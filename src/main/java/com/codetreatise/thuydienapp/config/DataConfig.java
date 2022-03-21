@@ -26,6 +26,7 @@ public class DataConfig {
 
         public String MODBUS_IP;
         public Integer MODBUS_PORT;
+        public Byte UNIT;
 
         public boolean MODBUS_SYNC_READY;
         public boolean API_CALL_API_READY;
@@ -34,7 +35,7 @@ public class DataConfig {
         public String API_PASSWORD;
         public List<Data> DATA_LIST;
 
-        private void createNew(Integer TIME_SCHEDULE_SYNC_MODBUS, Date NEXT_TIME_SCHEDULE_SYNC_MODBUS, Integer TIME_SCHEDULE_CALL_API, Date NEXT_TIME_SCHEDULE_CALL_API, String API_CALL_URL, HttpMethod HTTP_METHOD_CALL_API, String MODBUS_IP, Integer MODBUS_PORT, boolean MODBUS_SYNC_READY, boolean API_CALL_API_READY, String API_USERNAME, String API_PASSWORD, List<Data> dataList) {
+        private void createNew(Integer TIME_SCHEDULE_SYNC_MODBUS, Date NEXT_TIME_SCHEDULE_SYNC_MODBUS, Integer TIME_SCHEDULE_CALL_API, Date NEXT_TIME_SCHEDULE_CALL_API, String API_CALL_URL, HttpMethod HTTP_METHOD_CALL_API, String MODBUS_IP, Integer MODBUS_PORT, byte UNIT,boolean MODBUS_SYNC_READY, boolean API_CALL_API_READY, String API_USERNAME, String API_PASSWORD, List<Data> dataList) {
 
             this.TIME_SCHEDULE_SYNC_MODBUS = TIME_SCHEDULE_SYNC_MODBUS;
             this.NEXT_TIME_SCHEDULE_SYNC_MODBUS = NEXT_TIME_SCHEDULE_SYNC_MODBUS;
@@ -49,6 +50,7 @@ public class DataConfig {
             this.API_USERNAME = API_USERNAME;
             this.API_PASSWORD = API_PASSWORD;
             this.DATA_LIST = dataList;
+            this.UNIT = UNIT;
         }
 
         public DataSaveObject() {
@@ -61,6 +63,7 @@ public class DataConfig {
                     SystemArg.HTTP_METHOD_CALL_API,
                     SystemArg.MODBUS_IP,
                     SystemArg.MODBUS_PORT,
+                    SystemArg.UNIT,
                     SystemArg.MODBUS_SYNC_READY,
                     SystemArg.API_CALL_API_READY,
                     SystemArg.API_USERNAME,
@@ -83,6 +86,7 @@ public class DataConfig {
             SystemArg.API_USERNAME = API_USERNAME;
             SystemArg.API_PASSWORD = API_PASSWORD;
             SystemArg.DATA_LIST = DATA_LIST;
+            SystemArg.UNIT = UNIT;
         }
 
     }

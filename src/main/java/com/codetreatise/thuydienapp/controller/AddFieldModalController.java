@@ -36,7 +36,6 @@ public class AddFieldModalController {
 
     public Button saveUser;
     public Label lbMessage;
-    public TextField uiid;
     @Lazy
     @Autowired
     private StageManager stageManager;
@@ -56,7 +55,6 @@ public class AddFieldModalController {
                             .maThongSo(maThongSo.getText().trim())
                             .address(Integer.parseInt(address.getText().trim()))
                             .quantity(Integer.parseInt(quantity.getText().trim()))
-                            .uiid(Byte.parseByte(uiid.getText().trim()))
                             .status(1)
                             .build();
             SystemArg.DATA_LIST.add(data);
@@ -78,7 +76,6 @@ public class AddFieldModalController {
         maThongSo.setStyle(successStyle);
         address.setStyle(successStyle);
         quantity.setStyle(successStyle);
-        uiid.setStyle(successStyle);
         String message = "";
         boolean valid = true;
         if(key.getText().trim().equals("")) {
@@ -104,11 +101,6 @@ public class AddFieldModalController {
         if(quantity.getText().trim().equals("") || !quantity.getText().trim().matches("\\d+")) {
             quantity.setStyle(errorStyle);
             message += "quantity is required and only have 0-9!\n";
-            valid = false;
-        }
-        if(uiid.getText().trim().equals("") || !uiid.getText().trim().matches("\\d+")) {
-            uiid.setStyle(errorStyle);
-            message += "Slave ID is required and only have 0-9!\n";
             valid = false;
         }
         lbMessage.setText(message);

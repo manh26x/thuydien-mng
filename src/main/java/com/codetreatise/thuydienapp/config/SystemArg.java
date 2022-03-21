@@ -20,6 +20,7 @@ public final class SystemArg {
 
     public static String MODBUS_IP = "localhost";
     public static Integer MODBUS_PORT = 502;
+    public static Byte UNIT = 1;
 
     public static boolean MODBUS_SYNC_READY = false;
     public static boolean API_CALL_API_READY = false;

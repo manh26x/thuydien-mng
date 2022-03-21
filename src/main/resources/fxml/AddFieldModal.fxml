@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="571.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codetreatise.thuydienapp.controller.AddFieldModalController">
+<AnchorPane prefHeight="571.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codetreatise.thuydienapp.controller.AddFieldModalController">
     <VBox prefHeight="571.0" prefWidth="600.0" spacing="10.0" styleClass="background" stylesheets="@../styles/Styles.css" BorderPane.alignment="CENTER">
         <children>
             <Label text="Add New Field Data" textFill="WHITE">
@@ -14,7 +14,7 @@
                     <Font size="20.0" />
                 </font>
                 <VBox.margin>
-                    <Insets bottom="10.0" left="20.0" top="30.0" />
+                    <Insets left="20.0" top="10.0" />
                 </VBox.margin>
             </Label>
             <HBox prefHeight="30.0" prefWidth="265.0">
@@ -24,45 +24,92 @@
                             <Font size="15.0" />
                         </font>
                     </Label>
-                    <Label fx:id="userId">
-                        <HBox.margin>
-                            <Insets left="25.0" />
-                        </HBox.margin>
-                    </Label>
                 </children>
                 <VBox.margin>
                     <Insets left="25.0" />
                 </VBox.margin>
             </HBox>
+         <Label text="Key" textFill="WHITE">
+            <VBox.margin>
+               <Insets left="25.0" />
+            </VBox.margin>
+            <font>
+               <Font name="System Bold" size="12.0" />
+            </font>
+         </Label>
             <TextField fx:id="key" prefHeight="30.0" prefWidth="246.0" promptText="Key">
                 <VBox.margin>
                     <Insets left="25.0" right="25.0" />
                 </VBox.margin></TextField>
+         <Label text="Tên chỉ tiêu" textFill="WHITE">
+            <VBox.margin>
+               <Insets left="25.0" />
+            </VBox.margin>
+            <font>
+               <Font name="System Bold" size="12.0" />
+            </font>
+         </Label>
             <TextField fx:id="tenChiTieu" prefHeight="30.0" prefWidth="246.0" promptText="Tên chỉ tiêu">
                 <VBox.margin>
                     <Insets left="25.0" right="25.0" />
                 </VBox.margin></TextField>
+         <Label text="Mã thông số" textFill="WHITE">
+            <VBox.margin>
+               <Insets left="25.0" />
+            </VBox.margin>
+            <font>
+               <Font name="System Bold" size="12.0" />
+            </font>
+         </Label>
             <TextField fx:id="maThongSo" prefHeight="30.0" prefWidth="246.0" promptText="Mã thông số">
                 <VBox.margin>
                     <Insets left="25.0" right="25.0" />
                 </VBox.margin></TextField>
+         <Label text="Đơn vị tính" textFill="WHITE">
+            <VBox.margin>
+               <Insets left="25.0" />
+            </VBox.margin>
+            <font>
+               <Font name="System Bold" size="12.0" />
+            </font>
+         </Label>
             <TextField fx:id="dvt" prefHeight="30.0" prefWidth="246.0" promptText="Đơn vị tính">
                 <VBox.margin>
                     <Insets left="25.0" right="25.0" />
                 </VBox.margin></TextField>
+         <Label text="Nguồn" textFill="WHITE">
+            <VBox.margin>
+               <Insets left="25.0" />
+            </VBox.margin>
+            <font>
+               <Font name="System Bold" size="12.0" />
+            </font>
+         </Label>
             <TextField fx:id="nguon" prefHeight="30.0" prefWidth="246.0" promptText="Nguồn">
                 <VBox.margin>
                     <Insets left="25.0" right="25.0" />
                 </VBox.margin></TextField>
+         <Label text="Địa chỉ Modbus" textFill="WHITE">
+            <VBox.margin>
+               <Insets left="25.0" />
+            </VBox.margin>
+            <font>
+               <Font name="System Bold" size="12.0" />
+            </font>
+         </Label>
             <TextField fx:id="address" prefHeight="30.0" prefWidth="246.0" promptText="Address Modbus">
                 <VBox.margin>
                     <Insets left="25.0" right="25.0" />
                 </VBox.margin></TextField>
+         <Label text="Quantity Modbus" textFill="WHITE">
+            <VBox.margin>
+               <Insets left="25.0" />
+            </VBox.margin>
+            <font>
+               <Font name="System Bold" size="12.0" />
+            </font>
+         </Label>
             <TextField fx:id="quantity" prefHeight="30.0" prefWidth="246.0" promptText="Quantity Modbus">
-                <VBox.margin>
-                    <Insets left="25.0" right="25.0" />
-                </VBox.margin></TextField>
-            <TextField fx:id="uiid" prefHeight="30.0" prefWidth="246.0" promptText="Slave ID">
                 <VBox.margin>
                     <Insets left="25.0" right="25.0" />
                 </VBox.margin></TextField>

@@ -59,6 +59,8 @@ public class TimingModbusController extends BaseController implements Initializa
     public Label lbMessage;
     @FXML
     public ComboBox timeChosen;
+    @FXML
+    public TextField slaveId;
 
 
     ObservableList<Data> dataObservable = FXCollections.observableArrayList();;
@@ -99,6 +101,7 @@ public class TimingModbusController extends BaseController implements Initializa
         if(isValid()) {
             SystemArg.MODBUS_IP = modbusIP.getText().trim();
             SystemArg.MODBUS_PORT = Integer.parseInt(modbusPort.getText());
+            SystemArg.UNIT = (byte) Integer.parseInt(slaveId.getText());
             SystemArg.TIME_SCHEDULE_SYNC_MODBUS = (Integer) timeChosen.getSelectionModel().getSelectedItem() * 60 * 1000;
             SystemArg.MODBUS_SYNC_READY = rbReady.isSelected();
             SystemArg.NEXT_TIME_SCHEDULE_SYNC_MODBUS = new Date();
@@ -120,6 +123,7 @@ public class TimingModbusController extends BaseController implements Initializa
         String successStyle = String.format("-fx-border-color: #A9A9A9; -fx-border-width: 2; -fx-border-radius: 5;");
         modbusPort.setStyle(successStyle);
         modbusIP.setStyle(successStyle);
+        slaveId.setStyle(successStyle);
         if(modbusIP.getText().trim().equals("")) {
             message += "Modbus IP is required!\n";
             modbusIP.setStyle(errorStyle);
@@ -128,6 +132,11 @@ public class TimingModbusController extends BaseController implements Initializa
         if(modbusPort.getText().trim().equals("") || !modbusPort.getText().trim().matches("\\d+")) {
             message += "Modbus Port is required and it must be a digit 0-9\n";
             modbusPort.setStyle(errorStyle);
+            valid = false;
+        }
+        if(slaveId.getText().trim().equals("") || !slaveId.getText().trim().matches("\\d+")) {
+            message += "Slave ID is required and it must be a digit 0-9\n";
+            slaveId.setStyle(errorStyle);
             valid = false;
         }
         if(timeChosen.getSelectionModel().isEmpty()) {
@@ -150,6 +159,7 @@ public class TimingModbusController extends BaseController implements Initializa
     public void reset(ActionEvent event) {
         modbusIP.setText(SystemArg.MODBUS_IP);
         modbusPort.setText(SystemArg.MODBUS_PORT.toString());
+        slaveId.setText(SystemArg.UNIT.toString());
         switch (SystemArg.TIME_SCHEDULE_SYNC_MODBUS / (60 * 1000)) {
             case 5:
                 timeChosen.getSelectionModel().select(0);

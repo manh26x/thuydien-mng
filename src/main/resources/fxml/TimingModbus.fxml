@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="600.0" prefWidth="1400.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codetreatise.thuydienapp.controller.TimingModbusController">
+<BorderPane prefHeight="600.0" prefWidth="1400.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codetreatise.thuydienapp.controller.TimingModbusController">
     <top>
         <MenuBar BorderPane.alignment="TOP_LEFT">
             <menus>
@@ -54,11 +54,39 @@
                         <Insets left="25.0" />
                     </VBox.margin>
                 </HBox>
+            <Label text="IP hoặc hostname" textFill="WHITE">
+               <VBox.margin>
+                  <Insets left="25.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
                 <TextField fx:id="modbusIP" prefHeight="30.0" prefWidth="246.0" promptText="IP">
                     <VBox.margin>
                         <Insets left="25.0" right="25.0" />
                     </VBox.margin></TextField>
+            <Label text="Port" textFill="WHITE">
+               <VBox.margin>
+                  <Insets left="25.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
                 <TextField fx:id="modbusPort" prefHeight="30.0" prefWidth="246.0" promptText="Port">
+                    <VBox.margin>
+                        <Insets left="25.0" right="25.0" />
+                    </VBox.margin></TextField>
+                <Label text="Slave ID" textFill="WHITE">
+                    <VBox.margin>
+                        <Insets left="25.0" />
+                    </VBox.margin>
+                    <font>
+                        <Font name="System Bold" size="12.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="slaveId" prefHeight="30.0" prefWidth="246.0" promptText="Slave ID">
                     <VBox.margin>
                         <Insets left="25.0" right="25.0" />
                     </VBox.margin></TextField>
@@ -87,11 +115,11 @@
                         <Insets left="25.0" right="25.0" />
                     </VBox.margin>
                 </HBox>
-                <Label  prefHeight="30.0" prefWidth="246.0"  textFill="WHITE" text="Time (minus)" >
+                <Label prefHeight="30.0" prefWidth="246.0" text="Time (minus)" textFill="WHITE">
                     <VBox.margin>
                         <Insets left="25.0" right="25.0" />
                     </VBox.margin></Label>
-                <ComboBox fx:id="timeChosen" prefWidth="246.0" >
+                <ComboBox fx:id="timeChosen" prefWidth="246.0">
                     <VBox.margin>
                         <Insets left="25.0" right="25.0" />
                     </VBox.margin>

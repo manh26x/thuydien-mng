@@ -23,7 +23,6 @@ public class Data  implements Serializable {
     private Integer quantity;
     private Integer status;
     private String maThongSo;
-    private Byte uiid;
 
     @Override
     public String toString() {

@@ -77,6 +77,7 @@ public class SynchronizeConfig {
             ModbusClient modbusClient = new ModbusClient();
 
             modbusClient.Connect(modbusMaster.getIp(), modbusMaster.getPort());
+            modbusClient.setUnitIdentifier(SystemArg.UNIT);
 
         Date now = new Date();
         now.setSeconds(0);
@@ -85,11 +86,8 @@ public class SynchronizeConfig {
 
             dataList.forEach(e -> {
                 try {
-                    if(e.getUiid() == null) {
-                        e.setUiid((byte) 1);
-                    }
-                    modbusClient.setUnitIdentifier(e.getUiid());
-                    float arg = ModbusClient.ConvertRegistersToFloat(modbusClient.ReadInputRegisters(e.getAddress(), e.getQuantity()));
+
+                    float arg = ModbusClient.ConvertRegistersToFloat(modbusClient.ReadHoldingRegisters(e.getAddress(), e.getQuantity()));
                     logger.info(e.getKey() + " : " + arg);
                     dataReceiveRepository.save(
                             DataReceive.builder()
