@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="571.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codetreatise.thuydienapp.controller.AddFieldModalController">
+    <VBox prefHeight="571.0" prefWidth="600.0" spacing="10.0" styleClass="background" stylesheets="@../styles/Styles.css" BorderPane.alignment="CENTER">
+        <children>
+            <Label text="Add New Field Data" textFill="WHITE">
+                <font>
+                    <Font size="20.0" />
+                </font>
+                <VBox.margin>
+                    <Insets bottom="10.0" left="20.0" top="30.0" />
+                </VBox.margin>
+            </Label>
+            <HBox prefHeight="30.0" prefWidth="265.0">
+                <children>
+                    <Label text="Data KEY -" textFill="#f8f7f7">
+                        <font>
+                            <Font size="15.0" />
+                        </font>
+                    </Label>
+                    <Label fx:id="userId">
+                        <HBox.margin>
+                            <Insets left="25.0" />
+                        </HBox.margin>
+                    </Label>
+                </children>
+                <VBox.margin>
+                    <Insets left="25.0" />
+                </VBox.margin>
+            </HBox>
+            <TextField fx:id="key" prefHeight="30.0" prefWidth="246.0" promptText="Key">
+                <VBox.margin>
+                    <Insets left="25.0" right="25.0" />
+                </VBox.margin></TextField>
+            <TextField fx:id="tenChiTieu" prefHeight="30.0" prefWidth="246.0" promptText="Tên chỉ tiêu">
+                <VBox.margin>
+                    <Insets left="25.0" right="25.0" />
+                </VBox.margin></TextField>
+            <TextField fx:id="maThongSo" prefHeight="30.0" prefWidth="246.0" promptText="Mã thông số">
+                <VBox.margin>
+                    <Insets left="25.0" right="25.0" />
+                </VBox.margin></TextField>
+            <TextField fx:id="dvt" prefHeight="30.0" prefWidth="246.0" promptText="Đơn vị tính">
+                <VBox.margin>
+                    <Insets left="25.0" right="25.0" />
+                </VBox.margin></TextField>
+            <TextField fx:id="nguon" prefHeight="30.0" prefWidth="246.0" promptText="Nguồn">
+                <VBox.margin>
+                    <Insets left="25.0" right="25.0" />
+                </VBox.margin></TextField>
+            <TextField fx:id="address" prefHeight="30.0" prefWidth="246.0" promptText="Address Modbus">
+                <VBox.margin>
+                    <Insets left="25.0" right="25.0" />
+                </VBox.margin></TextField>
+            <TextField fx:id="quantity" prefHeight="30.0" prefWidth="246.0" promptText="Quantity Modbus">
+                <VBox.margin>
+                    <Insets left="25.0" right="25.0" />
+                </VBox.margin></TextField>
+            <TextField fx:id="uiid" prefHeight="30.0" prefWidth="246.0" promptText="Slave ID">
+                <VBox.margin>
+                    <Insets left="25.0" right="25.0" />
+                </VBox.margin></TextField>
+            <Label fx:id="lbMessage" layoutX="97.0" layoutY="46.0" text="" textFill="#EB1814">
+                <font>
+                    <Font size="14.0" />
+                </font>
+            </Label>
+            <HBox prefHeight="30.0" prefWidth="250.0" spacing="10.0">
+                <children>
+                    <Button fx:id="reset" mnemonicParsing="false" onAction="#close" prefHeight="30.0" prefWidth="75.0" style="-fx-background-color: white;" text="Close">
+                        <effect>
+                            <DropShadow blurType="ONE_PASS_BOX" color="#1965d0" />
+                        </effect>
+                    </Button>
+                    <Button fx:id="saveUser" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#save" prefHeight="30.0" prefWidth="75.0" styleClass="btnGreen" text="Save" textFill="WHITE">
+                        <font>
+                            <Font size="15.0" />
+                        </font>
+                        <effect>
+                            <DropShadow blurType="ONE_PASS_BOX" color="#6468b2" />
+                        </effect>
+                    </Button>
+                </children>
+                <opaqueInsets>
+                    <Insets />
+                </opaqueInsets>
+                <VBox.margin>
+                    <Insets left="110.0" />
+                </VBox.margin>
+            </HBox>
+        </children>
+        <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+        </padding>
+        <BorderPane.margin>
+            <Insets />
+        </BorderPane.margin>
+    </VBox>
+</AnchorPane>

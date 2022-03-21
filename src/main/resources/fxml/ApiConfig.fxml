@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane prefHeight="700.0" prefWidth="1400.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codetreatise.thuydienapp.controller.ApiConfigController">
+    <top>
+        <MenuBar BorderPane.alignment="TOP_LEFT">
+            <menus>
+                <Menu mnemonicParsing="false" text="File">
+                    <items>
+<!--                        <MenuItem mnemonicParsing="false" onAction="#userMng" text="User Manager" />-->
+                        <MenuItem mnemonicParsing="false" onAction="#timeSyncModbus" text="Modbus Config" />
+                        <MenuItem mnemonicParsing="false" onAction="#timeCallApi" text="API Config" />
+<!--                        <MenuItem mnemonicParsing="false" onAction="#exit" text="Exit" />-->
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Edit">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Delete" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="About" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
+    <left>
+        <VBox prefHeight="571.0" prefWidth="506.0" spacing="10.0" styleClass="background" stylesheets="@../styles/Styles.css" BorderPane.alignment="CENTER">
+            <children>
+                <Label text="API config" textFill="WHITE">
+                    <font>
+                        <Font size="20.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets bottom="10.0" left="20.0" top="30.0" />
+                    </VBox.margin>
+                </Label>
+                <HBox prefHeight="30.0" prefWidth="265.0">
+                    <children>
+                        <Label text="API address" textFill="#f8f7f7">
+                            <font>
+                                <Font size="15.0" />
+                            </font>
+                        </Label>
+                    </children>
+                    <VBox.margin>
+                        <Insets left="25.0" />
+                    </VBox.margin>
+                </HBox>
+
+                <TextField fx:id="apiAddress" disable="true" prefHeight="30.0" prefWidth="246.0" promptText="API Address">
+                    <VBox.margin>
+                        <Insets left="25.0" right="25.0" />
+                    </VBox.margin></TextField>
+                <Label text="Username" textFill="#f8f7f7">
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets left="25.0" />
+                    </VBox.margin>
+                </Label>
+                <TextField fx:id="usernameApi" prefHeight="30.0" prefWidth="246.0" promptText="username">
+                    <VBox.margin>
+                        <Insets left="25.0" right="25.0" />
+                    </VBox.margin></TextField>
+                <Label text="Password" textFill="#f8f7f7">
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets left="25.0" />
+                    </VBox.margin>
+                </Label>
+                <TextField fx:id="passwordApi" prefHeight="30.0" prefWidth="246.0" promptText="password">
+                    <VBox.margin>
+                        <Insets left="25.0" right="25.0" />
+                    </VBox.margin></TextField>
+                <Label fx:id="statusTimeConfigLb" graphicTextGap="25.0" text="Config Status and Time" textFill="WHITE">
+                    <font>
+                        <Font size="20.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets bottom="10.0" left="20.0" top="30.0" />
+                    </VBox.margin>
+                </Label>
+                <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="255.0" spacing="15.0">
+                    <children>
+                        <RadioButton fx:id="rbReady" mnemonicParsing="false" selected="true" text="Ready" textFill="WHITE">
+                            <toggleGroup>
+                                <ToggleGroup fx:id="readyGroup" />
+                            </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="rbNotReady" mnemonicParsing="false" text="Not Ready" textFill="WHITE" toggleGroup="$readyGroup">
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                        </RadioButton>
+                    </children>
+                    <VBox.margin>
+                        <Insets left="25.0" right="25.0" />
+                    </VBox.margin>
+                </HBox>
+                <Label text="Timing (ms)" textFill="#f8f7f7">
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets left="25.0" />
+                    </VBox.margin>
+                </Label>
+
+                <ComboBox fx:id="timeSyncChosen" prefWidth="246.0">
+                    <VBox.margin>
+                        <Insets left="25.0" right="25.0" />
+                    </VBox.margin></ComboBox>
+                <Label fx:id="lbMessage" layoutX="97.0" layoutY="46.0" text="" textFill="#EB1814">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <HBox prefHeight="30.0" prefWidth="250.0" spacing="10.0">
+                    <children>
+                        <Button fx:id="reset" mnemonicParsing="false" onAction="#reset" prefHeight="30.0" prefWidth="75.0" style="-fx-background-color: white;" text="Reset">
+                            <effect>
+                                <DropShadow blurType="ONE_PASS_BOX" color="#1965d0" />
+                            </effect>
+                        </Button>
+                        <Button fx:id="save" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#save" prefHeight="30.0" prefWidth="75.0" styleClass="btnGreen" text="Save" textFill="WHITE">
+                            <font>
+                                <Font size="15.0" />
+                            </font>
+                            <effect>
+                                <DropShadow blurType="ONE_PASS_BOX" color="#6468b2" />
+                            </effect>
+                        </Button>
+                        <Button fx:id="saveAndCall" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#saveAndCall" prefHeight="30.0" prefWidth="125.0" style="-fx-background-color: #05796c;" text="Save and Call" textFill="WHITE">
+                            <font>
+                                <Font size="15.0" />
+                            </font>
+                            <effect>
+                                <DropShadow blurType="ONE_PASS_BOX" color="#6468b2" />
+                            </effect>
+                        </Button>
+                    </children>
+                    <opaqueInsets>
+                        <Insets />
+                    </opaqueInsets>
+                    <VBox.margin>
+                        <Insets left="110.0" />
+                    </VBox.margin>
+                </HBox>
+                <Label fx:id="lbNextTimeCall" layoutX="97.0" layoutY="46.0" text="asfafsd" textFill="#00eb2a">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                    <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                    </padding>
+                </Label>
+            </children>
+            <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </padding>
+
+            <BorderPane.margin>
+                <Insets />
+            </BorderPane.margin>
+
+        </VBox>
+
+    </left>
+    <center>
+    <VBox alignment="TOP_RIGHT" prefHeight="571.0" prefWidth="892.0" BorderPane.alignment="CENTER">
+         <children>
+             <VBox>
+                 <HBox spacing="5.0">
+             <VBox prefHeight="30.0" prefWidth="200.0">
+             <Label text="Start Date" textFill="BLACK">
+                 <font>
+                     <Font size="15.0" />
+                 </font>
+             </Label>
+                 <DatePicker fx:id="startDate" />
+
+             </VBox>
+             <VBox prefHeight="30.0" prefWidth="200.0">
+                 <Label text="End Date" textFill="BLACK">
+                     <font>
+                         <Font size="15.0" />
+                     </font>
+
+                 </Label>
+                 <DatePicker fx:id="endDate" />
+                 <VBox.margin>
+                     <Insets left="10.0" />
+                 </VBox.margin>
+             </VBox>
+                     <VBox prefHeight="30.0" prefWidth="300.0">
+                         <Label text="Status Code" textFill="BLACK">
+                             <font>
+                                 <Font size="15.0" />
+                             </font>
+
+                         </Label>
+                         <ComboBox fx:id="dataChosen" prefWidth="300.0" />
+                         <VBox.margin>
+                             <Insets left="10.0" />
+                         </VBox.margin>
+                     </VBox>
+                     <Button fx:id="search" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#search" prefHeight="30.0" prefWidth="75.0" styleClass="btnGreen" text="Search" textFill="WHITE">
+                         <font>
+                             <Font size="15.0" />
+                         </font>
+                         <effect>
+                             <DropShadow blurType="ONE_PASS_BOX" color="#6468b2" />
+                         </effect>
+                         <HBox.margin><Insets left="20.0" top="17.0" /></HBox.margin>
+
+                     </Button>
+                 </HBox>
+                 <VBox.margin>
+                     <Insets left="10.0" top="50.0" />
+                 </VBox.margin>
+             </VBox>
+             <TableView fx:id="dataTable" prefHeight="540.0" prefWidth="628.0" tableMenuButtonVisible="true">
+                 <columns>
+                     <TableColumn fx:id="colTime" maxWidth="200.0" prefWidth="20.0" text="ThoiGian" />
+                     <TableColumn fx:id="colRequest" maxWidth="450.0" prefWidth="75.0" text="Request" />
+                     <TableColumn fx:id="colResponse" maxWidth="450.0" prefWidth="75.0" text="Response" />
+                     <TableColumn fx:id="colTrangThai" maxWidth="100.0" prefWidth="75.0" text="Trạng thái" />
+                 </columns>
+                 <VBox.margin>
+                     <Insets left="10.0" right="5.0" top="25.0" />
+                 </VBox.margin>
+                 <columnResizePolicy>
+                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                 </columnResizePolicy>
+                 <contextMenu>
+                     <ContextMenu>
+                         <items>
+                             <MenuItem fx:id="viewData" mnemonicParsing="false" onAction="#resfresh" text="refresh" />
+                         </items>
+                     </ContextMenu>
+                 </contextMenu>
+             </TableView>
+         </children></VBox>
+    </center>
+</BorderPane>

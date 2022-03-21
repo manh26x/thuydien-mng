@@ -7,11 +7,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="JavaFXSpringBootApp" />
+        <module name="thuydienapp" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="JavaFXSpringBootApp" target="1.8" />
+      <module name="thuydienapp" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

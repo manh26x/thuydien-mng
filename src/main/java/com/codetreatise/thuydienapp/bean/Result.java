@@ -1,0 +1,32 @@
+package com.codetreatise.thuydienapp.bean;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.util.Date;
+
+@Entity
+@lombok.Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class Result {
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    private String api;
+
+    @Column(columnDefinition = "LONGVARCHAR")
+    private String response;
+
+    @Column(columnDefinition = "LONGVARCHAR")
+    private String request;
+
+    private Integer codeResponse;
+
+    private Date timeSend;
+
+}

@@ -21,13 +21,15 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="600.0" prefWidth="1000.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codetreatise.controller.UserController">
+<BorderPane prefHeight="600.0" prefWidth="1200.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codetreatise.thuydienapp.controller.UserController">
    <top>
       <MenuBar BorderPane.alignment="TOP_LEFT">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
+                <MenuItem mnemonicParsing="false" onAction="#userMng" text="User Manager" />
                 <MenuItem mnemonicParsing="false" onAction="#timeSyncModbus" text="Timing modbus" />
+                <MenuItem mnemonicParsing="false" onAction="#timeCallApi" text="API Config" />
               <MenuItem mnemonicParsing="false" onAction="#exit" text="Exit" />
             </items>
           </Menu>
@@ -149,7 +151,7 @@
       </VBox>
    </left>
    <center>
-      <VBox alignment="TOP_RIGHT" prefHeight="571.0" prefWidth="692.0" BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_RIGHT" prefHeight="571.0" prefWidth="892.0" BorderPane.alignment="CENTER">
          <children>
             <HBox alignment="TOP_RIGHT" prefHeight="41.0" prefWidth="640.0">
                <children>

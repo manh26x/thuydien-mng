@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/JavaFXSpringBootApp.iml" filepath="$PROJECT_DIR$/JavaFXSpringBootApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/thuydienapp.iml" filepath="$PROJECT_DIR$/thuydienapp.iml" />
     </modules>
   </component>
 </project>

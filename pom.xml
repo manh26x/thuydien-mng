@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.codetreatise</groupId>
-    <artifactId>JavaFXSpringBootApp</artifactId>
+    <artifactId>thuydienapp</artifactId>
     <packaging>jar</packaging>
     <version>1.0</version>
 
-    <name>JavaFXSpringBootApp</name>
+    <name>ThuyDienApp</name>
 
     <parent>
 		<groupId>org.springframework.boot</groupId>
@@ -33,6 +33,11 @@
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>de.re</groupId>
+			<artifactId>easymodbus</artifactId>
+			<version>1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -62,7 +67,25 @@
             <artifactId>lombok</artifactId>
             <version>1.18.12</version>
         </dependency>
-    </dependencies>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.7.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>2.7.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>2.7.4</version>
+		</dependency>
+	</dependencies>
 	
     <build>
         <plugins>
@@ -70,13 +93,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <showDeprecation>true</showDeprecation>
-                </configuration>
-            </plugin>            
         </plugins>
     </build>
     <description>The Application front-end designed using JavaFX and Spring Boot is used as backend to bootstrap the app. The scenes are created in FXML using Scene Builder. The app demonstrate simple CRUD using Spring Boot and JavaFX.</description>
