@@ -3,7 +3,6 @@ package com.codetreatise.thuydienapp.controller;
 import com.codetreatise.thuydienapp.bean.Data;
 import com.codetreatise.thuydienapp.config.DataConfig;
 import com.codetreatise.thuydienapp.config.SystemArg;
-import com.codetreatise.thuydienapp.repository.DataRepository;
 import com.codetreatise.thuydienapp.view.FxmlView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,7 +11,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.net.URL;
@@ -63,6 +61,7 @@ public class TimingModbusController extends BaseController implements Initializa
     public TextField slaveId;
 
 
+
     ObservableList<Data> dataObservable = FXCollections.observableArrayList();;
 
 
@@ -84,14 +83,13 @@ public class TimingModbusController extends BaseController implements Initializa
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         int[] timeChosenList = new int[] { 5, 10, 15, 30, 60 };
-
         timeChosen.getItems().addAll(Arrays.stream(timeChosenList)
                 .boxed()
                 .collect(Collectors.toList()));
         reset(null);
         setColProperties();
         loadDataList();
-
+        super.initApiMenuGen();
     }
 
 
@@ -191,5 +189,12 @@ public class TimingModbusController extends BaseController implements Initializa
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+    public void updateData(ActionEvent actionEvent) {
+        UpdateFieldModalController.DATA_CHOSEN = (Data) dataTable.getSelectionModel().getSelectedItem();
+        stageManager.createModal(FxmlView.UPDATE_FIELD_MODAL);
+
     }
 }

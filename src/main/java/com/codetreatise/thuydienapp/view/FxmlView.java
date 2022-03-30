@@ -48,6 +48,29 @@ public enum FxmlView {
             return "/fxml/AddFieldModal.fxml";
         }
     },
+    UPDATE_FIELD_MODAL {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("updateFieldModal.title");
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/fxml/UpdateFieldModal.fxml";
+        }
+    },
+    FTP_CONFIG {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("ftp.title");
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/fxml/FtpSendFileConfig.fxml";
+        }
+    },
+
     API_CONFIG {
         @Override
         public String getTitle() {
@@ -57,6 +80,17 @@ public enum FxmlView {
         @Override
         public String getFxmlFile() {
             return "/fxml/ApiConfig.fxml";
+        }
+    },
+    ADD_API {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("addApi.title");
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/fxml/AddApi.fxml";
         }
     }
     ;

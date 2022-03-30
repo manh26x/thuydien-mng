@@ -4,6 +4,10 @@
 	-fx-background-color:  #3cbc53;
 }
 
+.btnPrimary{
+	-fx-background-color: #3c42bc;
+}
+
 .btnCall{
 	-fx-background-color: #05796c;
 }

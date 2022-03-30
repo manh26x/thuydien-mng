@@ -1,6 +1,7 @@
 package com.codetreatise.thuydienapp;
 
 import com.codetreatise.thuydienapp.config.StageManager;
+import com.codetreatise.thuydienapp.config.SystemArg;
 import com.codetreatise.thuydienapp.view.FxmlView;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -43,7 +44,12 @@ public class Main extends Application {
      * window.
      */
     protected void displayInitialScene() {
-        stageManager.switchScene(FxmlView.TIMING_MODBUS);
+        if(SystemArg.LOGIN) {
+            stageManager.switchScene(FxmlView.TIMING_MODBUS);
+        } else {
+            stageManager.switchScene(FxmlView.LOGIN);
+
+        }
     }
 
     

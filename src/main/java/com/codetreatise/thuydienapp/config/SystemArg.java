@@ -1,5 +1,6 @@
 package com.codetreatise.thuydienapp.config;
 
+import com.codetreatise.thuydienapp.bean.ApiConfig;
 import com.codetreatise.thuydienapp.bean.Data;
 import org.springframework.http.HttpMethod;
 
@@ -8,6 +9,10 @@ import java.util.Date;
 import java.util.List;
 
 public final class SystemArg {
+
+    private SystemArg() {
+
+    }
 
     public static List<Data> DATA_LIST = new ArrayList<>();
     public static Integer TIME_SCHEDULE_SYNC_MODBUS = 1000 * 60*10;
@@ -27,7 +32,11 @@ public final class SystemArg {
 
     public static String API_USERNAME = "";
     public static String API_PASSWORD = "";
-    public static boolean IS_LOGINED = true;
+    public static String TOKEN = "";
+    public static Boolean LOGIN = Boolean.FALSE;
+
+    public static List<ApiConfig> API_LIST = new ArrayList<>();
+    public static String NAME_API_CHOSEN = "";
 
 
     public static void setNextTimeScheduleSyncModbus() {
@@ -37,7 +46,7 @@ public final class SystemArg {
     }
 
     public static boolean checkTimeScheduleSyncModbus() {
-        return !MODBUS_SYNC_READY || new Date().before(NEXT_TIME_SCHEDULE_SYNC_MODBUS);
+        return LOGIN && MODBUS_SYNC_READY && new Date().after(NEXT_TIME_SCHEDULE_SYNC_MODBUS);
     }
 
     public static void setNextTimeScheduleCallApi() {
@@ -47,6 +56,6 @@ public final class SystemArg {
     }
 
     public static boolean checkTimeScheduleCallApi() {
-        return !IS_LOGINED || !API_CALL_API_READY || new Date().before(NEXT_TIME_SCHEDULE_CALL_API) || API_CALL_URL.equals("");
+        return LOGIN || !API_CALL_API_READY || new Date().before(NEXT_TIME_SCHEDULE_CALL_API) || API_CALL_URL.equals("");
     }
 }

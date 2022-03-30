@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="30b98418-b1af-4d1e-bea5-3e40216c3a57" name="Changes" comment="fdsf">
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_jcraft_jsch_0_1_55.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_net_commons_net_3_8_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__jakarta_activation_jakarta_activation_api_1_2_2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__jakarta_xml_bind_jakarta_xml_bind_api_2_3_3.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_camel_camel_api_3_16_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_camel_camel_base_3_16_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_camel_camel_base_engine_3_16_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_camel_camel_cluster_3_16_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_camel_camel_core_catalog_3_16_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_camel_camel_core_model_3_16_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_camel_camel_core_processor_3_16_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_camel_camel_file_3_16_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_camel_camel_ftp_3_16_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_camel_camel_management_api_3_16_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_camel_camel_support_3_16_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_camel_camel_tooling_model_3_16_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_camel_camel_util_3_16_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_camel_camel_util_json_3_16_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/c/9/c97c38d51b4f7dd710d597ecc76fa524b82a078d" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/c/f/cf1728c0f0fd7160ceef4a61d94902a4e6cc58fe" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/spring-boot-logger.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/bean/ApiConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/config/ftp/FtpConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/config/ftp/FtpConfigArg.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/config/request/LoginRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/controller/AddApiController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/controller/FtpController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/controller/UpdateFieldModalController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/fxml/AddApi.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/fxml/FtpSendFileConfig.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/fxml/UpdateFieldModal.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__de_re_easymodbus_1_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/bean/Result.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/bean/Result.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/config/DataConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/config/DataConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/config/SpringFXMLLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/config/SpringFXMLLoader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/config/StageManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/config/StageManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/config/SynchronizeConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/config/SynchronizeConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/config/SystemArg.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/config/SystemArg.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/controller/ApiConfigController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/controller/ApiConfigController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/controller/BaseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/controller/BaseController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/controller/LoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/controller/TimingModbusController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/controller/TimingModbusController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/repository/DataReceiveRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/repository/DataReceiveRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/repository/ResultRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/repository/ResultRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/view/FxmlView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/view/FxmlView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Bundle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Bundle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/fxml/AddFieldModal.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fxml/AddFieldModal.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/fxml/ApiConfig.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fxml/ApiConfig.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/fxml/TimingModbus.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fxml/TimingModbus.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/styles/Styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/styles/Styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/thuydienapp.iml" beforeDir="false" afterPath="$PROJECT_DIR$/thuydienapp.iml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="FxmlFile" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="JpbToolWindowState">
+    <option name="myId2FirstActivated">
+      <map>
+        <entry key="com.haulmont.jpb.jpaInspector" value="true" />
+        <entry key="com.haulmont.jpb.jpaPalette" value="true" />
+        <entry key="com.haulmont.jpb.jpaStructure" value="true" />
+      </map>
+    </option>
+    <option name="myId2Visible">
+      <map>
+        <entry key="com.haulmont.jpb.jpaInspector" value="true" />
+        <entry key="com.haulmont.jpb.jpaPalette" value="false" />
+        <entry key="com.haulmont.jpb.jpaStructure" value="false" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectId" id="26g6CcDfTrW6TQOQA7qnAXZgwSJ" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DatabaseDriversLRU" value="h2" />
+    <property name="RequestMappingsPanelOrder0" value="0" />
+    <property name="RequestMappingsPanelOrder1" value="1" />
+    <property name="RequestMappingsPanelOrder2" value="2" />
+    <property name="RequestMappingsPanelWidth0" value="75" />
+    <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="RequestMappingsPanelWidth2" value="75" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="SONARLINT_PRECOMMIT_ANALYSIS" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/resources/fxml" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\thuydien-mng\src\main\resources\fxml" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="Main" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="thuydienapp" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.codetreatise.thuydienapp.Main" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="30b98418-b1af-4d1e-bea5-3e40216c3a57" name="Changes" comment="" />
+      <created>1647832756227</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1647832756227</updated>
+      <workItem from="1647832758075" duration="4818000" />
+      <workItem from="1647918336970" duration="1444000" />
+      <workItem from="1648027251488" duration="1963000" />
+      <workItem from="1648194444939" duration="7305000" />
+      <workItem from="1648434355280" duration="51875000" />
+    </task>
+    <task id="LOCAL-00001" summary="fdsf">
+      <created>1647836766985</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1647836766985</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="fdsf" />
+    <option name="LAST_COMMIT_MESSAGE" value="fdsf" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/controller/LoginController.java</url>
+          <line>83</line>
+          <option name="timeStamp" value="29" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/controller/LoginController.java</url>
+          <line>73</line>
+          <option name="timeStamp" value="64" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/controller/FtpController.java</url>
+          <line>147</line>
+          <option name="timeStamp" value="77" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$MAVEN_REPOSITORY$/commons-net/commons-net/3.8.0/commons-net-3.8.0.jar!/org/apache/commons/net/SocketClient.class</url>
+          <line>66</line>
+          <option name="timeStamp" value="78" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/controller/FtpController.java</url>
+          <line>83</line>
+          <option name="timeStamp" value="79" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

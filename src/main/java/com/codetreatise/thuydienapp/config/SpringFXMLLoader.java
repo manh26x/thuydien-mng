@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ResourceBundle;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
  * Spring as the FXML Controller Factory. Allows Spring and Java FX to coexist
  * once the Spring Application context has been bootstrapped.
  */
+@Getter
 @Component
 public class SpringFXMLLoader {
     private final ResourceBundle resourceBundle;

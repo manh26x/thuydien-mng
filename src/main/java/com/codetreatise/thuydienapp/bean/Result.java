@@ -27,6 +27,10 @@ public class Result {
 
     private Integer codeResponse;
 
+    @ManyToOne
+    @JoinColumn(name = "data_receive_id")
+    private DataReceive dataReceive;
+
     private Date timeSend;
 
 }

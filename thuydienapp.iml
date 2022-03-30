@@ -25,6 +25,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="EasyModbusJava" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-aop:1.5.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter:1.5.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot:1.5.2.RELEASE" level="project" />
@@ -38,8 +39,26 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-aop:4.3.7.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-beans:4.3.7.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.aspectj:aspectjweaver:1.8.9" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-ftp:3.16.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-file:3.16.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-support:3.16.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-management-api:3.16.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-util:3.16.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-cluster:3.16.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-base-engine:3.16.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-base:3.16.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-core-model:3.16.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-core-processor:3.16.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-core-catalog:3.16.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-api:3.16.0" level="project" />
+    <orderEntry type="library" name="Maven: jakarta.xml.bind:jakarta.xml.bind-api:2.3.3" level="project" />
+    <orderEntry type="library" name="Maven: jakarta.activation:jakarta.activation-api:1.2.2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-tooling-model:3.16.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-util-json:3.16.0" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.24" level="project" />
+    <orderEntry type="library" name="Maven: com.jcraft:jsch:0.1.55" level="project" />
+    <orderEntry type="library" name="Maven: commons-net:commons-net:3.8.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: com.h2database:h2:1.4.193" level="project" />
-    <orderEntry type="library" name="Maven: de.re:easymodbus:1.0" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-cache:1.5.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-context:4.3.7.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-expression:4.3.7.RELEASE" level="project" />
@@ -63,7 +82,6 @@
     <orderEntry type="library" name="Maven: org.springframework.data:spring-data-commons:1.13.1.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-orm:4.3.7.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:4.3.7.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.24" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:jcl-over-slf4j:1.7.24" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-aspects:4.3.7.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-security:1.5.2.RELEASE" level="project" />
@@ -93,6 +111,5 @@
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.7.4" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.7.4" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.7.4" level="project" />
-    <orderEntry type="library" name="EasyModbusJava" level="project" />
   </component>
 </module>

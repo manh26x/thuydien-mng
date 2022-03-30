@@ -1,5 +1,6 @@
 package com.codetreatise.thuydienapp.config;
 
+import com.codetreatise.thuydienapp.bean.ApiConfig;
 import com.codetreatise.thuydienapp.bean.Data;
 import org.springframework.http.HttpMethod;
 
@@ -34,8 +35,11 @@ public class DataConfig {
         public String API_USERNAME;
         public String API_PASSWORD;
         public List<Data> DATA_LIST;
+        public String TOKEN;
+        public List<ApiConfig> API_LIST;
+        public Boolean LOGIN;
 
-        private void createNew(Integer TIME_SCHEDULE_SYNC_MODBUS, Date NEXT_TIME_SCHEDULE_SYNC_MODBUS, Integer TIME_SCHEDULE_CALL_API, Date NEXT_TIME_SCHEDULE_CALL_API, String API_CALL_URL, HttpMethod HTTP_METHOD_CALL_API, String MODBUS_IP, Integer MODBUS_PORT, byte UNIT,boolean MODBUS_SYNC_READY, boolean API_CALL_API_READY, String API_USERNAME, String API_PASSWORD, List<Data> dataList) {
+        private void createNew(Integer TIME_SCHEDULE_SYNC_MODBUS, Date NEXT_TIME_SCHEDULE_SYNC_MODBUS, Integer TIME_SCHEDULE_CALL_API, Date NEXT_TIME_SCHEDULE_CALL_API, String API_CALL_URL, HttpMethod HTTP_METHOD_CALL_API, String MODBUS_IP, Integer MODBUS_PORT, byte UNIT,boolean MODBUS_SYNC_READY, boolean API_CALL_API_READY, String API_USERNAME, String API_PASSWORD, List<Data> dataList, List<ApiConfig> apiConfigs, String token, Boolean LOGIN) {
 
             this.TIME_SCHEDULE_SYNC_MODBUS = TIME_SCHEDULE_SYNC_MODBUS;
             this.NEXT_TIME_SCHEDULE_SYNC_MODBUS = NEXT_TIME_SCHEDULE_SYNC_MODBUS;
@@ -51,6 +55,9 @@ public class DataConfig {
             this.API_PASSWORD = API_PASSWORD;
             this.DATA_LIST = dataList;
             this.UNIT = UNIT;
+            this.API_LIST = apiConfigs;
+            this.TOKEN = token;
+            this.LOGIN = LOGIN;
         }
 
         public DataSaveObject() {
@@ -68,7 +75,10 @@ public class DataConfig {
                     SystemArg.API_CALL_API_READY,
                     SystemArg.API_USERNAME,
                     SystemArg.API_PASSWORD,
-                    SystemArg.DATA_LIST
+                    SystemArg.DATA_LIST,
+                    SystemArg.API_LIST,
+                    SystemArg.TOKEN,
+                     SystemArg.LOGIN
             );
         }
 
@@ -87,6 +97,21 @@ public class DataConfig {
             SystemArg.API_PASSWORD = API_PASSWORD;
             SystemArg.DATA_LIST = DATA_LIST;
             SystemArg.UNIT = UNIT;
+            if(API_LIST == null || API_LIST.size() == 0 ) {
+                ApiConfig apiConfig = new ApiConfig();
+                apiConfig.setApiCallReady(API_CALL_API_READY);
+                apiConfig.setName(API_CALL_URL);
+                apiConfig.setId(0);
+                apiConfig.setUrl(API_CALL_URL);
+                apiConfig.setUsername(API_USERNAME);
+                apiConfig.setPassword(API_PASSWORD);
+                apiConfig.setTimeScheduleCallApi(TIME_SCHEDULE_CALL_API);
+                API_LIST = new ArrayList<>();
+                API_LIST.add(apiConfig);
+            }
+            SystemArg.API_LIST = API_LIST;
+            SystemArg.LOGIN = LOGIN;
+            SystemArg.TOKEN = TOKEN;
         }
 
     }

@@ -1,5 +1,6 @@
 package com.codetreatise.thuydienapp.controller;
 
+import com.codetreatise.thuydienapp.bean.ApiConfig;
 import com.codetreatise.thuydienapp.bean.Result;
 import com.codetreatise.thuydienapp.config.DataConfig;
 import com.codetreatise.thuydienapp.config.SystemArg;
@@ -55,6 +56,7 @@ public class ApiConfigController extends BaseController implements Initializable
     public TableColumn colResponse;
     public TableColumn colTrangThai;
     public ComboBox timeSyncChosen;
+    private ApiConfig apiConfig;
 
     @Autowired
     private DataRepository dataRepository;
@@ -75,15 +77,17 @@ public class ApiConfigController extends BaseController implements Initializable
         dataChosen.getItems().addAll(Arrays.asList( new Integer[] {200, 201, 400, 404, 500}));
         setColProperties();
         loadDataList();
+        super.initApiMenuGen();
     }
 
     public void reset(ActionEvent event) {
-        apiAddress.setText(SystemArg.API_CALL_URL);
-        usernameApi.setText(SystemArg.API_USERNAME);
-        passwordApi.setText(SystemArg.API_PASSWORD);
-        rbReady.setSelected(SystemArg.API_CALL_API_READY);
-        rbNotReady.setSelected(!SystemArg.API_CALL_API_READY);
-        switch (SystemArg.TIME_SCHEDULE_CALL_API / (60 * 1000)) {
+        apiConfig = SystemArg.API_LIST.stream().filter(e-> e.getName() == SystemArg.NAME_API_CHOSEN).findFirst().get();
+        apiAddress.setText(apiConfig.getUrl());
+        usernameApi.setText(apiConfig.getUsername());
+        passwordApi.setText(apiConfig.getPassword());
+        rbReady.setSelected(apiConfig.isApiCallReady());
+        rbNotReady.setSelected(!apiConfig.isApiCallReady());
+        switch (apiConfig.getTimeScheduleCallApi()/ (60 * 1000)) {
             case 5:
                 timeSyncChosen.getSelectionModel().select(0);
                 break;
@@ -102,7 +106,7 @@ public class ApiConfigController extends BaseController implements Initializable
         }
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
         simpleDateFormat.applyPattern("yyyy-MM-dd HH:mm:ss");
-        lbNextTimeCall.setText("Thoi gian toi: " + simpleDateFormat.format(SystemArg.NEXT_TIME_SCHEDULE_CALL_API));
+        lbNextTimeCall.setText("Thoi gian toi: " + simpleDateFormat.format(apiConfig.getNextTimeScheduleCallApi()));
     }
 
 
@@ -110,12 +114,12 @@ public class ApiConfigController extends BaseController implements Initializable
     @FXML
     public void save(ActionEvent event) {
         if(isValid()) {
-            SystemArg.API_CALL_URL = apiAddress.getText().trim();
-            SystemArg.API_PASSWORD = passwordApi.getText();
-            SystemArg.API_USERNAME = usernameApi.getText().trim();
 
-            SystemArg.TIME_SCHEDULE_CALL_API = (Integer) timeSyncChosen.getSelectionModel().getSelectedItem() * 60 * 1000;
-            SystemArg.API_CALL_API_READY = rbReady.isSelected();
+            apiConfig.setPassword(passwordApi.getText());
+            apiConfig.setUsername(usernameApi.getText().trim());
+            apiConfig.setUrl(apiAddress.getText().trim());
+            apiConfig.setTimeScheduleCallApi((Integer) timeSyncChosen.getSelectionModel().getSelectedItem() * 60 * 1000);
+            apiConfig.setApiCallReady(rbReady.isSelected());
             reset(null);
             try {
                 DataConfig.saveFavorites(null);
@@ -132,7 +136,7 @@ public class ApiConfigController extends BaseController implements Initializable
         toDate.setMinutes(59);
         toDate.setSeconds(59);
         toDate.setHours(23);
-        dataObservable.addAll(resultRepository.findAllByTimeSendAfterAndTimeSendBefore(fromDate, toDate));
+        dataObservable.addAll(resultRepository.findAllByApiAndTimeSendAfterAndTimeSendBefore(apiConfig.getUrl(),fromDate, toDate));
         dataTable.setItems(dataObservable);
     }
 
@@ -190,11 +194,21 @@ public class ApiConfigController extends BaseController implements Initializable
     }
 
     public void saveAndCall(ActionEvent event) {
-        SystemArg.NEXT_TIME_SCHEDULE_CALL_API = new Date();
+        apiConfig.setNextTimeScheduleCallApi(new Date());
         save(null);
 
     }
 
     public void viewData(ActionEvent event) {
     }
+
+    public void deleteApi(ActionEvent actionEvent) {
+        SystemArg.API_LIST.remove(apiConfig);
+        try {
+            DataConfig.saveFavorites(null);
+            super.timeSyncModbus(null);
+        } catch (Exception e) {}
+    }
+
+
 }

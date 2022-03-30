@@ -14,6 +14,7 @@ import java.util.concurrent.CountDownLatch;
 import com.codetreatise.thuydienapp.view.FxmlView;
 import com.sun.imageio.plugins.common.I18N;
 import javafx.stage.Modality;
+import lombok.Getter;
 import org.slf4j.Logger;
 
 import javafx.application.Platform;
@@ -30,6 +31,7 @@ public class StageManager {
     private static final String TITLE = "title";
     private static final String STOP = "stop";
     private static final Logger LOG = getLogger(StageManager.class);
+    @Getter
     private final Stage primaryStage;
     private final SpringFXMLLoader springFXMLLoader;
     private final Stage dialog;
@@ -63,15 +65,12 @@ public class StageManager {
         dialog.sizeToScene();
         dialog.centerOnScreen();
 
-
-
         try {
             dialog.show();
         } catch (Exception exception) {
             logAndExit ("Unable to show scene for title" + view.getTitle(),  exception);
         }
     }
-    
     private void show(final Parent rootnode, String title) {
         Scene scene = prepareScene(rootnode);
         scene.getStylesheets().add("/styles/Styles.css");
