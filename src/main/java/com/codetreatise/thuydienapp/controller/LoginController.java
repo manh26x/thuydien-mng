@@ -75,13 +75,16 @@ public class LoginController implements Initializable{
 			DataConfig.saveFavorites(null);
 			stageManager.switchScene(FxmlView.TIMING_MODBUS);
 		} catch (HttpClientErrorException ex) {
-			lblLogin.setText("Login Failed.");
-			if(ex.getStatusCode().is4xxClientError()) {
-				SystemArg.LOGIN = false;
+			if(ex.getStatusCode().value() == HttpStatus.EXPECTATION_FAILED.value()) {
+				lblLogin.setText("Tài khoản hết hạn");
+			} else if(ex.getStatusCode().is4xxClientError()) {
+				lblLogin.setText("Sai tài khoản hoặc mật khẩu");
 			}
+			SystemArg.LOGIN = false;
+
 			ex.printStackTrace();
 		} catch ( Exception e) {
-			lblLogin.setText("Login Failed.");
+			lblLogin.setText("Đăng nhập thất bại");
 			e.printStackTrace();
 		}
 	}

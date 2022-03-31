@@ -1,11 +1,14 @@
 package com.codetreatise.thuydienapp.config.ftp;
 
+import com.codetreatise.thuydienapp.config.SystemArg;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.Date;
 
 @Data
 @Builder
@@ -22,4 +25,19 @@ public class FtpConfigArg implements Serializable {
     private Boolean isPassive;
     private Boolean ready;
     private Integer timeSchedule;
+    private String transferDirectory;
+    private Date nextTimeSend = new Date();
+
+    public Boolean checkReady() throws IOException {
+        if(nextTimeSend == null) {
+            nextTimeSend = new Date();
+            FtpConfig.saveFavorites(this);
+        }
+        return SystemArg.LOGIN && ready && new Date().after(nextTimeSend);
+    }
+    public void autoNextTime() {
+        Date now = new Date();
+        now.setSeconds(0);
+        this.nextTimeSend = new Date(now.getTime() + timeSchedule*60*1000);
+    }
 }

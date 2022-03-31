@@ -81,7 +81,7 @@ public class SynchronizeConfig {
 
     }
 
-    @Scheduled( initialDelay = 60* 1000, fixedDelay = 3 * 1000)
+    @Scheduled( initialDelay = 5 * 1000, fixedDelay = 60 * 60 * 1000)
     public void loginCheck() throws IOException {
         if(SystemArg.LOGIN) {
             AtomicReference<String> jsonBody = new AtomicReference<>("");
@@ -105,6 +105,9 @@ public class SynchronizeConfig {
             try {
                 response.set(restTemplate.postForEntity(validTokenUrl, request, String.class));
                 SystemArg.LOGIN = response.get().getBody().equals(Boolean.TRUE.toString());
+                if(!SystemArg.LOGIN) {
+                    stageManager.switchScene(FxmlView.LOGIN);
+                }
                 DataConfig.saveFavorites(null);
             } catch (HttpClientErrorException ex) {
                 if(ex.getStatusCode().value() == HttpStatus.FORBIDDEN.value()) {
