@@ -2,6 +2,8 @@ package com.codetreatise.thuydienapp.controller;
 
 import com.codetreatise.thuydienapp.config.StageManager;
 import com.codetreatise.thuydienapp.config.SystemArg;
+import com.codetreatise.thuydienapp.config.ftp.FtpArgSaved;
+import com.codetreatise.thuydienapp.config.ftp.FtpConfig;
 import com.codetreatise.thuydienapp.view.FxmlView;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -11,6 +13,8 @@ import javafx.scene.control.MenuItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
 import java.io.IOException;
 
 public class BaseController {
@@ -40,6 +44,8 @@ public class BaseController {
     }
     @FXML
     public void ftpConfig(ActionEvent actionEvent) {
+        String ftpName = ((MenuItem)actionEvent.getTarget()).getText();
+        SystemArg.NAME_FTP_CHOSEN = ftpName;
         stageManager.switchScene(FxmlView.FTP_CONFIG);
     }
     @FXML
@@ -58,6 +64,23 @@ public class BaseController {
     }
 
     protected void initApiMenuGen() {
+
+        try {
+            FtpArgSaved ftpArgSaved = FtpConfig.getFtpConfig();
+            ftpArgSaved.getFtpConfigArg().keySet().stream().forEach(ftpName -> {
+                MenuItem menuItem = new MenuItem();
+                menuItem.setText(ftpName);
+                menuItem.setId(ftpName);
+                menuItem.setOnAction(event -> {
+                    ftpConfig(event);
+                });
+                if(!menuBar.getMenus().get(0).getItems().stream().filter(e -> e.getText().equals(ftpName)).findAny().isPresent()) {
+                    menuBar.getMenus().get(0).getItems().add(menuItem);
+                }
+            });
+        } catch (IOException | ClassNotFoundException | IllegalBlockSizeException | BadPaddingException | NullPointerException e) {
+            e.printStackTrace();
+        }
         SystemArg.API_LIST.forEach(api -> {
             MenuItem menuItem = new MenuItem();
             menuItem.setText(api.getName());
@@ -67,9 +90,9 @@ public class BaseController {
             });
             if(!menuBar.getMenus().get(0).getItems().stream().filter(e -> e.getText().equals(api.getName())).findAny().isPresent()) {
                 menuBar.getMenus().get(0).getItems().add(menuItem);
-
             }
         });
+
 
 
     }

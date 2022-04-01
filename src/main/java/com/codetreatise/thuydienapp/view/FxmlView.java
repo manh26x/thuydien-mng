@@ -70,7 +70,17 @@ public enum FxmlView {
             return "/fxml/FtpSendFileConfig.fxml";
         }
     },
+    ADD_FTP {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("addFtp.title");
+        }
 
+        @Override
+        public String getFxmlFile() {
+            return "/fxml/AddFtp.fxml";
+        }
+    },
     API_CONFIG {
         @Override
         public String getTitle() {

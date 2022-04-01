@@ -31,10 +31,10 @@ public class FtpConfig {
     }
 
 
-    public static FtpConfigArg getFtpConfig() throws IOException,
+    public static FtpArgSaved getFtpConfig() throws IOException,
             ClassNotFoundException, IllegalBlockSizeException,
             BadPaddingException {
-        FtpConfigArg dataSaveObject = null;
+        FtpArgSaved dataSaveObject = null;
         FileInputStream fin = null;
         ObjectInputStream in = null;
         try {
@@ -45,13 +45,16 @@ public class FtpConfig {
 
                 Object obj = in.readObject();
                 if (obj instanceof FtpConfigArg) {
-                    dataSaveObject = (FtpConfigArg) obj;
+                    dataSaveObject = (FtpArgSaved) obj;
                 } else {
                     SealedObject so = (SealedObject) obj;
-                    dataSaveObject = (FtpConfigArg) so
+                    dataSaveObject = (FtpArgSaved) so
                             .getObject(getCipher(Cipher.DECRYPT_MODE));
 
                 }
+            }
+            if(dataSaveObject == null) {
+                dataSaveObject = new FtpArgSaved();
             }
             return dataSaveObject;
         } finally {
@@ -83,9 +86,9 @@ public class FtpConfig {
     }
 
 
-    public static void saveFavorites(FtpConfigArg dataSaveObject) throws IOException {
+    public static void saveFavorites(FtpArgSaved dataSaveObject) throws IOException {
         if(dataSaveObject == null) {
-            dataSaveObject = new FtpConfigArg();
+            dataSaveObject = new FtpArgSaved();
         }
         checkDataHome();
         ObjectOutputStream out = null;
@@ -109,6 +112,45 @@ public class FtpConfig {
                 out.close();
             }
             out = null;
+        }
+    }
+
+    public static FtpConfigArg getFtpConfigArg(String ftpName)throws IOException,
+            ClassNotFoundException, IllegalBlockSizeException,
+            BadPaddingException  {
+        FtpArgSaved dataSaveObject = null;
+        FileInputStream fin = null;
+        ObjectInputStream in = null;
+        try {
+            checkHostFile();
+            fin = new FileInputStream(HOST_FILE);
+            in  = new ObjectInputStream(fin);
+            if (fin.available() > 0) {
+
+                Object obj = in.readObject();
+                if (obj instanceof FtpConfigArg) {
+                    dataSaveObject = (FtpArgSaved) obj;
+                } else {
+                    SealedObject so = (SealedObject) obj;
+                    dataSaveObject = (FtpArgSaved) so
+                            .getObject(getCipher(Cipher.DECRYPT_MODE));
+
+                }
+            }
+            if(dataSaveObject == null) {
+                dataSaveObject = new FtpArgSaved();
+            }
+            return dataSaveObject.getFtpConfigArg().get(ftpName);
+        } finally {
+            try {
+                if (in != null) {
+                    in.close();
+                }
+                if (fin != null) {
+                    fin.close();
+                }
+            } catch (IOException ignored) {
+            }
         }
     }
 }

@@ -28,12 +28,16 @@ public class FtpConfigArg implements Serializable {
     private String transferDirectory;
     private Date nextTimeSend = new Date();
 
-    public Boolean checkReady() throws IOException {
-        if(nextTimeSend == null) {
-            nextTimeSend = new Date();
-            FtpConfig.saveFavorites(this);
+    public Boolean checkReady()  {
+        try {
+            if(nextTimeSend == null) {
+                nextTimeSend = new Date();
+            }
+            return SystemArg.LOGIN && ready && new Date().after(nextTimeSend);
+        } catch (NullPointerException e) {
+            return false;
         }
-        return SystemArg.LOGIN && ready && new Date().after(nextTimeSend);
+
     }
     public void autoNextTime() {
         Date now = new Date();

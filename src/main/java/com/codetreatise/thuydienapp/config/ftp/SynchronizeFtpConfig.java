@@ -22,61 +22,71 @@ public class SynchronizeFtpConfig {
 
     @Scheduled( initialDelay = 10 * 1000, fixedDelay = 10 * 1000)
     public void autoSendFtp() throws IllegalBlockSizeException, IOException, BadPaddingException, ClassNotFoundException, InterruptedException {
-        FtpConfigArg configArg = getFtpConfigArg();
-        if(Boolean.FALSE.equals(configArg.checkReady())) {
-            return;
-        }
-        FTPClient ftpClient = getFtpClientConnected(configArg);
+        FtpArgSaved ftpArgSaved = getFtpConfigArg();
+        ftpArgSaved.getFtpConfigArg().values().stream().parallel().filter(FtpConfigArg::checkReady).forEach(configArg -> {
+            FTPClient ftpClient = getFtpClientConnected(configArg);
 
-        if(ftpClient != null) {
-            File folder = new File(configArg.getLocalWorkingDirectory());
-            try{
-                for(File file : folder.listFiles()) {
-                    FileInputStream inputStream;
-                    boolean completed = false;
-                    int i = 0;
-                    while (!completed || i <=10) {
-                        ftpClient.enterLocalPassiveMode();
-                        ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-                        log.info(ftpClient.getReplyString() + " file: " + file.getName());
-                        inputStream = new FileInputStream(file);
-                        OutputStream os = ftpClient.storeFileStream(configArg.getRemoteWorkingDirectory() + "/" + file.getName());
-                        byte[] buffer = new byte[1024];
-                        int len;
-                        while ((len = inputStream.read(buffer)) != -1) {
-                            os.write(buffer, 0, len);
-                        }
-
-                        inputStream.close();
-
-                        os.close();
-                        completed = ftpClient.completePendingCommand();
-                        i++;
-                    }
-
-                    if(completed) {
-                        log.info(file.getName() + " is uploaded successfully!");
-                        if((configArg.getTransferDirectory() != null || !configArg.getTransferDirectory().equals(""))  ){
-                            boolean isTransfer = file.renameTo(new File(configArg.getTransferDirectory() + "/" + file.getName()));
-                            if(isTransfer) {
-                                log.info(file.getName() + " is transfer!");
-                            } else {
-                                log.error(file.getName() + " transfer error!");
+            if(ftpClient != null) {
+                File folder = new File(configArg.getLocalWorkingDirectory());
+                try{
+                    for(File file : folder.listFiles()) {
+                        FileInputStream inputStream;
+                        boolean completed = false;
+                        while (!completed) {
+                            ftpClient.enterLocalPassiveMode();
+                            ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+                            log.info(ftpClient.getReplyString() + " file: " + file.getName());
+                            inputStream = new FileInputStream(file);
+                            OutputStream os = ftpClient.storeFileStream(configArg.getRemoteWorkingDirectory() + "/" + file.getName());
+                            byte[] buffer = new byte[1024];
+                            int len;
+                            while ((len = inputStream.read(buffer)) != -1) {
+                                os.write(buffer, 0, len);
                             }
+
+                            inputStream.close();
+
+                            os.close();
+                            completed = ftpClient.completePendingCommand();
                         }
-                    } else {
-                        log.error(file.getName() + " is uploaded failed!");
+
+                        if(completed) {
+                            log.info(file.getName() + " is uploaded successfully!");
+                            if((configArg.getTransferDirectory() != null || !configArg.getTransferDirectory().equals(""))  ){
+                                boolean isTransfer = file.renameTo(new File(configArg.getTransferDirectory() + "/" + file.getName()));
+                                if(isTransfer) {
+                                    log.info(file.getName() + " is transfer!");
+                                } else {
+                                    log.error(file.getName() + " transfer error!");
+                                }
+                            }
+                        } else {
+                            log.error(file.getName() + " is uploaded failed!");
+                        }
+
                     }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        ftpClient.logout();
+                        ftpClient.disconnect();
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
 
                 }
-            }finally {
-                ftpClient.logout();
-                ftpClient.disconnect();
+                configArg.autoNextTime();
 
             }
-            }
-        configArg.autoNextTime();
-        FtpConfig.saveFavorites(configArg);
+        });
+        FtpConfig.saveFavorites(ftpArgSaved);
+
+
 
     }
 
@@ -100,7 +110,7 @@ public class SynchronizeFtpConfig {
         }
     }
 
-    public FtpConfigArg getFtpConfigArg() throws IllegalBlockSizeException, IOException, BadPaddingException, ClassNotFoundException {
+    public FtpArgSaved getFtpConfigArg() throws IllegalBlockSizeException, IOException, BadPaddingException, ClassNotFoundException {
         return FtpConfig.getFtpConfig();
     }
 

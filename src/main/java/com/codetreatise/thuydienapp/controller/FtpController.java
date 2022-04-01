@@ -2,8 +2,10 @@ package com.codetreatise.thuydienapp.controller;
 
 import com.codetreatise.thuydienapp.config.StageManager;
 import com.codetreatise.thuydienapp.config.SystemArg;
+import com.codetreatise.thuydienapp.config.ftp.FtpArgSaved;
 import com.codetreatise.thuydienapp.config.ftp.FtpConfig;
 import com.codetreatise.thuydienapp.config.ftp.FtpConfigArg;
+import com.codetreatise.thuydienapp.view.FxmlView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -83,32 +85,34 @@ public class FtpController  extends BaseController implements Initializable {
 
     void loadFile() {
         dataObservable.clear();
-        File folder = new File(localDirectory.getText());
-        dataObservable.addAll(Arrays.stream(Objects.requireNonNull(folder.listFiles())).collect(Collectors.toList()));
-        fileListTable.setItems(dataObservable);
+        if(localDirectory.getText() != null) {
+            File folder = new File(localDirectory.getText());
+            dataObservable.addAll(Arrays.stream(Objects.requireNonNull(folder.listFiles())).collect(Collectors.toList()));
+            fileListTable.setItems(dataObservable);
+        }
     }
     void setColProperties() {
         colName.setCellValueFactory(new PropertyValueFactory<>("name"));
 
     }
     public void reset(ActionEvent actionEvent) throws IllegalBlockSizeException, IOException, BadPaddingException, ClassNotFoundException {
-        FtpConfigArg ftpConfigArg = FtpConfig.getFtpConfig();
+        FtpConfigArg ftpConfigArg = FtpConfig.getFtpConfigArg(SystemArg.NAME_FTP_CHOSEN);
         username.setText(ftpConfigArg.getAccount());
         password.setText(ftpConfigArg.getPassword());
         ipAddress.setText(ftpConfigArg.getIpAddress());
-        ftpProtocol.getSelectionModel().select(ftpConfigArg.getProtocol().equals("ftp")  ? 0 : 1);
+        ftpProtocol.getSelectionModel().select(ftpConfigArg.getProtocol() != null && ftpConfigArg.getProtocol().equals("ftp")  ? 0 : 1 );
         localDirectory.setText(ftpConfigArg.getLocalWorkingDirectory());
         remoteDirectory.setText(ftpConfigArg.getRemoteWorkingDirectory());
-        rbReady.setSelected(ftpConfigArg.getReady());
-        rbNotReady.setSelected(!ftpConfigArg.getReady());
+        rbReady.setSelected(ftpConfigArg.getReady() != null && ftpConfigArg.getReady());
+        rbNotReady.setSelected(ftpConfigArg.getReady() == null || !ftpConfigArg.getReady());
         timeChosen.getSelectionModel().select(ftpConfigArg.getTimeSchedule());
         port.setText(String.valueOf(ftpConfigArg.getPort()));
         transferDirectory.setText(ftpConfigArg.getTransferDirectory());
-        passive.setSelected(ftpConfigArg.getIsPassive());
+        passive.setSelected(ftpConfigArg.getIsPassive() != null && ftpConfigArg.getIsPassive());
         loadFile();
     }
 
-    public void save(ActionEvent actionEvent) throws IOException {
+    public void save(ActionEvent actionEvent) throws IOException, IllegalBlockSizeException, BadPaddingException, ClassNotFoundException {
         if(!valid()) {
             return;
         }
@@ -119,8 +123,9 @@ public class FtpController  extends BaseController implements Initializable {
             }
 
         }
-        FtpConfig.saveFavorites(FtpConfigArg.builder()
-                .account(username.getText().trim())
+        FtpArgSaved ftpArgSaved = FtpConfig.getFtpConfig();
+        ftpArgSaved.getFtpConfigArg().put(SystemArg.NAME_FTP_CHOSEN, FtpConfigArg.builder()
+                .account(username.getText())
                 .password(password.getText())
                 .ipAddress(ipAddress.getText())
                 .localWorkingDirectory(localDirectory.getText())
@@ -132,6 +137,7 @@ public class FtpController  extends BaseController implements Initializable {
                 .timeSchedule( (Integer) timeChosen.getSelectionModel().getSelectedItem())
                 .transferDirectory(transferDirectory.getText())
                 .build());
+        FtpConfig.saveFavorites(ftpArgSaved);
 
     }
     boolean valid() {
@@ -143,27 +149,27 @@ public class FtpController  extends BaseController implements Initializable {
         ipAddress.setStyle(successStyle);
         localDirectory.setStyle(successStyle);
         remoteDirectory.setStyle(successStyle);
-        if(ipAddress.getText().trim().equals("")) {
+        if(ipAddress.getText() == null || ipAddress.getText().trim().equals("")) {
             message += "IP or hostname is required!\n";
             ipAddress.setStyle(errorStyle);
             valid = false;
         }
-        if(port.getText().trim().equals("") || !port.getText().trim().matches("\\d+")) {
+        if(port.getText() == null || port.getText().trim().equals("") || !port.getText().trim().matches("\\d+")) {
             message += "Port is required and it must be a digit 0-9\n";
             port.setStyle(errorStyle);
             valid = false;
         }
-        if(localDirectory.getText().trim().equals("")) {
+        if(localDirectory.getText() == null || localDirectory.getText().trim().equals("")) {
             message += "Local working directory is required!\n";
             ipAddress.setStyle(errorStyle);
             valid = false;
         }
-        if(remoteDirectory.getText().trim().equals("")) {
+        if(remoteDirectory.getText() == null || remoteDirectory.getText().trim().equals("")) {
             message += "Remote working directory is required!\n";
             ipAddress.setStyle(errorStyle);
             valid = false;
         }
-        if(timeChosen.getSelectionModel().isEmpty()) {
+        if(timeChosen.getSelectionModel() == null || timeChosen.getSelectionModel().isEmpty()) {
             message += "Time Sync send file must be chosen\n";
             timeChosen.setStyle(errorStyle);
             valid = false;
@@ -231,5 +237,12 @@ public class FtpController  extends BaseController implements Initializable {
         } else {
             transferDirectory.setText(null);
         }
+    }
+
+    public void deleteFtp(ActionEvent actionEvent) throws IllegalBlockSizeException, IOException, BadPaddingException, ClassNotFoundException {
+        FtpArgSaved ftpArgSaved = FtpConfig.getFtpConfig();
+        ftpArgSaved.getFtpConfigArg().remove(SystemArg.NAME_FTP_CHOSEN);
+        FtpConfig.saveFavorites(ftpArgSaved);
+        stageManager.switchScene(FxmlView.TIMING_MODBUS);
     }
 }

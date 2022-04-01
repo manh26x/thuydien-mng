@@ -14,13 +14,12 @@
                     <items>
 <!--                        <MenuItem mnemonicParsing="false" onAction="#userMng" text="User Manager" />-->
                         <MenuItem mnemonicParsing="false" onAction="#timeSyncModbus" text="Modbus Config" />
-                        <MenuItem mnemonicParsing="false" onAction="#ftpConfig" text="Ftp Config" />
 <!--                        <MenuItem mnemonicParsing="false" onAction="#exit" text="Exit" />-->
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Edit">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#addApi" text="Thêm API" />
+                        <MenuItem mnemonicParsing="false" text="Delete" onAction="#deleteFtp"/>
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
@@ -250,7 +249,13 @@
                     <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                     </columnResizePolicy>
-
+                    <contextMenu>
+                        <ContextMenu>
+                            <items>
+                                <MenuItem fx:id="refresh" mnemonicParsing="false" onAction="#reset" text="Refresh" />
+                            </items>
+                        </ContextMenu>
+                    </contextMenu>
                 </TableView>
             </children>
         </HBox>

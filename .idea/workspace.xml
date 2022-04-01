@@ -4,19 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="30b98418-b1af-4d1e-bea5-3e40216c3a57" name="Changes" comment="add ftp and api call">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/config/ftp/SynchronizeFtpConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_net_commons_net_3_8_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_net_commons_net_3_3.xml" afterDir="false" />
+    <list default="true" id="30b98418-b1af-4d1e-bea5-3e40216c3a57" name="Changes" comment="add ftp sync call">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/config/ftp/FtpArgSaved.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/controller/AddFtpController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/fxml/AddFtp.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/spring-boot-logger.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/spring-boot-logger.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/config/SynchronizeConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/config/SynchronizeConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/config/SystemArg.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/config/SystemArg.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/config/ftp/FtpConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/config/ftp/FtpConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/config/ftp/FtpConfigArg.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/config/ftp/FtpConfigArg.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/config/ftp/SynchronizeFtpConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/config/ftp/SynchronizeFtpConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/controller/BaseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/controller/BaseController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/controller/FtpController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/controller/FtpController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/controller/LoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/controller/TimingModbusController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/controller/TimingModbusController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/view/FxmlView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/view/FxmlView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Bundle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Bundle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/fxml/ApiConfig.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fxml/ApiConfig.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/fxml/FtpSendFileConfig.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fxml/FtpSendFileConfig.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thuydienapp.iml" beforeDir="false" afterPath="$PROJECT_DIR$/thuydienapp.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/fxml/TimingModbus.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fxml/TimingModbus.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -108,7 +113,7 @@
       <workItem from="1647918336970" duration="1444000" />
       <workItem from="1648027251488" duration="1963000" />
       <workItem from="1648194444939" duration="7305000" />
-      <workItem from="1648434355280" duration="74011000" />
+      <workItem from="1648434355280" duration="82131000" />
     </task>
     <task id="LOCAL-00001" summary="fdsf">
       <created>1647836766985</created>
@@ -124,7 +129,14 @@
       <option name="project" value="LOCAL" />
       <updated>1648639361991</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="add ftp sync call">
+      <created>1648721438358</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1648721438358</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -145,7 +157,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="fdsf" />
     <MESSAGE value="add ftp and api call" />
-    <option name="LAST_COMMIT_MESSAGE" value="add ftp and api call" />
+    <MESSAGE value="add ftp sync call" />
+    <option name="LAST_COMMIT_MESSAGE" value="add ftp sync call" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -159,11 +172,6 @@
           <url>jar://$MAVEN_REPOSITORY$/commons-net/commons-net/3.8.0/commons-net-3.8.0.jar!/org/apache/commons/net/SocketClient.class</url>
           <line>66</line>
           <option name="timeStamp" value="78" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/config/SynchronizeConfig.java</url>
-          <line>85</line>
-          <option name="timeStamp" value="95" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/controller/LoginController.java</url>

@@ -197,4 +197,8 @@ public class TimingModbusController extends BaseController implements Initializa
         stageManager.createModal(FxmlView.UPDATE_FIELD_MODAL);
 
     }
+
+    public void addFtp(ActionEvent actionEvent) {
+        stageManager.createModal(FxmlView.ADD_FTP);
+    }
 }

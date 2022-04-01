@@ -37,6 +37,7 @@ public final class SystemArg {
 
     public static List<ApiConfig> API_LIST = new ArrayList<>();
     public static String NAME_API_CHOSEN = "";
+    public static String NAME_FTP_CHOSEN = "";
 
 
     public static void setNextTimeScheduleSyncModbus() {
