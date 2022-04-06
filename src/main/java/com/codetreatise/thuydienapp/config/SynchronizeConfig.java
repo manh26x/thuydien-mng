@@ -110,12 +110,11 @@ public class SynchronizeConfig {
                 }
                 DataConfig.saveFavorites(null);
             } catch (HttpClientErrorException ex) {
-                if(ex.getStatusCode().value() == HttpStatus.FORBIDDEN.value()) {
-                    SystemArg.LOGIN = false;
-                    DataConfig.saveFavorites(null);
-                    stageManager.switchScene(FxmlView.LOGIN);
-                }
                 ex.printStackTrace();
+            } catch (Exception e) {
+                SystemArg.LOGIN = false;
+                DataConfig.saveFavorites(null);
+                stageManager.switchScene(FxmlView.LOGIN);
             }
         } else {
             stageManager.switchScene(FxmlView.LOGIN);

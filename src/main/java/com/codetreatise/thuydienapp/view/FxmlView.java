@@ -70,6 +70,7 @@ public enum FxmlView {
             return "/fxml/FtpSendFileConfig.fxml";
         }
     },
+
     ADD_FTP {
         @Override
         public String getTitle() {
@@ -79,6 +80,17 @@ public enum FxmlView {
         @Override
         public String getFxmlFile() {
             return "/fxml/AddFtp.fxml";
+        }
+    },
+    MODBUS_SERVER_CONFIG {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("modbusServerConfig.title");
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/fxml/ModbusServerConfig.fxml";
         }
     },
     API_CONFIG {

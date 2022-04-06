@@ -50,18 +50,14 @@ public class SynchronizeFtpConfig {
                             completed = ftpClient.completePendingCommand();
                         }
 
-                        if(completed) {
-                            log.info(file.getName() + " is uploaded successfully!");
-                            if((configArg.getTransferDirectory() != null || !configArg.getTransferDirectory().equals(""))  ){
-                                boolean isTransfer = file.renameTo(new File(configArg.getTransferDirectory() + "/" + file.getName()));
-                                if(isTransfer) {
-                                    log.info(file.getName() + " is transfer!");
-                                } else {
-                                    log.error(file.getName() + " transfer error!");
-                                }
+                        log.info(file.getName() + " is uploaded successfully!");
+                        if((configArg.getTransferDirectory() != null || !configArg.getTransferDirectory().equals(""))  ){
+                            boolean isTransfer = file.renameTo(new File(configArg.getTransferDirectory() + "/" + file.getName()));
+                            if(isTransfer) {
+                                log.info(file.getName() + " is transfer!");
+                            } else {
+                                log.error(file.getName() + " transfer error!");
                             }
-                        } else {
-                            log.error(file.getName() + " is uploaded failed!");
                         }
 
                     }

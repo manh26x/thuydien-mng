@@ -5,22 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="30b98418-b1af-4d1e-bea5-3e40216c3a57" name="Changes" comment="add ftp sync call">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/config/ftp/FtpArgSaved.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/controller/AddFtpController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/fxml/AddFtp.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/config/modbus/master/ModbusMasterArg.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/config/modbus/master/ModbusMasterConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/config/modbus/master/ModbusMasterStart.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/controller/ModbusServerConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/fxml/ModbusServerConfig.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/spring-boot-logger.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/spring-boot-logger.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/config/SystemArg.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/config/SystemArg.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/config/ftp/FtpConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/config/ftp/FtpConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/config/ftp/FtpConfigArg.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/config/ftp/FtpConfigArg.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/config/SynchronizeConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/config/SynchronizeConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/config/ftp/SynchronizeFtpConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/config/ftp/SynchronizeFtpConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/controller/BaseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/controller/BaseController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/controller/FtpController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/controller/FtpController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/controller/TimingModbusController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/controller/TimingModbusController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/view/FxmlView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codetreatise/thuydienapp/view/FxmlView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/Bundle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Bundle.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/fxml/ApiConfig.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fxml/ApiConfig.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/fxml/FtpSendFileConfig.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fxml/FtpSendFileConfig.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/fxml/TimingModbus.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fxml/TimingModbus.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -114,6 +112,8 @@
       <workItem from="1648027251488" duration="1963000" />
       <workItem from="1648194444939" duration="7305000" />
       <workItem from="1648434355280" duration="82131000" />
+      <workItem from="1649126629996" duration="680000" />
+      <workItem from="1649144811877" duration="5264000" />
     </task>
     <task id="LOCAL-00001" summary="fdsf">
       <created>1647836766985</created>

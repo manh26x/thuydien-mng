@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Font?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.effect.DropShadow?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.codetreatise.thuydienapp.controller.ModbusServerConfig"
+            prefHeight="300.0" prefWidth="600.0">
+    <VBox prefHeight="300.0" prefWidth="600.0" spacing="10.0" styleClass="background" stylesheets="@../styles/Styles.css" BorderPane.alignment="CENTER">
+        <children>
+            <Label text="Chạy modbus server" textFill="WHITE">
+                <font>
+                    <Font size="20.0" />
+                </font>
+                <VBox.margin>
+                    <Insets left="20.0" top="10.0" />
+                </VBox.margin>
+            </Label>
+            <Label text="Name" textFill="WHITE">
+                <VBox.margin>
+                    <Insets left="25.0" />
+                </VBox.margin>
+                <font>
+                    <Font name="System Bold" size="12.0" />
+                </font>
+            </Label>
+            <TextField fx:id="name" prefHeight="30.0" prefWidth="246.0" promptText="Name">
+                <VBox.margin>
+                    <Insets left="25.0" right="25.0" />
+                </VBox.margin></TextField>
+            <Label text="Port" textFill="WHITE">
+                <VBox.margin>
+                    <Insets left="25.0" />
+                </VBox.margin>
+                <font>
+                    <Font name="System Bold" size="12.0" />
+                </font>
+            </Label>
+            <TextField fx:id="port" prefHeight="30.0" prefWidth="246.0" promptText="Port">
+                <VBox.margin>
+                    <Insets left="25.0" right="25.0" bottom="25.0"/>
+                </VBox.margin></TextField>
+            <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="255.0" spacing="15.0">
+                <children>
+                    <RadioButton fx:id="rbReady" mnemonicParsing="false" selected="true" text="Ready" textFill="WHITE">
+                        <toggleGroup>
+                            <ToggleGroup fx:id="readyGroup" />
+                        </toggleGroup>
+                    </RadioButton>
+                    <RadioButton fx:id="rbNotReady" mnemonicParsing="false" text="Not Ready" textFill="WHITE" toggleGroup="$readyGroup">
+                        <HBox.margin>
+                            <Insets left="10.0" />
+                        </HBox.margin>
+                    </RadioButton>
+                </children>
+                <VBox.margin>
+                    <Insets left="25.0" right="25.0" />
+                </VBox.margin>
+            </HBox>
+            <HBox prefHeight="30.0" prefWidth="250.0" spacing="10.0">
+                <children>
+                    <Button fx:id="reset" mnemonicParsing="false" onAction="#close" prefHeight="30.0" prefWidth="75.0" style="-fx-background-color: white;" text="Close">
+                        <effect>
+                            <DropShadow blurType="ONE_PASS_BOX" color="#1965d0" />
+                        </effect>
+                    </Button>
+                    <Button fx:id="saveUser" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#save" prefHeight="30.0" prefWidth="75.0" styleClass="btnGreen" text="Save" textFill="WHITE">
+                        <font>
+                            <Font size="15.0" />
+                        </font>
+                        <effect>
+                            <DropShadow blurType="ONE_PASS_BOX" color="#6468b2" />
+                        </effect>
+                    </Button>
+                </children>
+                <opaqueInsets>
+                    <Insets />
+                </opaqueInsets>
+                <VBox.margin>
+                    <Insets left="110.0" />
+                </VBox.margin>
+            </HBox>
+        </children>
+    </VBox>
+</AnchorPane>

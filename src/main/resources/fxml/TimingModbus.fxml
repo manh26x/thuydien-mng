@@ -21,6 +21,7 @@
                     <items>
                         <MenuItem onAction="#addApi" mnemonicParsing="false" text="Thêm API" />
                         <MenuItem onAction="#addFtp" mnemonicParsing="false" text="Thêm Ftp " />
+                        <MenuItem onAction="#modbusServerConfig" mnemonicParsing="false" text="Config modbus Server" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">

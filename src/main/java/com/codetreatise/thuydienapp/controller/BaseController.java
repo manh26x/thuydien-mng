@@ -63,6 +63,11 @@ public class BaseController {
         stageManager.switchScene(FxmlView.API_CONFIG);
     }
 
+    @FXML
+    public void modbusServerConfig(ActionEvent actionEvent) {
+        stageManager.createModal(FxmlView.MODBUS_SERVER_CONFIG);
+    }
+
     protected void initApiMenuGen() {
 
         try {
