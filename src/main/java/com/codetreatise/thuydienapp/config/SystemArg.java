@@ -2,13 +2,13 @@ package com.codetreatise.thuydienapp.config;
 
 import com.codetreatise.thuydienapp.bean.ApiConfig;
 import com.codetreatise.thuydienapp.bean.Data;
-import org.springframework.http.HttpMethod;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public final class SystemArg {
+
 
     private SystemArg() {
 
@@ -21,7 +21,6 @@ public final class SystemArg {
     public static Date NEXT_TIME_SCHEDULE_CALL_API = new Date();
 
     public static String API_CALL_URL = "";
-    public static HttpMethod HTTP_METHOD_CALL_API = HttpMethod.POST;
 
     public static String MODBUS_IP = "localhost";
     public static Integer MODBUS_PORT = 502;

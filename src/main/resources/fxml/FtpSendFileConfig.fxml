@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="600.0" prefWidth="1400.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codetreatise.thuydienapp.controller.FtpController">
+<BorderPane stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codetreatise.thuydienapp.controller.FtpController">
     <top>
         <MenuBar fx:id="menuBar" BorderPane.alignment="TOP_LEFT">
             <menus>
@@ -19,7 +19,7 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="Edit">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Delete" onAction="#deleteFtp"/>
+                        <MenuItem mnemonicParsing="false" onAction="#deleteFtp" text="Delete" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
@@ -31,211 +31,229 @@
         </MenuBar>
     </top>
     <left>
-        <VBox prefHeight="699.0" prefWidth="414.0" spacing="10.0" styleClass="background" stylesheets="@../styles/Styles.css" BorderPane.alignment="CENTER">
-            <children>
-                <Label text="Config FTP" textFill="WHITE">
-                    <font>
-                        <Font size="20.0" />
-                    </font>
-                    <VBox.margin>
-                        <Insets bottom="10.0" left="20.0" top="10.0" />
-                    </VBox.margin>
-                </Label>
-            <Label text="IP hoặc hostname" textFill="WHITE">
-               <VBox.margin>
-                  <Insets left="25.0" />
-               </VBox.margin>
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-                <TextField fx:id="ipAddress" prefHeight="30.0" prefWidth="246.0" promptText="IP">
-                    <VBox.margin>
-                        <Insets left="25.0" right="25.0" />
-                    </VBox.margin></TextField>
-            <Label text="Port" textFill="WHITE">
-               <VBox.margin>
-                  <Insets left="25.0" />
-               </VBox.margin>
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-                <TextField fx:id="port" prefHeight="30.0" prefWidth="246.0" promptText="Port">
-                    <VBox.margin>
-                        <Insets left="25.0" right="25.0" />
-                    </VBox.margin></TextField>
-                <Label text="Protocol" textFill="WHITE">
-                    <VBox.margin>
+      <ScrollPane hbarPolicy="NEVER" vbarPolicy="ALWAYS" BorderPane.alignment="TOP_LEFT">
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+         <content>
+              <VBox spacing="10.0" styleClass="background" stylesheets="@../styles/Styles.css">
+                  <children>
+                      <Label text="Config FTP" textFill="WHITE">
+                          <font>
+                              <Font size="20.0" />
+                          </font>
+                          <VBox.margin>
+                              <Insets bottom="10.0" left="20.0" top="10.0" />
+                          </VBox.margin>
+                      </Label>
+                  <Label text="IP hoặc hostname" textFill="WHITE">
+                     <VBox.margin>
                         <Insets left="25.0" />
-                    </VBox.margin>
-                    <font>
-                        <Font name="System Bold" size="12.0" />
-                    </font>
-                </Label>
-                <ComboBox fx:id="ftpProtocol" layoutX="15.0" layoutY="33.0" prefWidth="90.0" promptText="choose">
-
-                    <VBox.margin>
-                        <Insets left="25.0" />
-                    </VBox.margin>
-                </ComboBox>
-                <Label text="Username" textFill="WHITE">
-                    <VBox.margin>
-                        <Insets left="25.0" />
-                    </VBox.margin>
-                    <font>
-                        <Font name="System Bold" size="12.0" />
-                    </font>
-                </Label>
-                <TextField fx:id="username" prefHeight="30.0" prefWidth="246.0" promptText="Username">
-                    <VBox.margin>
-                        <Insets left="25.0" right="25.0" />
-                    </VBox.margin></TextField>
-                <Label text="Password" textFill="WHITE">
-                    <VBox.margin>
-                        <Insets left="25.0" />
-                    </VBox.margin>
-                    <font>
-                        <Font name="System Bold" size="12.0" />
-                    </font>
-                </Label>
-                <TextField fx:id="password" prefHeight="30.0" prefWidth="246.0" promptText="Password">
-                    <VBox.margin>
-                        <Insets left="25.0" right="25.0" />
-                    </VBox.margin></TextField>
-
-
-                <CheckBox mnemonicParsing="false" text="Passive " fx:id="passive" textFill="WHITE">
-                    <font>
-                        <Font name="System Bold" size="12.0" />
-                    </font>
-                    <VBox.margin>
-                        <Insets left="25.0" />
-                    </VBox.margin>
-                </CheckBox>
-                <Label text="Local directory" textFill="WHITE">
-                    <VBox.margin>
-                        <Insets left="25.0" />
-                    </VBox.margin>
-                    <font>
-                        <Font name="System Bold" size="12.0" />
-                    </font>
-                </Label>
-                <TextField fx:id="localDirectory" onMouseClicked="#chooseFile" prefHeight="30.0" prefWidth="246.0" promptText="Choose Directory Local">
-                    <VBox.margin>
-                        <Insets left="25.0" right="25.0" />
-                    </VBox.margin></TextField>
-
-                <Label text="Remote directory" textFill="WHITE">
-                    <VBox.margin>
-                        <Insets left="25.0" />
-                    </VBox.margin>
-                    <font>
-                        <Font name="System Bold" size="12.0" />
-                    </font>
-                </Label>
-                <TextField fx:id="remoteDirectory" prefHeight="30.0" prefWidth="246.0" promptText="Choose Directory Local">
-                    <VBox.margin>
-                        <Insets left="25.0" right="25.0" />
-                    </VBox.margin></TextField>
-                <Label text="Transfer directory after success" textFill="WHITE">
-                    <VBox.margin>
-                        <Insets left="25.0" />
-                    </VBox.margin>
-                    <font>
-                        <Font name="System Bold" size="12.0" />
-                    </font>
-                </Label>
-                <TextField fx:id="transferDirectory" onMouseClicked="#chooseFileTransfer" prefHeight="30.0" prefWidth="246.0" promptText="Choose Directory Local">
-                    <VBox.margin>
-                        <Insets left="25.0" right="25.0" />
-                    </VBox.margin></TextField>
-                  <Label fx:id="statusTimeConfigLb" graphicTextGap="25.0" text="Config Status and Time" textFill="WHITE">
-                    <font>
-                        <Font size="20.0" />
-                    </font>
-                    <VBox.margin>
-                        <Insets bottom="10.0" left="20.0" top="30.0" />
-                    </VBox.margin>
-                  </Label>
-
-                <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="255.0" spacing="15.0">
-                    <children>
-                        <RadioButton fx:id="rbReady" mnemonicParsing="false" selected="true" text="Ready" textFill="WHITE">
-                            <toggleGroup>
-                                <ToggleGroup fx:id="readyGroup" />
-                            </toggleGroup>
-                        </RadioButton>
-                        <RadioButton fx:id="rbNotReady" mnemonicParsing="false" text="Not Ready" textFill="WHITE" toggleGroup="$readyGroup">
-                            <HBox.margin>
-                                <Insets left="10.0" />
-                            </HBox.margin>
-                        </RadioButton>
-                    </children>
-                    <VBox.margin>
-                        <Insets left="25.0" right="25.0" />
-                    </VBox.margin>
-                </HBox>
-                <Label prefHeight="30.0" prefWidth="246.0" text="Time (minus)" textFill="WHITE">
-                    <VBox.margin>
-                        <Insets left="25.0" right="25.0" />
-                    </VBox.margin></Label>
-                <ComboBox fx:id="timeChosen" prefWidth="246.0">
-                    <VBox.margin>
-                        <Insets left="25.0" right="25.0" />
-                    </VBox.margin>
-                </ComboBox>
-                <Label fx:id="lbMessage" layoutX="97.0" layoutY="46.0" text="" textFill="#EB1814">
-                    <font>
-                        <Font size="14.0" />
-                    </font>
-                </Label>
-                <HBox prefHeight="30.0" prefWidth="250.0" spacing="10.0">
-                    <children>
-                        <Button fx:id="reset" mnemonicParsing="false" onAction="#reset" prefHeight="30.0" prefWidth="75.0" style="-fx-background-color: white;" text="Reset">
-                            <effect>
-                                <DropShadow blurType="ONE_PASS_BOX" color="#1965d0" />
-                            </effect>
-                        </Button>
-                        <Button fx:id="testConnection" alignment="CENTER"  contentDisplay="CENTER" mnemonicParsing="false" onAction="#testConection" prefHeight="30.0" prefWidth="135.0" styleClass="btnPrimary" text="Test Connection" textFill="WHITE">
-                            <font>
-                                <Font size="15.0" />
-                            </font>
-                            <effect>
-                                <DropShadow blurType="ONE_PASS_BOX" color="#6468b2" />
-                            </effect>
-                        </Button>
-                  <Button fx:id="save" alignment="CENTER" contentDisplay="CENTER" layoutX="95.0" layoutY="10.0" mnemonicParsing="false" onAction="#save" prefHeight="30.0" prefWidth="75.0" styleClass="btnGreen" text="Save" textFill="WHITE">
+                     </VBox.margin>
                      <font>
-                        <Font size="15.0" />
+                        <Font name="System Bold" size="12.0" />
                      </font>
+                  </Label>
+                      <TextField fx:id="ipAddress" prefHeight="30.0" prefWidth="246.0" promptText="IP">
+                          <VBox.margin>
+                              <Insets left="25.0" right="25.0" />
+                          </VBox.margin>
+                  </TextField>
+                  <Label text="Port" textFill="WHITE">
+                     <VBox.margin>
+                        <Insets left="25.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                      <TextField fx:id="port" prefHeight="30.0" prefWidth="246.0" promptText="Port">
+                          <VBox.margin>
+                              <Insets left="25.0" right="25.0" />
+                          </VBox.margin>
+                  </TextField>
+                      <Label text="Protocol" textFill="WHITE">
+                          <VBox.margin>
+                              <Insets left="25.0" />
+                          </VBox.margin>
+                          <font>
+                              <Font name="System Bold" size="12.0" />
+                          </font>
+                      </Label>
+                      <ComboBox fx:id="ftpProtocol" layoutX="15.0" layoutY="33.0" prefWidth="90.0" promptText="choose">
+      
+                          <VBox.margin>
+                              <Insets left="25.0" />
+                          </VBox.margin>
+                      </ComboBox>
+                      <Label text="Username" textFill="WHITE">
+                          <VBox.margin>
+                              <Insets left="25.0" />
+                          </VBox.margin>
+                          <font>
+                              <Font name="System Bold" size="12.0" />
+                          </font>
+                      </Label>
+                      <TextField fx:id="username" prefHeight="30.0" prefWidth="246.0" promptText="Username">
+                          <VBox.margin>
+                              <Insets left="25.0" right="25.0" />
+                          </VBox.margin>
+                  </TextField>
+                      <Label text="Password" textFill="WHITE">
+                          <VBox.margin>
+                              <Insets left="25.0" />
+                          </VBox.margin>
+                          <font>
+                              <Font name="System Bold" size="12.0" />
+                          </font>
+                      </Label>
+                      <TextField fx:id="password" prefHeight="30.0" prefWidth="246.0" promptText="Password">
+                          <VBox.margin>
+                              <Insets left="25.0" right="25.0" />
+                          </VBox.margin>
+                  </TextField>
+      
+      
+                      <CheckBox fx:id="passive" mnemonicParsing="false" text="Passive " textFill="WHITE">
+                          <font>
+                              <Font name="System Bold" size="12.0" />
+                          </font>
+                          <VBox.margin>
+                              <Insets left="25.0" />
+                          </VBox.margin>
+                      </CheckBox>
+                      <Label text="Local directory" textFill="WHITE">
+                          <VBox.margin>
+                              <Insets left="25.0" />
+                          </VBox.margin>
+                          <font>
+                              <Font name="System Bold" size="12.0" />
+                          </font>
+                      </Label>
+                      <TextField fx:id="localDirectory" onMouseClicked="#chooseFile" prefHeight="30.0" prefWidth="246.0" promptText="Choose Directory Local">
+                          <VBox.margin>
+                              <Insets left="25.0" right="25.0" />
+                          </VBox.margin>
+                  </TextField>
+      
+                      <Label text="Remote directory" textFill="WHITE">
+                          <VBox.margin>
+                              <Insets left="25.0" />
+                          </VBox.margin>
+                          <font>
+                              <Font name="System Bold" size="12.0" />
+                          </font>
+                      </Label>
+                      <TextField fx:id="remoteDirectory" prefHeight="30.0" prefWidth="246.0" promptText="Choose Directory Local">
+                          <VBox.margin>
+                              <Insets left="25.0" right="25.0" />
+                          </VBox.margin>
+                  </TextField>
+                      <Label text="Transfer directory after success" textFill="WHITE">
+                          <VBox.margin>
+                              <Insets left="25.0" />
+                          </VBox.margin>
+                          <font>
+                              <Font name="System Bold" size="12.0" />
+                          </font>
+                      </Label>
+                      <TextField fx:id="transferDirectory" onMouseClicked="#chooseFileTransfer" prefHeight="30.0" prefWidth="246.0" promptText="Choose Directory Local">
+                          <VBox.margin>
+                              <Insets left="25.0" right="25.0" />
+                          </VBox.margin>
+                  </TextField>
+                        <Label fx:id="statusTimeConfigLb" graphicTextGap="25.0" text="Config Status and Time" textFill="WHITE">
+                          <font>
+                              <Font size="20.0" />
+                          </font>
+                          <VBox.margin>
+                              <Insets bottom="10.0" left="20.0" top="30.0" />
+                          </VBox.margin>
+                        </Label>
+      
+                      <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="255.0" spacing="15.0">
+                          <children>
+                              <RadioButton fx:id="rbReady" mnemonicParsing="false" selected="true" text="Ready" textFill="WHITE">
+                                  <toggleGroup>
+                                      <ToggleGroup fx:id="readyGroup" />
+                                  </toggleGroup>
+                              </RadioButton>
+                              <RadioButton fx:id="rbNotReady" mnemonicParsing="false" text="Not Ready" textFill="WHITE" toggleGroup="$readyGroup">
+                                  <HBox.margin>
+                                      <Insets left="10.0" />
+                                  </HBox.margin>
+                              </RadioButton>
+                          </children>
+                          <VBox.margin>
+                              <Insets left="25.0" right="25.0" />
+                          </VBox.margin>
                      <effect>
-                        <DropShadow blurType="ONE_PASS_BOX" color="#6468b2" />
+                        <Blend />
                      </effect>
-                  </Button>
-                    </children>
-                    <opaqueInsets>
-                        <Insets />
-                    </opaqueInsets>
-                    <VBox.margin>
-                        <Insets left="50.0" />
-                    </VBox.margin>
-                </HBox>
-            </children>
-            <padding>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-            </padding>
-            <BorderPane.margin>
-                <Insets />
-            </BorderPane.margin>
-        </VBox>
+                      </HBox>
+                      <Label prefHeight="30.0" prefWidth="246.0" text="Time (minus)" textFill="WHITE">
+                          <VBox.margin>
+                              <Insets left="25.0" right="25.0" />
+                          </VBox.margin>
+                  </Label>
+                      <ComboBox fx:id="timeChosen" prefWidth="246.0">
+                          <VBox.margin>
+                              <Insets left="25.0" right="25.0" />
+                          </VBox.margin>
+                      </ComboBox>
+                      <Label fx:id="lbMessage" layoutX="97.0" layoutY="46.0" text="" textFill="#EB1814">
+                          <font>
+                              <Font size="14.0" />
+                          </font>
+                      </Label>
+                      <HBox prefHeight="30.0" prefWidth="250.0" spacing="10.0">
+                          <children>
+                              <Button fx:id="reset" mnemonicParsing="false" onAction="#reset" prefHeight="30.0" prefWidth="75.0" style="-fx-background-color: white;" text="Reset">
+                                  <effect>
+                                      <DropShadow blurType="ONE_PASS_BOX" color="#1965d0" />
+                                  </effect>
+                              </Button>
+                              <Button fx:id="testConnection" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#testConection" prefHeight="30.0" prefWidth="135.0" styleClass="btnPrimary" text="Test Connection" textFill="WHITE">
+                                  <font>
+                                      <Font size="15.0" />
+                                  </font>
+                                  <effect>
+                                      <DropShadow blurType="ONE_PASS_BOX" color="#6468b2" />
+                                  </effect>
+                              </Button>
+                        <Button fx:id="save" alignment="CENTER" contentDisplay="CENTER" layoutX="95.0" layoutY="10.0" mnemonicParsing="false" onAction="#save" prefHeight="30.0" prefWidth="75.0" styleClass="btnGreen" text="Save" textFill="WHITE">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                           <effect>
+                              <DropShadow blurType="ONE_PASS_BOX" color="#6468b2" />
+                           </effect>
+                        </Button>
+                          </children>
+                          <opaqueInsets>
+                              <Insets />
+                          </opaqueInsets>
+                          <VBox.margin>
+                              <Insets left="50.0" />
+                          </VBox.margin>
+                      </HBox>
+                  </children>
+                  <padding>
+                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                  </padding>
+               <effect>
+                  <Blend />
+               </effect>
+              </VBox>
+         </content>
+      </ScrollPane>
     </left>
     <center>
         <HBox>
             <children>
-                <TextArea  fx:id="logText" >
+                <TextArea fx:id="logText">
                     <font>
-                        <Font size="15.0"  />
+                        <Font size="15.0" />
                     </font>
                 </TextArea>
                 <TableView fx:id="fileListTable" prefHeight="300.0" prefWidth="679.0" tableMenuButtonVisible="true">

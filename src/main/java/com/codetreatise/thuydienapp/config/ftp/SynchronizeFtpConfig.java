@@ -1,26 +1,30 @@
 package com.codetreatise.thuydienapp.config.ftp;
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTPReply;
 import org.apache.commons.net.ftp.FTPSClient;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import java.io.*;
-import java.util.Arrays;
-import java.util.Objects;
+import java.util.TimerTask;
 
 @Slf4j
-@Configuration
-@EnableScheduling
-public class SynchronizeFtpConfig {
+public class SynchronizeFtpConfig extends TimerTask {
 
-    @Scheduled( initialDelay = 10 * 1000, fixedDelay = 10 * 1000)
+    private SynchronizeFtpConfig() {
+    }
+    private static SynchronizeFtpConfig instance;
+
+    public static SynchronizeFtpConfig getInstance() {
+        if(instance == null) {
+            instance = new SynchronizeFtpConfig();
+        }
+        return instance;
+    }
+
     public void autoSendFtp() throws IllegalBlockSizeException, IOException, BadPaddingException, ClassNotFoundException, InterruptedException {
         FtpArgSaved ftpArgSaved = getFtpConfigArg();
         ftpArgSaved.getFtpConfigArg().values().stream().parallel().filter(FtpConfigArg::checkReady).forEach(configArg -> {
@@ -110,4 +114,9 @@ public class SynchronizeFtpConfig {
         return FtpConfig.getFtpConfig();
     }
 
+    @SneakyThrows
+    @Override
+    public void run() {
+        autoSendFtp();
+    }
 }

@@ -9,24 +9,23 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-@Controller
 public class ModbusServerConfig implements Initializable {
     public TextField name;
     public TextField port;
     public RadioButton rbReady;
     public RadioButton rbNotReady;
     public ToggleGroup readyGroup;
-    @Lazy
-    @Autowired
-    private StageManager stageManager;
+
+    private final StageManager stageManager;
+
+    public ModbusServerConfig() {
+        this.stageManager = StageManager.getInstance();
+    }
 
     public void close(ActionEvent actionEvent) {
         stageManager.closeDialog();

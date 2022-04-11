@@ -11,10 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Controller;
 
-@Controller
 public class AddFieldModalController {
     @FXML
     public TextField key;
@@ -36,11 +33,13 @@ public class AddFieldModalController {
 
     public Button saveUser;
     public Label lbMessage;
-    @Lazy
-    @Autowired
-    private StageManager stageManager;
+    private final StageManager stageManager;
     @Autowired
     private DataRepository dataRepository;
+
+    public AddFieldModalController() {
+        this.stageManager = StageManager.getInstance();
+    }
 
     public void reset(ActionEvent event) {
     }
@@ -58,7 +57,7 @@ public class AddFieldModalController {
                             .status(1)
                             .build();
             SystemArg.DATA_LIST.add(data);
-            dataRepository.save(data);
+            dataRepository.insert(data);
             try {
                 DataConfig.saveFavorites(null);
             } catch (Exception e) {

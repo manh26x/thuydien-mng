@@ -10,8 +10,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -19,11 +17,14 @@ import java.io.IOException;
 
 public class BaseController {
 
-    @Lazy
-    @Autowired
-    protected StageManager stageManager;
+
+    protected final StageManager stageManager;
 
     public MenuBar menuBar;
+
+    public BaseController() {
+        this.stageManager = StageManager.getInstance();
+    }
 
 
     @FXML
@@ -48,10 +49,7 @@ public class BaseController {
         SystemArg.NAME_FTP_CHOSEN = ftpName;
         stageManager.switchScene(FxmlView.FTP_CONFIG);
     }
-    @FXML
-    public void userMng(ActionEvent event) {
-        stageManager.switchScene(FxmlView.USER);
-    }
+
     @FXML
     public void addApi(ActionEvent actionEvent) {
         stageManager.createModal(FxmlView.ADD_API);

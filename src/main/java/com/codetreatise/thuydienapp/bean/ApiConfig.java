@@ -10,9 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Objects;
 
-@Entity
 @Getter
 @Setter
 @AllArgsConstructor

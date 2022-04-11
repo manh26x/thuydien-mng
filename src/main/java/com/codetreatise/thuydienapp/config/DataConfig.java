@@ -2,7 +2,6 @@ package com.codetreatise.thuydienapp.config;
 
 import com.codetreatise.thuydienapp.bean.ApiConfig;
 import com.codetreatise.thuydienapp.bean.Data;
-import org.springframework.http.HttpMethod;
 
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
@@ -23,7 +22,6 @@ public class DataConfig {
         public Date NEXT_TIME_SCHEDULE_CALL_API;
 
         public String API_CALL_URL;
-        public HttpMethod HTTP_METHOD_CALL_API;
 
         public String MODBUS_IP;
         public Integer MODBUS_PORT;
@@ -39,14 +37,13 @@ public class DataConfig {
         public List<ApiConfig> API_LIST;
         public Boolean LOGIN;
 
-        private void createNew(Integer TIME_SCHEDULE_SYNC_MODBUS, Date NEXT_TIME_SCHEDULE_SYNC_MODBUS, Integer TIME_SCHEDULE_CALL_API, Date NEXT_TIME_SCHEDULE_CALL_API, String API_CALL_URL, HttpMethod HTTP_METHOD_CALL_API, String MODBUS_IP, Integer MODBUS_PORT, byte UNIT,boolean MODBUS_SYNC_READY, boolean API_CALL_API_READY, String API_USERNAME, String API_PASSWORD, List<Data> dataList, List<ApiConfig> apiConfigs, String token, Boolean LOGIN) {
+        private void createNew(Integer TIME_SCHEDULE_SYNC_MODBUS, Date NEXT_TIME_SCHEDULE_SYNC_MODBUS, Integer TIME_SCHEDULE_CALL_API, Date NEXT_TIME_SCHEDULE_CALL_API, String API_CALL_URL, String MODBUS_IP, Integer MODBUS_PORT, byte UNIT,boolean MODBUS_SYNC_READY, boolean API_CALL_API_READY, String API_USERNAME, String API_PASSWORD, List<Data> dataList, List<ApiConfig> apiConfigs, String token, Boolean LOGIN) {
 
             this.TIME_SCHEDULE_SYNC_MODBUS = TIME_SCHEDULE_SYNC_MODBUS;
             this.NEXT_TIME_SCHEDULE_SYNC_MODBUS = NEXT_TIME_SCHEDULE_SYNC_MODBUS;
             this.TIME_SCHEDULE_CALL_API = TIME_SCHEDULE_CALL_API;
             this.NEXT_TIME_SCHEDULE_CALL_API = NEXT_TIME_SCHEDULE_CALL_API;
             this.API_CALL_URL = API_CALL_URL;
-            this.HTTP_METHOD_CALL_API = HTTP_METHOD_CALL_API;
             this.MODBUS_IP = MODBUS_IP;
             this.MODBUS_PORT = MODBUS_PORT;
             this.MODBUS_SYNC_READY = MODBUS_SYNC_READY;
@@ -67,7 +64,6 @@ public class DataConfig {
                     SystemArg.TIME_SCHEDULE_CALL_API,
                     SystemArg.NEXT_TIME_SCHEDULE_CALL_API,
                     SystemArg.API_CALL_URL,
-                    SystemArg.HTTP_METHOD_CALL_API,
                     SystemArg.MODBUS_IP,
                     SystemArg.MODBUS_PORT,
                     SystemArg.UNIT,
@@ -88,7 +84,6 @@ public class DataConfig {
             SystemArg.TIME_SCHEDULE_CALL_API = TIME_SCHEDULE_CALL_API;
             SystemArg.NEXT_TIME_SCHEDULE_CALL_API = NEXT_TIME_SCHEDULE_CALL_API;
             SystemArg.API_CALL_URL = API_CALL_URL;
-            SystemArg.HTTP_METHOD_CALL_API = HTTP_METHOD_CALL_API;
             SystemArg.MODBUS_IP = MODBUS_IP;
             SystemArg.MODBUS_PORT = MODBUS_PORT;
             SystemArg.MODBUS_SYNC_READY = MODBUS_SYNC_READY;

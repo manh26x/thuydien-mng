@@ -7,16 +7,16 @@ import com.codetreatise.thuydienapp.config.SystemArg;
 import javafx.event.ActionEvent;
 import javafx.scene.control.TextField;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Controller;
 
-@Controller
 public class AddApiController {
     public TextField name;
     public TextField url;
-    @Lazy
-    @Autowired
-    private StageManager stageManager;
+    private final StageManager stageManager;
+
+    public AddApiController() {
+        stageManager = StageManager.getInstance();
+    }
+
     public void close(ActionEvent actionEvent) {
         stageManager.closeDialog();
     }

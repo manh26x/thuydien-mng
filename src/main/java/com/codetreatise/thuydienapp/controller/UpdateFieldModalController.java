@@ -3,7 +3,6 @@ package com.codetreatise.thuydienapp.controller;
 import com.codetreatise.thuydienapp.bean.Data;
 import com.codetreatise.thuydienapp.config.DataConfig;
 import com.codetreatise.thuydienapp.config.StageManager;
-import com.codetreatise.thuydienapp.config.SystemArg;
 import com.codetreatise.thuydienapp.repository.DataRepository;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,13 +11,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-@Controller
 public class UpdateFieldModalController implements Initializable {
     @FXML
     public TextField key;
@@ -41,11 +37,14 @@ public class UpdateFieldModalController implements Initializable {
     public Button saveUser;
     public Label lbMessage;
     public static Data DATA_CHOSEN = new Data();
-    @Lazy
-    @Autowired
-    private StageManager stageManager;
-    @Autowired
-    private DataRepository dataRepository;
+    private final StageManager stageManager;
+
+    private final DataRepository dataRepository;
+
+    public UpdateFieldModalController() {
+        dataRepository = DataRepository.getInstance();
+        stageManager = StageManager.getInstance();
+    }
 
     public void reset(ActionEvent event) {
     }
@@ -59,7 +58,7 @@ public class UpdateFieldModalController implements Initializable {
             DATA_CHOSEN.setMaThongSo(maThongSo.getText().trim());
             DATA_CHOSEN.setNguon(nguon.getText().trim());
             DATA_CHOSEN.setQuantity(Integer.parseInt(quantity.getText().trim()));
-            dataRepository.save(DATA_CHOSEN);
+            dataRepository.update(DATA_CHOSEN);
             try {
                 DataConfig.saveFavorites(null);
             } catch (Exception e) {

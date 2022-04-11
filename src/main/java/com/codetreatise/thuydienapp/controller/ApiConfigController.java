@@ -4,7 +4,6 @@ import com.codetreatise.thuydienapp.bean.ApiConfig;
 import com.codetreatise.thuydienapp.bean.Result;
 import com.codetreatise.thuydienapp.config.DataConfig;
 import com.codetreatise.thuydienapp.config.SystemArg;
-import com.codetreatise.thuydienapp.repository.DataRepository;
 import com.codetreatise.thuydienapp.repository.ResultRepository;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,8 +12,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -25,7 +22,6 @@ import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-@Controller
 public class ApiConfigController extends BaseController implements Initializable {
     @FXML
     public TextField apiAddress;
@@ -58,12 +54,13 @@ public class ApiConfigController extends BaseController implements Initializable
     public ComboBox timeSyncChosen;
     private ApiConfig apiConfig;
 
-    @Autowired
-    private DataRepository dataRepository;
 
-    @Autowired
-    private ResultRepository resultRepository;
+    private final ResultRepository resultRepository;
     ObservableList<Result> dataObservable = FXCollections.observableArrayList();;
+
+    public ApiConfigController() {
+        resultRepository = ResultRepository.getInstance();
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

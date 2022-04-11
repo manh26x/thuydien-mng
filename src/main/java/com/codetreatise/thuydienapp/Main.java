@@ -1,41 +1,52 @@
 package com.codetreatise.thuydienapp;
 
+import com.codetreatise.thuydienapp.config.SpringFXMLLoader;
 import com.codetreatise.thuydienapp.config.StageManager;
 import com.codetreatise.thuydienapp.config.SystemArg;
+import com.codetreatise.thuydienapp.config.database.InitDatabase;
+import com.codetreatise.thuydienapp.config.ftp.SynchronizeFtpConfig;
+import com.codetreatise.thuydienapp.config.modbus.master.ModbusMasterStart;
 import com.codetreatise.thuydienapp.view.FxmlView;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.context.ConfigurableApplicationContext;
 
-@SpringBootApplication
+import java.util.ResourceBundle;
+import java.util.Timer;
+
+
 public class Main extends Application {
 
-    protected ConfigurableApplicationContext springContext;
     protected StageManager stageManager;
 
     public static void main(final String[] args) {
         System.setProperty("java.awt.headless", "false");
         Application.launch(args);
+
+
     }
 
-    @Override
-    public void init() {
-        springContext = springBootApplicationContext();
-    }
+
 
     @Override
     public void start(Stage stage) throws Exception {
-        stageManager = springContext.getBean(StageManager.class, stage);
+        stageManager = StageManager.getInstance();
+        SpringFXMLLoader springFXMLLoader = SpringFXMLLoader.getInstance();
+        springFXMLLoader.setResourceBundle(ResourceBundle.getBundle("Bundle"));
+        stageManager.setArgs(springFXMLLoader, stage);
         displayInitialScene();
         stageManager.init();
         stageManager.setup();
+
+        InitDatabase.getInstance().initTableDatabase();
+
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(ModbusMasterStart.getInstance(), 1000, 10000);
+        timer.scheduleAtFixedRate(SynchronizeFtpConfig.getInstance(), 1000, 1000);
     }
 
     @Override
     public void stop() throws Exception {
-        springContext.close();
+
     }
 
     /**
@@ -50,13 +61,6 @@ public class Main extends Application {
             stageManager.switchScene(FxmlView.LOGIN);
 
         }
-    }
-
-    
-    private ConfigurableApplicationContext springBootApplicationContext() {
-        SpringApplicationBuilder builder = new SpringApplicationBuilder(Main.class);
-        String[] args = getParameters().getRaw().stream().toArray(String[]::new);
-        return builder.run(args);
     }
 
 }

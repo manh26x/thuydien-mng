@@ -32,9 +32,9 @@ public class StageManager {
     private static final String STOP = "stop";
     private static final Logger LOG = getLogger(StageManager.class);
     @Getter
-    private final Stage primaryStage;
-    private final SpringFXMLLoader springFXMLLoader;
-    private final Stage dialog;
+    private Stage primaryStage;
+    private SpringFXMLLoader springFXMLLoader;
+    private Stage dialog;
     public static I18N i18n;
     private static final String iconImageLoc =
             "/images/Mlogo-ico.png";
@@ -42,7 +42,21 @@ public class StageManager {
     private static final int FOCUS_REQUEST_PAUSE_MILLIS = 500;
     private static final int SINGLE_INSTANCE_LISTENER_PORT = 11055;
     private static final String SINGLE_INSTANCE_FOCUS_MESSAGE = "focus";
-    public StageManager(SpringFXMLLoader springFXMLLoader, Stage stage) {
+    private static StageManager instance;
+
+    private StageManager() {
+
+    }
+
+    public static StageManager getInstance() {
+        if(instance == null) {
+            instance = new StageManager();
+            return instance;
+        }
+        return instance;
+    }
+
+    public void setArgs(SpringFXMLLoader springFXMLLoader, Stage stage) {
         this.springFXMLLoader = springFXMLLoader;
         this.primaryStage = stage;
         dialog = new Stage();

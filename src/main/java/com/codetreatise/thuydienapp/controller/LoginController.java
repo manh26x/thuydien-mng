@@ -11,11 +11,7 @@ import com.codetreatise.thuydienapp.config.request.LoginRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.*;
-import org.springframework.stereotype.Controller;
 
 import com.codetreatise.thuydienapp.config.StageManager;
 import com.codetreatise.thuydienapp.view.FxmlView;
@@ -34,11 +30,9 @@ import org.springframework.web.client.RestTemplate;
  * @since 05-04-2017
  */
 
-@Controller
 public class LoginController implements Initializable{
 
-	@Value("${api.login}")
-	private String loginUrl;
+	private final String loginUrl;
 
     @FXML
     private PasswordField password;
@@ -49,10 +43,13 @@ public class LoginController implements Initializable{
     @FXML
     private Label lblLogin;
 
-    @Lazy
-    @Autowired
     private StageManager stageManager;
-        
+
+	public LoginController() {
+		this.loginUrl = "http://quantri.i-lovecandy.com:9999/token";
+		stageManager = StageManager.getInstance();
+	}
+
 	@FXML
     private void login(ActionEvent event) throws JsonProcessingException {
 		AtomicReference<String> jsonBody = new AtomicReference<>("");

@@ -18,9 +18,6 @@ import javafx.stage.DirectoryChooser;
 import lombok.SneakyThrows;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPSClient;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Controller;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -32,7 +29,6 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-@Controller
 public class FtpController  extends BaseController implements Initializable {
     @FXML
     public ComboBox<String> ftpProtocol;
@@ -55,13 +51,15 @@ public class FtpController  extends BaseController implements Initializable {
     public TextField transferDirectory;
 
 
-    @Autowired
-    @Lazy
-    private StageManager stageManager;
+    private final StageManager stageManager;
 
     @FXML
     public ComboBox timeChosen;
     ObservableList<File> dataObservable = FXCollections.observableArrayList();;
+
+    public FtpController() {
+        stageManager = StageManager.getInstance();
+    }
 
 
     @SneakyThrows

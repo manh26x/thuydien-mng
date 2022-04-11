@@ -1,31 +1,45 @@
 package com.codetreatise.thuydienapp.config.modbus.master;
 
 import de.re.easymodbus.server.ModbusServer;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.Scheduled;
 
-import javax.annotation.PostConstruct;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import java.io.IOException;
+import java.util.TimerTask;
 
 @Slf4j
-@Configuration
-public class ModbusMasterStart {
+public class ModbusMasterStart  extends TimerTask {
 
-    private static ModbusServer MODBUS_SERVER = new ModbusServer();
+    private ModbusServer modbusServer;
 
-    @Scheduled(initialDelay = 5000, fixedDelay = 30000)
+    private static ModbusMasterStart instance;
+    private ModbusMasterStart() {
+        modbusServer = new ModbusServer();
+    }
+    public static ModbusMasterStart getInstance() {
+        if(instance == null) {
+            instance = new ModbusMasterStart();
+        }
+        return instance;
+    }
+
     public void createModbusMaster() throws IOException, IllegalBlockSizeException, BadPaddingException, ClassNotFoundException {
         ModbusMasterArg modbusMasterArg = ModbusMasterConfig.getModbusConfig();
-        if(modbusMasterArg.getReady() && !MODBUS_SERVER.getServerRunning()) {
-            MODBUS_SERVER.setPort(modbusMasterArg.getPort());
-            MODBUS_SERVER.setName(modbusMasterArg.getName());
-            MODBUS_SERVER.Listen();
-            log.info("START modbus server: " + MODBUS_SERVER.getName() + " on port: " + MODBUS_SERVER.getPort());
-            log.info("Modbus server is running? " +        MODBUS_SERVER.getServerRunning());
+        if(modbusMasterArg.getReady() && !modbusServer.getServerRunning()) {
+            modbusServer.setPort(modbusMasterArg.getPort());
+            modbusServer.setName(modbusMasterArg.getName());
+            modbusServer.Listen();
+            log.info("START modbus server: " + modbusServer.getName() + " on port: " + modbusServer.getPort());
+            log.info("Modbus server is running? " +        modbusServer.getServerRunning());
         }
 
+    }
+
+    @SneakyThrows
+    @Override
+    public void run() {
+        createModbusMaster();
     }
 }
