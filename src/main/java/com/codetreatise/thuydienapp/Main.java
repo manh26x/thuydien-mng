@@ -5,7 +5,9 @@ import com.codetreatise.thuydienapp.config.StageManager;
 import com.codetreatise.thuydienapp.config.SystemArg;
 import com.codetreatise.thuydienapp.config.database.InitDatabase;
 import com.codetreatise.thuydienapp.config.ftp.SynchronizeFtpConfig;
+import com.codetreatise.thuydienapp.config.login.LoginCheckTask;
 import com.codetreatise.thuydienapp.config.modbus.master.ModbusMasterStart;
+import com.codetreatise.thuydienapp.config.modbus.slave.ModbusSchedule;
 import com.codetreatise.thuydienapp.view.FxmlView;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -37,11 +39,13 @@ public class Main extends Application {
         stageManager.init();
         stageManager.setup();
 
-        InitDatabase.getInstance().initTableDatabase();
 
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(ModbusMasterStart.getInstance(), 1000, 10000);
         timer.scheduleAtFixedRate(SynchronizeFtpConfig.getInstance(), 1000, 1000);
+        timer.scheduleAtFixedRate(LoginCheckTask.getInstance(), 1000, 1000);
+        timer.scheduleAtFixedRate(ModbusSchedule.getInstance(), 1000, 1000);
+        timer.schedule(InitDatabase.getInstance(),2000);
     }
 
     @Override

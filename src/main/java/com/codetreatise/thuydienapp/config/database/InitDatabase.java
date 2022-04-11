@@ -1,6 +1,8 @@
 package com.codetreatise.thuydienapp.config.database;
 
-public final class InitDatabase {
+import java.util.TimerTask;
+
+public final class InitDatabase extends TimerTask {
     private static InitDatabase instance;
 
     public static InitDatabase getInstance() {
@@ -12,6 +14,11 @@ public final class InitDatabase {
 
     private InitDatabase() {}
 
+    @Override
+    public void run() {
+        initTableDatabase();
+    }
+
     public void initTableDatabase() {
         String sqlTableData = "CREATE TABLE IF NOT EXISTS  DATA " +
                 "(`key`  VARCHAR(255)  PRIMARY KEY , " +
@@ -22,8 +29,6 @@ public final class InitDatabase {
                 " quantity INTEGER, " +
                 " status INTEGER )";
         H2Jdbc.getInstance().executeUpdate(sqlTableData);
-        H2Jdbc.getInstance().executeUpdate("DROP TABLE DATA_RECEIVE");
-        H2Jdbc.getInstance().executeUpdate("DROP TABLE RESULT");
         String sqlTableDataReceive = "CREATE TABLE IF NOT EXISTS  Data_Receive " +
                 "(id LONG PRIMARY KEY AUTO_INCREMENT, " +
                 " data_id LONG not NULL, " +

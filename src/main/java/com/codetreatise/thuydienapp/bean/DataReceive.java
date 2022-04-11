@@ -2,7 +2,6 @@ package com.codetreatise.thuydienapp.bean;
 
 import lombok.*;
 
-import javax.persistence.*;
 import java.util.Date;
 
 @Builder
@@ -11,11 +10,7 @@ import java.util.Date;
 @Getter
 @Setter
 public class DataReceive {
-    @Id
-    @GeneratedValue
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "data_id")
     private Data data;
 
 

@@ -3,7 +3,6 @@ package com.codetreatise.thuydienapp.config.modbus.slave;
 import com.codetreatise.thuydienapp.bean.Data;
 import com.codetreatise.thuydienapp.bean.DataReceive;
 import com.codetreatise.thuydienapp.bean.ModbusMaster;
-import com.codetreatise.thuydienapp.config.SynchronizeConfig;
 import com.codetreatise.thuydienapp.config.SystemArg;
 import com.codetreatise.thuydienapp.repository.DataReceiveJdbc;
 import de.re.easymodbus.exceptions.ModbusException;
