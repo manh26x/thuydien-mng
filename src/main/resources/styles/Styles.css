@@ -8,6 +8,10 @@
 	-fx-background-color: #3c42bc;
 }
 
+.btnDanger{
+	-fx-background-color: #ec3f3f;
+}
+
 .btnCall{
 	-fx-background-color: #05796c;
 }

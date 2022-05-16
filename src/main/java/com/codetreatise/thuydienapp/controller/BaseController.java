@@ -4,6 +4,7 @@ import com.codetreatise.thuydienapp.config.StageManager;
 import com.codetreatise.thuydienapp.config.SystemArg;
 import com.codetreatise.thuydienapp.config.ftp.FtpArgSaved;
 import com.codetreatise.thuydienapp.config.ftp.FtpConfig;
+import com.codetreatise.thuydienapp.event.EventTrigger;
 import com.codetreatise.thuydienapp.view.FxmlView;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -14,8 +15,10 @@ import javafx.scene.control.MenuItem;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import java.io.IOException;
+import java.util.Observable;
+import java.util.Observer;
 
-public class BaseController {
+public class BaseController implements Observer {
 
 
     protected final StageManager stageManager;
@@ -24,6 +27,8 @@ public class BaseController {
 
     public BaseController() {
         this.stageManager = StageManager.getInstance();
+        EventTrigger.getInstance().deleteObservers();
+        EventTrigger.getInstance().addObserver(this);
     }
 
 
@@ -98,5 +103,11 @@ public class BaseController {
 
 
 
+    }
+
+    @Override
+    public final void update(Observable o, Object arg) {
+        System.out.println("changed " + arg);
+        initApiMenuGen();
     }
 }

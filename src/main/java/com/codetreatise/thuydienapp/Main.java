@@ -1,8 +1,7 @@
 package com.codetreatise.thuydienapp;
 
-import com.codetreatise.thuydienapp.config.SpringFXMLLoader;
-import com.codetreatise.thuydienapp.config.StageManager;
-import com.codetreatise.thuydienapp.config.SystemArg;
+import com.codetreatise.thuydienapp.bean.ApiConfig;
+import com.codetreatise.thuydienapp.config.*;
 import com.codetreatise.thuydienapp.config.database.InitDatabase;
 import com.codetreatise.thuydienapp.config.ftp.SynchronizeFtpConfig;
 import com.codetreatise.thuydienapp.config.login.LoginCheckTask;
@@ -23,8 +22,6 @@ public class Main extends Application {
     public static void main(final String[] args) {
         System.setProperty("java.awt.headless", "false");
         Application.launch(args);
-
-
     }
 
 
@@ -42,9 +39,10 @@ public class Main extends Application {
 
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(ModbusMasterStart.getInstance(), 1000, 10000);
-        timer.scheduleAtFixedRate(SynchronizeFtpConfig.getInstance(), 1000, 1000);
-        timer.scheduleAtFixedRate(LoginCheckTask.getInstance(), 1000, 1000);
-        timer.scheduleAtFixedRate(ModbusSchedule.getInstance(), 1000, 1000);
+        timer.scheduleAtFixedRate(SynchronizeFtpConfig.getInstance(), 1000, 10000);
+        timer.scheduleAtFixedRate(LoginCheckTask.getInstance(), 30*1000, 60*60*1000);
+        timer.scheduleAtFixedRate(ModbusSchedule.getInstance(), 2000, 10000);
+        timer.scheduleAtFixedRate(SynchronizeConfig.getInstance(), 2000, 1000);
         timer.schedule(InitDatabase.getInstance(),2000);
     }
 
@@ -59,6 +57,14 @@ public class Main extends Application {
      * window.
      */
     protected void displayInitialScene() {
+        try {
+
+            DataConfig.getHostsList();
+
+        } catch (Exception ignored) {
+        } finally {
+        }
+
         if(SystemArg.LOGIN) {
             stageManager.switchScene(FxmlView.TIMING_MODBUS);
         } else {

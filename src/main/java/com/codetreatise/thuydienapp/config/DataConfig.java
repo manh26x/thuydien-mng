@@ -92,17 +92,8 @@ public class DataConfig {
             SystemArg.API_PASSWORD = API_PASSWORD;
             SystemArg.DATA_LIST = DATA_LIST;
             SystemArg.UNIT = UNIT;
-            if(API_LIST == null || API_LIST.size() == 0 ) {
-                ApiConfig apiConfig = new ApiConfig();
-                apiConfig.setApiCallReady(API_CALL_API_READY);
-                apiConfig.setName(API_CALL_URL);
-                apiConfig.setId(0);
-                apiConfig.setUrl(API_CALL_URL);
-                apiConfig.setUsername(API_USERNAME);
-                apiConfig.setPassword(API_PASSWORD);
-                apiConfig.setTimeScheduleCallApi(TIME_SCHEDULE_CALL_API);
+            if(API_LIST == null) {
                 API_LIST = new ArrayList<>();
-                API_LIST.add(apiConfig);
             }
             SystemArg.API_LIST = API_LIST;
             SystemArg.LOGIN = LOGIN;

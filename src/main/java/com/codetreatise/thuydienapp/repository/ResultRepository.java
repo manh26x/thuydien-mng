@@ -3,10 +3,13 @@ package com.codetreatise.thuydienapp.repository;
 import com.codetreatise.thuydienapp.bean.Data;
 import com.codetreatise.thuydienapp.bean.DataReceive;
 import com.codetreatise.thuydienapp.bean.Result;
+import com.codetreatise.thuydienapp.config.SystemArg;
 import com.codetreatise.thuydienapp.config.database.H2Jdbc;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -23,7 +26,7 @@ public class ResultRepository {
 
     public List<Result> findAllByApiAndTimeSendAfterAndTimeSendBefore(String apiUrl, Date fromDate, Date toDate) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        String sql = "SELECT * FROM RESULT r where r.api like '" + apiUrl
+        String sql = "SELECT * FROM DATA_RESULT r where r.api like '" + apiUrl
                 + "' and r.time_send between '" + formatter.format(fromDate) + "' and '" + formatter.format(toDate) + "'";
         List<Result> results = new ArrayList<>();
         H2Jdbc sqlH2Jdbdc = H2Jdbc.getInstance();
@@ -52,44 +55,45 @@ public class ResultRepository {
         return results;
     }
 
-    public List<DataReceive> findNotSend(String apiUrl) {
+    public List<DataReceive> findNotSend(String apiUrl)  {
 
-        String sql = "SELECT * FROM Data_Receive d JOIN DATA data on d.data_id = data.id" +
-                " where d.id not in "
-                + " ( SELECT r.data_receive_id RESULT r " +
-                " JOIN r.data_receive_id = d.id where r.api like '" + apiUrl +"' )";
-        H2Jdbc sqlH2Jdbdc = H2Jdbc.getInstance();
-        ResultSet rs = sqlH2Jdbdc.getResultSet(sql);
+        String sql = "SELECT * FROM Data_Receive  d where not exists  " +
+                "( SELECT r.data_receive_id FROM DATA_RESULT r " +
+                "JOIN Data_Receive d on r.data_receive_id = d.id where r.api ='"+apiUrl+"')";
+
         List<DataReceive> dataReceives = new ArrayList<>();
-        while (true) {
-            try {
-                if (!rs.next()) break;
-                dataReceives.add(DataReceive.builder()
-                        .data(Data.builder()
-                                .tenChiTieu(rs.getString("ten_chi_tieu"))
-                                .dvt(rs.getString("dvt"))
-                                .nguon(rs.getString("nguon"))
-                                .maThongSo(rs.getString("ma_thong_so"))
-                                .key(rs.getString("key"))
-                                .address(rs.getInt("address"))
-                                .quantity(rs.getInt("quantity"))
-                                .build())
-                        .id(rs.getLong("id"))
-                        .value(rs.getFloat("value"))
-                        .thoigian(rs.getDate("thoigian"))
-                        .status(rs.getInt("status"))
-                        .build());
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
+        try {
+            ResultSet rs = H2Jdbc.getInstance().getResultSet(sql);
+            if(rs == null) {
+                rs = H2Jdbc.getInstance().getResultSet("SELECT * FROM Data_Receive d");
             }
+            while (true) {
+                try {
+                    if (!rs.next()) break;
+                    dataReceives.add(DataReceive.builder()
+                            .data(SystemArg.findByKey(rs.getString("data_id")))
+                            .id(rs.getLong("id"))
+                            .value(rs.getFloat("gia_tri"))
+                            .thoigian(rs.getDate("thoigian"))
+                            .status(rs.getInt("status"))
+                            .build());
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        } finally {
 
         }
+
         return dataReceives;
     }
 
     public void insert(Result entity) {
         H2Jdbc sqlJdbc = H2Jdbc.getInstance();
-        String sql = "INSERT INTO Result " + "VALUES (" +
+        String sql = "INSERT INTO DATA_RESULT " + "VALUES (" +
                 null +
                 ", '" + entity.getApi() +
                 "', '" + entity.getResponse() +

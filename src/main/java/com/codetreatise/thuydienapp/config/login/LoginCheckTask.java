@@ -3,7 +3,10 @@ package com.codetreatise.thuydienapp.config.login;
 import com.codetreatise.thuydienapp.config.DataConfig;
 import com.codetreatise.thuydienapp.config.StageManager;
 import com.codetreatise.thuydienapp.config.SystemArg;
+import com.codetreatise.thuydienapp.config.request.LoginRequest;
 import com.codetreatise.thuydienapp.view.FxmlView;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.springframework.http.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -27,10 +30,11 @@ public class LoginCheckTask extends TimerTask {
 
     private final StageManager stageManager;
     private final String validTokenUrl;
-
+    private final String loginUrl;
     public LoginCheckTask() {
         this.stageManager = StageManager.getInstance();
         this.validTokenUrl = "http://quantri.i-lovecandy.com:9999/token/valid";
+        loginUrl = "http://quantri.i-lovecandy.com:9999/token";
     }
 
     @Override
@@ -66,18 +70,43 @@ public class LoginCheckTask extends TimerTask {
                 response.set(restTemplate.postForEntity(validTokenUrl, request, String.class));
                 SystemArg.LOGIN = response.get().getBody().equals(Boolean.TRUE.toString());
                 if(!SystemArg.LOGIN) {
-                    stageManager.switchScene(FxmlView.LOGIN);
+                    stageManager.showWhenHidden(FxmlView.LOGIN);
                 }
                 DataConfig.saveFavorites(null);
             } catch (HttpClientErrorException ex) {
+                if(ex.getStatusCode().compareTo(HttpStatus.EXPECTATION_FAILED) == 0) {
+                    SystemArg.LOGIN = false;
+                    DataConfig.saveFavorites(null);
+                    jsonBody = new AtomicReference<>("");
+                    response = new AtomicReference<>(ResponseEntity.status(HttpStatus.OK).body(""));
+                    headers = new HttpHeaders();
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                    ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+                    jsonBody.set(ow.writeValueAsString(LoginRequest.builder()
+                            .username(SystemArg.API_USERNAME)
+                            .password(SystemArg.API_PASSWORD)
+                            .build()));
+                    request = new HttpEntity<>(jsonBody.get(), headers);
+                    try {
+                        response.set(restTemplate.postForEntity(loginUrl, request, String.class));
+                        SystemArg.LOGIN = Boolean.TRUE;
+                        SystemArg.TOKEN = response.get().getBody();
+                        DataConfig.saveFavorites(null);
+                    } catch (Exception e) {
+                        SystemArg.LOGIN = false;
+                        DataConfig.saveFavorites(null);
+                        stageManager.showWhenHidden(FxmlView.LOGIN);
+                    }
+                }
+
                 ex.printStackTrace();
             } catch (Exception e) {
                 SystemArg.LOGIN = false;
                 DataConfig.saveFavorites(null);
-                stageManager.switchScene(FxmlView.LOGIN);
+                stageManager.showWhenHidden(FxmlView.LOGIN);
             }
         } else {
-            stageManager.switchScene(FxmlView.LOGIN);
+            stageManager.showWhenHidden(FxmlView.LOGIN);
         }
 
     }

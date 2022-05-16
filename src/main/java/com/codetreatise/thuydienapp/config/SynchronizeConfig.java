@@ -29,25 +29,6 @@ public class SynchronizeConfig extends TimerTask {
     }
 
     public SynchronizeConfig() {
-        try {
-
-            DataConfig.getHostsList();
-
-        } catch (Exception ignored) {
-        } finally {
-            if(SystemArg.API_LIST.size() == 0) {
-                ApiConfig apiConfig = new ApiConfig();
-                apiConfig.setApiCallReady(SystemArg.API_CALL_API_READY);
-                apiConfig.setName(SystemArg.API_CALL_URL);
-                apiConfig.setId(0);
-                apiConfig.setUrl(SystemArg.API_CALL_URL);
-                apiConfig.setUsername(SystemArg.API_USERNAME);
-                apiConfig.setPassword(SystemArg.API_PASSWORD);
-                apiConfig.setTimeScheduleCallApi(SystemArg.TIME_SCHEDULE_CALL_API);
-                SystemArg.API_LIST.add(apiConfig);
-            }
-        }
-
 
         resultRepository = ResultRepository.getInstance();
     }

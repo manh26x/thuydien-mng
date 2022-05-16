@@ -102,16 +102,17 @@
 			<version>1.0</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<version>2.1.210</version>
-			<scope>provided</scope>
-		</dependency>
+        <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>2.1.212</version>
+            <scope>runtime</scope>
+        </dependency>
 
 
-		<dependency>
+
+        <dependency>
 
 			<groupId>commons-net</groupId>
 
@@ -145,7 +146,16 @@
 			<version>1.18.22</version>
 			<scope>provided</scope>
 		</dependency>
-
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.36</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.7.36</version>
+		</dependency>
 	</dependencies>
     <description>The Application front-end designed using JavaFX and Spring Boot is used as backend to bootstrap the app. The scenes are created in FXML using Scene Builder. The app demonstrate simple CRUD using Spring Boot and JavaFX.</description>
 </project>

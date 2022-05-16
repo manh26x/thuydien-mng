@@ -6,7 +6,6 @@ import com.codetreatise.thuydienapp.config.StageManager;
 import com.codetreatise.thuydienapp.config.SystemArg;
 import javafx.event.ActionEvent;
 import javafx.scene.control.TextField;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class AddApiController {
     public TextField name;
@@ -33,4 +32,7 @@ public class AddApiController {
         }
         stageManager.closeDialog();
     }
+
+
+
 }

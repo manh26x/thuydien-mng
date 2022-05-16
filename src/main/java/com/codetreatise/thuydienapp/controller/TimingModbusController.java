@@ -1,9 +1,15 @@
 package com.codetreatise.thuydienapp.controller;
 
 import com.codetreatise.thuydienapp.bean.Data;
+import com.codetreatise.thuydienapp.bean.DataReceive;
+import com.codetreatise.thuydienapp.bean.ModbusDataReceiveTable;
 import com.codetreatise.thuydienapp.config.DataConfig;
 import com.codetreatise.thuydienapp.config.SystemArg;
+import com.codetreatise.thuydienapp.config.modbus.slave.ModbusClientGetData;
+import com.codetreatise.thuydienapp.config.modbus.slave.ModbusDataReceive;
+import com.codetreatise.thuydienapp.repository.DataReceiveJdbc;
 import com.codetreatise.thuydienapp.view.FxmlView;
+import de.re.easymodbus.exceptions.ModbusException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,6 +18,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -57,11 +64,40 @@ public class TimingModbusController extends BaseController implements Initializa
     public ComboBox timeChosen;
     @FXML
     public TextField slaveId;
+    public TableView modbusTable;
+    public TableColumn colModAddress;
+    public TableColumn colModQuantity;
+    public TableColumn colModValue;
+    public TextField address;
+    public TextField quantity;
+    public TextField sizeMod;
+    public TableColumn modTenChiTieu;
+    public TableColumn modAddress;
+    public TableColumn modMaThongSo;
+    public TableColumn modValue;
+    public TableView modbusData;
 
+    private TimerTask updateModbusThread;
+    private Timer timer;
 
 
     ObservableList<Data> dataObservable = FXCollections.observableArrayList();;
+    ObservableList<ModbusDataReceive> receiveObservableList = FXCollections.observableArrayList();
+    ObservableList<ModbusDataReceiveTable> modbusDataReceives = FXCollections.observableArrayList();
 
+    private DataReceiveJdbc receiveJdbc;
+
+
+    private void loadModbusData() {
+        try {
+            receiveJdbc = DataReceiveJdbc.getInstance();
+            modbusDataReceives.clear();
+            modbusDataReceives.addAll(receiveJdbc.findAllByTime(null, null));
+            modbusData.setItems(modbusDataReceives);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     private void loadDataList() {
         dataObservable.clear();
@@ -69,6 +105,15 @@ public class TimingModbusController extends BaseController implements Initializa
         dataTable.setItems(dataObservable);
     }
     private void setColProperties() {
+        modTenChiTieu.setCellValueFactory(new PropertyValueFactory<>("tenChiTieu"));
+        modAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
+        modValue.setCellValueFactory(new PropertyValueFactory<>("value"));
+        modMaThongSo.setCellValueFactory(new PropertyValueFactory<>("maThongSo"));
+
+        colModAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
+        colModQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        colModValue.setCellValueFactory(new PropertyValueFactory<>("value"));
+
         colKey.setCellValueFactory(new PropertyValueFactory<>("key"));
         colDvt.setCellValueFactory(new PropertyValueFactory<>("dvt"));
         colNguon.setCellValueFactory(new PropertyValueFactory<>("nguon"));
@@ -87,6 +132,7 @@ public class TimingModbusController extends BaseController implements Initializa
         reset(null);
         setColProperties();
         loadDataList();
+        loadModbusData();
         super.initApiMenuGen();
     }
 
@@ -98,7 +144,7 @@ public class TimingModbusController extends BaseController implements Initializa
             SystemArg.MODBUS_IP = modbusIP.getText().trim();
             SystemArg.MODBUS_PORT = Integer.parseInt(modbusPort.getText());
             SystemArg.UNIT = (byte) Integer.parseInt(slaveId.getText());
-            SystemArg.TIME_SCHEDULE_SYNC_MODBUS = (Integer) timeChosen.getSelectionModel().getSelectedItem() * 60 * 1000;
+            SystemArg.TIME_SCHEDULE_SYNC_MODBUS = (Integer) timeChosen.getSelectionModel().getSelectedItem() ;
             SystemArg.MODBUS_SYNC_READY = rbReady.isSelected();
             SystemArg.NEXT_TIME_SCHEDULE_SYNC_MODBUS = new Date();
             try {
@@ -144,19 +190,16 @@ public class TimingModbusController extends BaseController implements Initializa
         return valid;
     }
 
-
-
     public void addData(ActionEvent event) {
         stageManager.createModal(FxmlView.ADD_FIELD_MODAL);
     }
-
-
 
     public void reset(ActionEvent event) {
         modbusIP.setText(SystemArg.MODBUS_IP);
         modbusPort.setText(SystemArg.MODBUS_PORT.toString());
         slaveId.setText(SystemArg.UNIT.toString());
-        switch (SystemArg.TIME_SCHEDULE_SYNC_MODBUS / (60 * 1000)) {
+
+        switch (SystemArg.TIME_SCHEDULE_SYNC_MODBUS) {
             case 5:
                 timeChosen.getSelectionModel().select(0);
                 break;
@@ -201,4 +244,79 @@ public class TimingModbusController extends BaseController implements Initializa
     }
 
 
+    public void connect(ActionEvent event) {
+        try {
+            getDataModbus();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void getDataModbus() throws IOException {
+        ModbusClientGetData.getInstance().connect(
+                    this.modbusIP.getText(),
+                    Integer.parseInt(this.modbusPort.getText().trim()),
+                    (byte) Integer.parseInt(slaveId.getText()));
+        if(this.updateModbusThread == null) {
+            updateModbusThread = new TimerTask() {
+                @Override
+                public void run() {
+                    updateDataModbus();
+                }
+            };
+            timer = new Timer();
+            timer.scheduleAtFixedRate(updateModbusThread, 0, 1000);
+        }
+    }
+
+    private void updateDataModbus() {
+
+        if(ModbusClientGetData.getInstance().isConnected()) {
+            try {
+                Integer sizeMod = Integer.parseInt(this.sizeMod.getText().trim());
+                Integer address = Integer.parseInt(this.address.getText().trim());
+                Integer quantity = Integer.parseInt(this.quantity.getText().trim());
+                for(int i = 0; i < sizeMod; i++) {
+                    float arg = ModbusClientGetData.getInstance().getValue(address + i*quantity, quantity);
+                    ModbusDataReceive dataReceive = null;
+                    try {
+                        dataReceive = receiveObservableList.get(i);
+                    } catch (Exception ignored) {}
+                    if(dataReceive == null) {
+                        receiveObservableList.add(ModbusDataReceive.builder()
+                                .address(String.valueOf(address + i*quantity))
+                                .quantity(String.valueOf(quantity))
+                                .value(arg)
+                                .build());
+                    } else if(dataReceive.getValue() != arg) {
+                        dataReceive.setValue(arg);
+                    }
+
+                }
+            } catch (ModbusException | IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            receiveObservableList.clear();
+        }
+        modbusTable.setItems(receiveObservableList);
+        modbusTable.refresh();
+
+    }
+
+    public void disconnect(ActionEvent event) throws IOException {
+        ModbusClientGetData.getInstance().disconnect();
+        updateModbusThread = null;
+        timer.cancel();
+
+    }
+
+    public void resfreshModbus(ActionEvent event) {
+        updateDataModbus();
+    }
+
+
+    public void resfreshModbusData(ActionEvent event) {
+        loadModbusData();
+    }
 }

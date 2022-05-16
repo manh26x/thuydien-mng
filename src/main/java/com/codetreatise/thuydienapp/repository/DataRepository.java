@@ -40,6 +40,13 @@ public class DataRepository {
                         .build());
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
+            }finally {
+                try {
+                    H2Jdbc.getInstance().getStmt().close();
+                    H2Jdbc.getInstance().getConn().close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
             }
 
         }
@@ -50,13 +57,13 @@ public class DataRepository {
     public void update(Data data) {
         H2Jdbc sqlJdbc = H2Jdbc.getInstance();
         String sql = "UPDATE Data SET" +
-                " key = '" + data.getKey() +
+                " `key` = '" + data.getKey() +
                 "', nguon = '" + data.getNguon() +
                 "', ten_chi_tieu = '" + data.getTenChiTieu() +
                 "', dvt = '" + data.getDvt() +
                 "', address = " + data.getAddress() +
                 ", quantity = " + data.getQuantity() +
-                ", status " + data.getStatus() +
+                ", status =" + data.getStatus() +
                 ", ma_thong_so = '" + data.getMaThongSo() +
                 "'";
         sqlJdbc.executeUpdate(sql);
@@ -64,7 +71,8 @@ public class DataRepository {
 
     public void insert(Data data) {
         H2Jdbc sqlJdbc = H2Jdbc.getInstance();
-        String sql = "INSERT INTO Data " + "VALUES (" +
+        String sql = "INSERT INTO Data" +
+                "( `key`, nguon, ten_chi_tieu, dvt, address, quantity, status, ma_thong_so) VALUES (" +
                 "'" + data.getKey() +
                 "', '" + data.getNguon() +
                 "', '" + data.getTenChiTieu() +

@@ -27,18 +27,20 @@ public final class InitDatabase extends TimerTask {
                 " dvt VARCHAR(10), " +
                 " address INTEGER, " +
                 " quantity INTEGER, " +
-                " status INTEGER )";
+                " status INTEGER, " +
+                " ma_thong_so VARCHAR(300) " +
+                ")";
         H2Jdbc.getInstance().executeUpdate(sqlTableData);
         String sqlTableDataReceive = "CREATE TABLE IF NOT EXISTS  Data_Receive " +
-                "(id LONG PRIMARY KEY AUTO_INCREMENT, " +
-                " data_id LONG not NULL, " +
+                "(id BIGINT PRIMARY KEY AUTO_INCREMENT, " +
+                " data_id VARCHAR(255)  not NULL, " +
                 " thoigian DATETIME, " +
                 " gia_tri REAL, " +
                 " status INTEGER )";
 
         H2Jdbc.getInstance().executeUpdate(sqlTableDataReceive);
 
-        String sqlTableResult = "CREATE TABLE IF NOT EXISTS  RESULT " +
+        String sqlTableResult = "CREATE TABLE IF NOT EXISTS  DATA_RESULT " +
                 "(id LONG PRIMARY KEY AUTO_INCREMENT, " +
                 " data_receive_id LONG not NULL, " +
                 " time_send DATETIME, " +

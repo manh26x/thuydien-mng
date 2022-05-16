@@ -1,5 +1,7 @@
 package com.codetreatise.thuydienapp.config.modbus.master;
 
+import ModbusRTU.ModbusRTU;
+import de.re.easymodbus.modbusclient.gui.EasyModbusTcpClient;
 import de.re.easymodbus.server.ModbusServer;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +32,8 @@ public class ModbusMasterStart  extends TimerTask {
         if(modbusMasterArg.getReady() && !modbusServer.getServerRunning()) {
             modbusServer.setPort(modbusMasterArg.getPort());
             modbusServer.setName(modbusMasterArg.getName());
+            modbusServer.udpFlag=true;
+
             modbusServer.Listen();
             log.info("START modbus server: " + modbusServer.getName() + " on port: " + modbusServer.getPort());
             log.info("Modbus server is running? " +        modbusServer.getServerRunning());

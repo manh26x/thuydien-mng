@@ -34,11 +34,11 @@ public class AddFieldModalController {
     public Button saveUser;
     public Label lbMessage;
     private final StageManager stageManager;
-    @Autowired
-    private DataRepository dataRepository;
+    private final DataRepository dataRepository;
 
     public AddFieldModalController() {
         this.stageManager = StageManager.getInstance();
+        dataRepository = DataRepository.getInstance();
     }
 
     public void reset(ActionEvent event) {

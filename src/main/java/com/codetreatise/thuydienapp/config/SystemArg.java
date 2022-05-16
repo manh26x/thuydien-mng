@@ -38,21 +38,29 @@ public final class SystemArg {
     public static String NAME_API_CHOSEN = "";
     public static String NAME_FTP_CHOSEN = "";
 
+    public static Data findByKey(String key) {
+        return SystemArg.DATA_LIST.stream().filter(data -> data.getKey().equals(key)).findFirst().orElse(null);
+    }
 
     public static void setNextTimeScheduleSyncModbus() {
         Date now = new Date();
         now.setSeconds(0);
-        SystemArg.NEXT_TIME_SCHEDULE_SYNC_MODBUS = new Date(now.getTime() + SystemArg.TIME_SCHEDULE_SYNC_MODBUS);
+        SystemArg.NEXT_TIME_SCHEDULE_SYNC_MODBUS = new Date(now.getTime() + 60*1000);
     }
 
     public static boolean checkTimeScheduleSyncModbus() {
-        return LOGIN && MODBUS_SYNC_READY && new Date().after(NEXT_TIME_SCHEDULE_SYNC_MODBUS);
+        Date now = new Date();
+        now.setSeconds(0);
+
+        return LOGIN && MODBUS_SYNC_READY
+                && (TIME_SCHEDULE_SYNC_MODBUS == 60 ||
+                now.getMinutes() % TIME_SCHEDULE_SYNC_MODBUS == 0);
     }
 
     public static void setNextTimeScheduleCallApi() {
         Date now = new Date();
         now.setSeconds(0);
-        SystemArg.NEXT_TIME_SCHEDULE_CALL_API = new Date(now.getTime() + SystemArg.TIME_SCHEDULE_CALL_API);
+        SystemArg.NEXT_TIME_SCHEDULE_CALL_API = new Date(now.getTime() + 60*1000);
     }
 
     public static boolean checkTimeScheduleCallApi() {

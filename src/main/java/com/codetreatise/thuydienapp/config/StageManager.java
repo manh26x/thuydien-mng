@@ -11,6 +11,7 @@ import java.net.URL;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
 
+import com.codetreatise.thuydienapp.event.EventTrigger;
 import com.codetreatise.thuydienapp.view.FxmlView;
 import com.sun.imageio.plugins.common.I18N;
 import javafx.stage.Modality;
@@ -29,7 +30,7 @@ import javax.imageio.ImageIO;
  */
 public class StageManager {
     private static final String TITLE = "title";
-    private static final String STOP = "stop";
+    private static final String STOP = "logout";
     private static final Logger LOG = getLogger(StageManager.class);
     @Getter
     private Stage primaryStage;
@@ -206,6 +207,14 @@ public class StageManager {
         primaryStage.getIcons().add(new javafx.scene.image.Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/Mlogo.png"))));
     }
 
+    public void showWhenHidden(final FxmlView view) {
+        Platform.runLater(() -> {
+            switchScene(view);
+            primaryStage.toFront();
+            primaryStage.setAlwaysOnTop(true);
+            primaryStage.setAlwaysOnTop(false);
+        });
+    }
 
 
     /**
@@ -255,6 +264,7 @@ public class StageManager {
             exitItem.addActionListener(event -> {
                 Platform.exit();
                 finalTray.remove(finalTrayIcon);
+                System.exit(2);
             });
 
             // setup the popup menu for the application.
@@ -278,8 +288,8 @@ public class StageManager {
     }
 
     private void stopService() {
-        SystemArg.MODBUS_SYNC_READY = false;
-        SystemArg.API_CALL_API_READY = false;
+        SystemArg.LOGIN = false;
+        this.showWhenHidden(FxmlView.LOGIN);
     }
 
 
@@ -299,5 +309,7 @@ public class StageManager {
     public void closeDialog() {
         dialog.hide();
         dialog.close();
+        EventTrigger.getInstance().setChange();
+        EventTrigger.getInstance().notifyObservers(null);
     }
 }
