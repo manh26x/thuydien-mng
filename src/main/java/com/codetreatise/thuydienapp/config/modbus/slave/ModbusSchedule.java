@@ -7,8 +7,6 @@ import com.codetreatise.thuydienapp.config.SystemArg;
 import com.codetreatise.thuydienapp.repository.DataReceiveJdbc;
 import de.re.easymodbus.exceptions.ModbusException;
 import de.re.easymodbus.modbusclient.ModbusClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Date;
@@ -17,7 +15,6 @@ import java.util.TimerTask;
 
 public class ModbusSchedule extends TimerTask {
 
-    Logger logger = LoggerFactory.getLogger(ModbusSchedule.class);
     private static ModbusSchedule instance;
 
     public static ModbusSchedule getInstance() {
@@ -60,7 +57,6 @@ public class ModbusSchedule extends TimerTask {
                 try {
 
                     float arg = ModbusClient.ConvertRegistersToFloat(modbusClient.ReadHoldingRegisters(e.getAddress(), e.getQuantity()));
-                    logger.info(e.getKey() + " : " + arg);
                     DataReceiveJdbc.getInstance().insert(
                             DataReceive.builder()
                                     .data(e)
@@ -70,13 +66,12 @@ public class ModbusSchedule extends TimerTask {
                                     .build()
                     );
                 } catch (ModbusException | IOException modbusException) {
-                    logger.error(modbusException.getMessage());
                 }
             });
 
             modbusClient.Disconnect();
         } catch (IOException e) {
-            logger.error(e.getMessage());
+            e.printStackTrace();
         } finally {
             SystemArg.setNextTimeScheduleSyncModbus();
 

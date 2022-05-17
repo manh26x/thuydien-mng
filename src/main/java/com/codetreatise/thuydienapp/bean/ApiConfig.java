@@ -8,6 +8,8 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.util.Date;
 
+import static com.codetreatise.thuydienapp.config.SystemArg.*;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -37,7 +39,12 @@ public class ApiConfig implements Serializable {
     }
 
     public boolean checkTimeScheduleCallApi() {
-        return SystemArg.LOGIN && apiCallReady && new Date().after(nextTimeScheduleCallApi) && !url.equals("");
+        Date now = new Date();
+        now.setSeconds(0);
+
+        return LOGIN && apiCallReady
+                && (timeScheduleCallApi == 60 ||
+                now.getMinutes() % timeScheduleCallApi == 0);
     }
 
 

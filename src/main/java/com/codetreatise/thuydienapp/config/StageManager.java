@@ -1,6 +1,5 @@
 package com.codetreatise.thuydienapp.config;
 
-import static org.slf4j.LoggerFactory.getLogger;
 
 import java.awt.*;
 import java.io.*;
@@ -16,7 +15,6 @@ import com.codetreatise.thuydienapp.view.FxmlView;
 import com.sun.imageio.plugins.common.I18N;
 import javafx.stage.Modality;
 import lombok.Getter;
-import org.slf4j.Logger;
 
 import javafx.application.Platform;
 import javafx.scene.Parent;
@@ -31,7 +29,6 @@ import javax.imageio.ImageIO;
 public class StageManager {
     private static final String TITLE = "title";
     private static final String STOP = "logout";
-    private static final Logger LOG = getLogger(StageManager.class);
     @Getter
     private Stage primaryStage;
     private SpringFXMLLoader springFXMLLoader;
@@ -132,7 +129,6 @@ public class StageManager {
     
     
     private void logAndExit(String errorMsg, Exception exception) {
-        LOG.error(errorMsg, exception, exception.getCause());
         Platform.exit();
     }
 

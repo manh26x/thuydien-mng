@@ -1,6 +1,5 @@
 package com.codetreatise.thuydienapp;
 
-import com.codetreatise.thuydienapp.bean.ApiConfig;
 import com.codetreatise.thuydienapp.config.*;
 import com.codetreatise.thuydienapp.config.database.InitDatabase;
 import com.codetreatise.thuydienapp.config.ftp.SynchronizeFtpConfig;

@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
 import java.util.*;
 
 public class ResultRepository {
@@ -26,17 +27,21 @@ public class ResultRepository {
 
     public List<Result> findAllByApiAndTimeSendAfterAndTimeSendBefore(String apiUrl, Date fromDate, Date toDate) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        String sql = "SELECT * FROM DATA_RESULT r where r.api like '" + apiUrl
-                + "' and r.time_send between '" + formatter.format(fromDate) + "' and '" + formatter.format(toDate) + "'";
+        String sql = "SELECT * FROM DATA_RESULT r where r.api like ? and r.time_send between ? and ?";
         List<Result> results = new ArrayList<>();
-        H2Jdbc sqlH2Jdbdc = H2Jdbc.getInstance();
-        ResultSet rs = sqlH2Jdbdc.getResultSet(sql);
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = H2Jdbc.getInstance().getConn().prepareStatement(sql);
+            preparedStatement.setString(1, apiUrl);
+            preparedStatement.setObject(2, fromDate.toInstant().atZone(ZoneId.of("UTC+7")).toLocalDateTime());
+            preparedStatement.setObject(3, toDate.toInstant().atZone(ZoneId.of("UTC+7")).toLocalDateTime());
+            ResultSet rs = preparedStatement.executeQuery();
         while (true) {
             try {
                 if (!rs.next()) break;
                 results.add(Result.builder()
                         .api(rs.getString("api"))
-                        .codeResponse(rs.getInt("code_response"))
+                        .codeResponse(rs.getInt("codeResponse"))
                         .timeSend(rs.getDate("time_send"))
                         .request(rs.getString("request"))
                         .response(rs.getString("response"))
@@ -44,12 +49,20 @@ public class ResultRepository {
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
                 break;
-            } finally {
-                try {
-                    rs.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
+            }
+        }
+            try {
+                rs.close();
+            } catch (Exception throwables) {
+                throwables.printStackTrace();
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            try {
+                preparedStatement.close();
+            } catch (Exception throwables) {
+                throwables.printStackTrace();
             }
         }
         return results;
@@ -93,15 +106,31 @@ public class ResultRepository {
 
     public void insert(Result entity) {
         H2Jdbc sqlJdbc = H2Jdbc.getInstance();
-        String sql = "INSERT INTO DATA_RESULT " + "VALUES (" +
-                null +
-                ", '" + entity.getApi() +
-                "', '" + entity.getResponse() +
-                "', '" + entity.getRequest() +
-                "', " + entity.getCodeResponse() +
-                ", " + entity.getDataReceive().getId() +
-                ", " + entity.getTimeSend() +
-                ")";
-        sqlJdbc.executeUpdate(sql);
+        String sql = "INSERT INTO DATA_RESULT(" +
+                "api, " +
+                "response," +
+                "request, " +
+                "codeResponse, " +
+                "data_receive_id," +
+                "time_send) " + "VALUES (?,?,?,?,?, ?)";
+        PreparedStatement preparedStatement = null;
+        try {
+             preparedStatement = sqlJdbc.getConn().prepareStatement(sql);
+            preparedStatement.setString(1, entity.getApi());
+            preparedStatement.setString(2, entity.getResponse());
+            preparedStatement.setString(3, entity.getRequest());
+            preparedStatement.setInt(4, entity.getCodeResponse());
+            preparedStatement.setLong(5,  entity.getDataReceive().getId());
+            preparedStatement.setObject(6, entity.getTimeSend().toInstant().atZone(ZoneId.of("UTC+7")).toLocalDateTime() );
+            preparedStatement.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            try {
+                preparedStatement.close();
+            } catch (Exception troubles) {
+                troubles.printStackTrace();
+            }
+        }
     }
 }
