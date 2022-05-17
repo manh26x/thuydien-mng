@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="H2 - .thuydienmng" uuid="02e76f3a-90fb-4b26-9b50-7db2f5a443dc">
+    <data-source source="LOCAL" name="thuydien_db" uuid="cd2d3258-5222-40d2-b591-fce643c50fc4">
       <driver-ref>h2.unified</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.h2.Driver</jdbc-driver>
-      <jdbc-url>jdbc:h2:jdbc:h2:file:~/.thuydienmng/thuydien_db;MV_STORE=false</jdbc-url>
+      <jdbc-url>jdbc:h2:file:./database/thuydien_db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

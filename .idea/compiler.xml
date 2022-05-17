@@ -11,7 +11,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="thuydienapp" target="1.8" />
+      <module name="thuydienapp" target="8" />
     </bytecodeTargetLevel>
   </component>
 </project>
