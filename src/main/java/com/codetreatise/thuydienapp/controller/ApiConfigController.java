@@ -42,8 +42,7 @@ public class ApiConfigController extends BaseController implements Initializable
     @FXML
     public ComboBox<Integer> dataChosen;
     public Label lbMessage;
-    @FXML
-    public Label lbNextTimeCall;
+
     @FXML
     public TextArea result;
     public TableView dataTable;
@@ -84,7 +83,7 @@ public class ApiConfigController extends BaseController implements Initializable
         passwordApi.setText(apiConfig.getPassword());
         rbReady.setSelected(apiConfig.isApiCallReady());
         rbNotReady.setSelected(!apiConfig.isApiCallReady());
-        switch (apiConfig.getTimeScheduleCallApi()/ (60 * 1000)) {
+        switch (apiConfig.getTimeScheduleCallApi()) {
             case 5:
                 timeSyncChosen.getSelectionModel().select(0);
                 break;
@@ -103,7 +102,6 @@ public class ApiConfigController extends BaseController implements Initializable
         }
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
         simpleDateFormat.applyPattern("yyyy-MM-dd HH:mm:ss");
-        lbNextTimeCall.setText("Thoi gian toi: " + simpleDateFormat.format(apiConfig.getNextTimeScheduleCallApi()));
     }
 
 
@@ -115,7 +113,7 @@ public class ApiConfigController extends BaseController implements Initializable
             apiConfig.setPassword(passwordApi.getText());
             apiConfig.setUsername(usernameApi.getText().trim());
             apiConfig.setUrl(apiAddress.getText().trim());
-            apiConfig.setTimeScheduleCallApi((Integer) timeSyncChosen.getSelectionModel().getSelectedItem() * 60 * 1000);
+            apiConfig.setTimeScheduleCallApi((Integer) timeSyncChosen.getSelectionModel().getSelectedItem());
             apiConfig.setApiCallReady(rbReady.isSelected());
             reset(null);
             try {

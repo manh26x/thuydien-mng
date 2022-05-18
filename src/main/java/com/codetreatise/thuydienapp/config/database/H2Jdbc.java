@@ -1,7 +1,9 @@
 package com.codetreatise.thuydienapp.config.database;
 
-import java.sql.*;
+import lombok.extern.slf4j.Slf4j;
 
+import java.sql.*;
+@Slf4j
 public class H2Jdbc {
     private static H2Jdbc instance;
     static final String JDBC_DRIVER = "org.h2.Driver";
@@ -35,6 +37,7 @@ public class H2Jdbc {
             stmt = getConn().createStatement();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+            log.error(throwables.getMessage());
         }
         return stmt;
     }
@@ -44,12 +47,14 @@ public class H2Jdbc {
              getStmt().executeUpdate(sql);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+            log.error(throwables.getMessage());
         } finally {
             try {
                 stmt.close();
                 conn.close();
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
+                log.error(throwables.getMessage());
             }
         }
     }

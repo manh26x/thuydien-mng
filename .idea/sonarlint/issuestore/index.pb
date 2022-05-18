@@ -9,14 +9,8 @@ Jsrc/main/java/com/codetreatise/thuydienapp/config/request/DataCallApi.java,4\4
 Ksrc/main/java/com/codetreatise/thuydienapp/config/request/LoginRequest.java,b\d\bd591387148e2ff5b3d038fe74b020d283b91a92
 {
 Ksrc/main/java/com/codetreatise/thuydienapp/config/login/LoginCheckTask.java,7\4\745adf293da2c07c61e1a0e02487a4149c9b4c9f
-q
-Asrc/main/java/com/codetreatise/thuydienapp/config/DataConfig.java,2\8\28ca7ed04a6d3ae247a2280497a34baf82bdbf92
 Ç
 Rsrc/main/java/com/codetreatise/thuydienapp/controller/AddFieldModalController.java,b\e\bece92fcba19dab956c277fdf118e9bf12de0059
-y
-Isrc/main/java/com/codetreatise/thuydienapp/controller/BaseController.java,e\d\edcad546c9dc2aadbb9212a54fad1a6dd0864a51
-Å
-Qsrc/main/java/com/codetreatise/thuydienapp/controller/TimingModbusController.java,c\8\c894aaf50b98f94df0c8f3fc7d58d39fb18c807f
 r
 Bsrc/main/java/com/codetreatise/thuydienapp/event/EventTrigger.java,2\7\27f1adb6d6051192ac3ea17c50c91ea83b18911e
 d
@@ -43,5 +37,3 @@ p
 @.idea/libraries/Maven__org_springframework_spring_jcl_5_3_18.xml,8\0\80f8431f86c466a9faf4f3fc68078267102bba38
 p
 @.idea/libraries/Maven__org_springframework_spring_web_5_3_18.xml,9\6\96074d04cbbd210653e0fc82164930618451ee55
-?
-thuydienapp.iml,c\9\c97c38d51b4f7dd710d597ecc76fa524b82a078d

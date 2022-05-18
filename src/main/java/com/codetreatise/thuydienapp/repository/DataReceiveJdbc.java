@@ -4,6 +4,7 @@ import com.codetreatise.thuydienapp.bean.DataReceive;
 import com.codetreatise.thuydienapp.bean.ModbusDataReceiveTable;
 import com.codetreatise.thuydienapp.config.database.H2Jdbc;
 import com.sun.org.apache.xpath.internal.operations.Mod;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Slf4j
 public class DataReceiveJdbc {
     private static DataReceiveJdbc instance;
 
@@ -42,7 +44,7 @@ public class DataReceiveJdbc {
                         .build());
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
-
+                log.error(throwables.getMessage());
             }
         }
         try {
@@ -63,16 +65,19 @@ public class DataReceiveJdbc {
             preparedStatement.setFloat(3, dataReceive.getValue());
             preparedStatement.setInt(4, dataReceive.getStatus());
             int result = preparedStatement.executeUpdate();
+            log.info("saved " + dataReceive.getValue() + " ? " + result);
             System.out.println("saved " + dataReceive.getValue() + " ? " + result);
             preparedStatement.close();
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+            log.error(throwables.getMessage());
         } finally {
             try {
                 H2Jdbc.getInstance().getConn().close();
             } catch (Exception throwables) {
                 throwables.printStackTrace();
+                log.error(throwables.getMessage());
             }
 
         }

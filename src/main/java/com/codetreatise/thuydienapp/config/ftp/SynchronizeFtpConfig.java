@@ -9,6 +9,7 @@ import org.apache.commons.net.ftp.FTPSClient;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import java.io.*;
+import java.util.Objects;
 import java.util.TimerTask;
 
 @Slf4j
@@ -33,7 +34,7 @@ public class SynchronizeFtpConfig extends TimerTask {
             if(ftpClient != null) {
                 File folder = new File(configArg.getLocalWorkingDirectory());
                 try{
-                    for(File file : folder.listFiles()) {
+                    for(File file : Objects.requireNonNull(folder.listFiles())) {
                         FileInputStream inputStream;
                         boolean completed = false;
                         while (!completed) {

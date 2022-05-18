@@ -116,7 +116,7 @@
                               <Insets left="25.0" right="25.0" />
                           </VBox.margin>
                       </HBox>
-                      <Label text="Timing (ms)" textFill="#f8f7f7">
+                      <Label text="Timing (minus)" textFill="#f8f7f7">
                           <font>
                               <Font size="15.0" />
                           </font>
@@ -166,14 +166,7 @@
                               <Insets left="110.0" />
                           </VBox.margin>
                       </HBox>
-                      <Label fx:id="lbNextTimeCall" layoutX="97.0" layoutY="46.0" text="asfafsd" textFill="#00eb2a">
-                          <font>
-                              <Font size="14.0" />
-                          </font>
-                          <padding>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                          </padding>
-                      </Label>
+
                   </children>
                   <padding>
                       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

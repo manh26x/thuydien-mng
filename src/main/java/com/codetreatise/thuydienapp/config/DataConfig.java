@@ -2,6 +2,7 @@ package com.codetreatise.thuydienapp.config;
 
 import com.codetreatise.thuydienapp.bean.ApiConfig;
 import com.codetreatise.thuydienapp.bean.Data;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
@@ -12,6 +13,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 
+@Slf4j
 public class DataConfig {
 
     @lombok.Data
@@ -177,6 +179,7 @@ public class DataConfig {
             return cipher;
         } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException exp) {
             exp.printStackTrace();
+            log.error(exp.getMessage());
         }
         return null;
     }

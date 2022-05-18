@@ -1,19 +1,18 @@
 package com.codetreatise.thuydienapp.repository;
 
-import com.codetreatise.thuydienapp.bean.Data;
 import com.codetreatise.thuydienapp.bean.DataReceive;
 import com.codetreatise.thuydienapp.bean.Result;
 import com.codetreatise.thuydienapp.config.SystemArg;
 import com.codetreatise.thuydienapp.config.database.H2Jdbc;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.util.*;
 
+@Slf4j
 public class ResultRepository {
 
     private static ResultRepository instance;
@@ -26,14 +25,13 @@ public class ResultRepository {
     }
 
     public List<Result> findAllByApiAndTimeSendAfterAndTimeSendBefore(String apiUrl, Date fromDate, Date toDate) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         String sql = "SELECT * FROM DATA_RESULT r where r.api like ? and r.time_send between ? and ?";
         List<Result> results = new ArrayList<>();
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = H2Jdbc.getInstance().getConn().prepareStatement(sql);
             preparedStatement.setString(1, apiUrl);
-            preparedStatement.setObject(2, fromDate.toInstant().atZone(ZoneId.of("UTC+7")).toLocalDateTime());
+            preparedStatement.setObject(2, fromDate.toInstant().atZone(ZoneId.of("UTC+7")).toLocalDateTime() );
             preparedStatement.setObject(3, toDate.toInstant().atZone(ZoneId.of("UTC+7")).toLocalDateTime());
             ResultSet rs = preparedStatement.executeQuery();
         while (true) {
@@ -48,6 +46,7 @@ public class ResultRepository {
                         .build());
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
+                log.error(throwables.getMessage());
                 break;
             }
         }
@@ -55,14 +54,17 @@ public class ResultRepository {
                 rs.close();
             } catch (Exception throwables) {
                 throwables.printStackTrace();
+                log.error(throwables.getMessage());
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+            log.error(throwables.getMessage());
         } finally {
             try {
                 preparedStatement.close();
             } catch (Exception throwables) {
                 throwables.printStackTrace();
+                log.error(throwables.getMessage());
             }
         }
         return results;
@@ -92,6 +94,7 @@ public class ResultRepository {
                             .build());
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
+                    log.error(throwables.getMessage());
                 }
 
             }
@@ -125,11 +128,12 @@ public class ResultRepository {
             preparedStatement.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+            log.error(throwables.getMessage());
         } finally {
             try {
                 preparedStatement.close();
             } catch (Exception troubles) {
-                troubles.printStackTrace();
+                log.error(troubles.getMessage());
             }
         }
     }

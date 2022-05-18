@@ -2,11 +2,14 @@ package com.codetreatise.thuydienapp.repository;
 
 import com.codetreatise.thuydienapp.bean.Data;
 import com.codetreatise.thuydienapp.config.database.H2Jdbc;
+import lombok.extern.slf4j.Slf4j;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class DataRepository {
 
     private static DataRepository instance;
@@ -40,12 +43,14 @@ public class DataRepository {
                         .build());
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
+                log.error(throwables.getMessage());
             }finally {
                 try {
                     H2Jdbc.getInstance().getStmt().close();
                     H2Jdbc.getInstance().getConn().close();
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
+                    log.error(throwables.getMessage());
                 }
             }
 

@@ -52,7 +52,7 @@ public final class SystemArg {
         Date now = new Date();
         now.setSeconds(0);
 
-        return LOGIN && MODBUS_SYNC_READY
+        return LOGIN && MODBUS_SYNC_READY && now.after(NEXT_TIME_SCHEDULE_SYNC_MODBUS)
                 && (TIME_SCHEDULE_SYNC_MODBUS == 60 ||
                 now.getMinutes() % TIME_SCHEDULE_SYNC_MODBUS == 0);
     }

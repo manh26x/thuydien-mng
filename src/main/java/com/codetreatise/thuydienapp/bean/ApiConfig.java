@@ -35,14 +35,14 @@ public class ApiConfig implements Serializable {
     public void autoNextTimeScheduleCallApi() {
         Date now = new Date();
         now.setSeconds(0);
-        nextTimeScheduleCallApi = new Date(now.getTime() + timeScheduleCallApi);
+        nextTimeScheduleCallApi = new Date(now.getTime() + 60*1000);
     }
 
     public boolean checkTimeScheduleCallApi() {
         Date now = new Date();
         now.setSeconds(0);
 
-        return LOGIN && apiCallReady
+        return LOGIN && apiCallReady && now.after(nextTimeScheduleCallApi)
                 && (timeScheduleCallApi == 60 ||
                 now.getMinutes() % timeScheduleCallApi == 0);
     }
