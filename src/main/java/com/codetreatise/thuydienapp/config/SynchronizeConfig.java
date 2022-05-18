@@ -5,6 +5,7 @@ import com.codetreatise.thuydienapp.config.request.DataCallApi;
 import com.codetreatise.thuydienapp.config.request.ObjectSendApi;
 import com.codetreatise.thuydienapp.repository.ResultRepository;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicReference;
 
+@Slf4j
 public class SynchronizeConfig extends TimerTask {
 
     private static SynchronizeConfig instance = new SynchronizeConfig();;
@@ -82,7 +84,7 @@ public class SynchronizeConfig extends TimerTask {
                     e.setStatus(1);
 
                 } catch (Exception exception) {
-                    exception.printStackTrace();
+                    log.error(exception.getMessage());
                 }
                 finally {
                     resultRepository.insert(Result.builder()

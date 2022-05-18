@@ -1,6 +1,7 @@
 package com.codetreatise.thuydienapp.config.ftp;
 
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPSClient;
@@ -10,6 +11,7 @@ import javax.crypto.IllegalBlockSizeException;
 import java.io.*;
 import java.util.TimerTask;
 
+@Slf4j
 public class SynchronizeFtpConfig extends TimerTask {
 
     private SynchronizeFtpConfig() {
@@ -37,6 +39,7 @@ public class SynchronizeFtpConfig extends TimerTask {
                         while (!completed) {
                             ftpClient.enterLocalPassiveMode();
                             ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+                            log.info(ftpClient.getReplyString() + " file: " + file.getName());
                             inputStream = new FileInputStream(file);
                             OutputStream os = ftpClient.storeFileStream(configArg.getRemoteWorkingDirectory() + "/" + file.getName());
                             byte[] buffer = new byte[1024];
@@ -51,10 +54,13 @@ public class SynchronizeFtpConfig extends TimerTask {
                             completed = ftpClient.completePendingCommand();
                         }
 
+                        log.info(file.getName() + " is uploaded successfully!");
                         if((configArg.getTransferDirectory() != null || !configArg.getTransferDirectory().equals(""))  ){
                             boolean isTransfer = file.renameTo(new File(configArg.getTransferDirectory() + "/" + file.getName()));
                             if(isTransfer) {
+                                log.info(file.getName() + " is transfer!");
                             } else {
+                                log.error(file.getName() + " transfer error!");
                             }
                         }
 

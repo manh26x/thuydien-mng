@@ -18,6 +18,7 @@ import javafx.stage.DirectoryChooser;
 import lombok.SneakyThrows;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPSClient;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import java.io.File;
@@ -31,6 +32,7 @@ import java.util.stream.Collectors;
 public class FtpController  extends BaseController implements Initializable {
     @FXML
     public ComboBox<String> ftpProtocol;
+
     public TextField localDirectory;
     public TextField ipAddress;
     public TextField port;
