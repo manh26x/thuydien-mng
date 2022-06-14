@@ -56,14 +56,19 @@ public class AddFieldModalController {
                             .quantity(Integer.parseInt(quantity.getText().trim()))
                             .status(1)
                             .build();
-            SystemArg.DATA_LIST.add(data);
-            dataRepository.insert(data);
-            try {
-                DataConfig.saveFavorites(null);
-            } catch (Exception e) {
-                e.printStackTrace();
+            int result = dataRepository.insert(data);
+            if(result == 1) {
+                try {
+                    SystemArg.DATA_LIST.add(data);
+                    DataConfig.saveFavorites(null);
+                    stageManager.closeDialog();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                lbMessage.setText("Add field Modbus failed!");
             }
-            stageManager.closeDialog();
+
 
         }
     }

@@ -42,9 +42,11 @@ public class H2Jdbc {
         return stmt;
     }
 
-    public void executeUpdate(String sql) {
+    public int executeUpdate(String sql) {
         try {
-             getStmt().executeUpdate(sql);
+             int result = getStmt().executeUpdate(sql);
+             log.info("executed update {} : {}",result, sql);
+             return result;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             log.error(throwables.getMessage());
@@ -57,6 +59,7 @@ public class H2Jdbc {
                 log.error(throwables.getMessage());
             }
         }
+        return 0;
     }
     
     public ResultSet getResultSet(String sql) {

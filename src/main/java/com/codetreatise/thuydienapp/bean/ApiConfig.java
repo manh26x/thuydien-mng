@@ -1,18 +1,20 @@
 package com.codetreatise.thuydienapp.bean;
 
-import com.codetreatise.thuydienapp.config.SystemArg;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import static com.codetreatise.thuydienapp.config.SystemArg.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@ToString
 public class ApiConfig implements Serializable {
     private int id;
     private String name;
@@ -22,6 +24,7 @@ public class ApiConfig implements Serializable {
     private String username;
     private String password;
     private boolean apiCallReady;
+    private List<Data> keySends;
 
     public ApiConfig() {
         url = "";

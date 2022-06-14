@@ -3,6 +3,7 @@ package com.codetreatise.thuydienapp.bean;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.io.Serializable;
 
@@ -10,6 +11,7 @@ import java.io.Serializable;
 @lombok.Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Data  implements Serializable {
     private String key;
     private String nguon;
@@ -20,8 +22,4 @@ public class Data  implements Serializable {
     private Integer status;
     private String maThongSo;
 
-    @Override
-    public String toString() {
-        return tenChiTieu + " - " + maThongSo;
-    }
 }

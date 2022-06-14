@@ -1,19 +1,15 @@
 package com.codetreatise.thuydienapp.event;
 
-
 import java.util.Observable;
 
-public class EventTrigger extends Observable{
-
-    private EventTrigger() {
-
+public class ErrorTrigger extends Observable {
+    private ErrorTrigger () {
     }
+    private static ErrorTrigger instance;
 
-    private static EventTrigger instance;
-
-    public static EventTrigger getInstance() {
+    public static ErrorTrigger getInstance() {
         if(instance == null) {
-            instance = new EventTrigger();
+            instance = new ErrorTrigger();
         }
         return instance;
     }

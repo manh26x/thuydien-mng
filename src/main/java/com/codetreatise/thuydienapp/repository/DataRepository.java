@@ -74,7 +74,7 @@ public class DataRepository {
         sqlJdbc.executeUpdate(sql);
     }
 
-    public void insert(Data data) {
+    public int  insert(Data data) {
         H2Jdbc sqlJdbc = H2Jdbc.getInstance();
         String sql = "INSERT INTO Data" +
                 "( `key`, nguon, ten_chi_tieu, dvt, address, quantity, status, ma_thong_so) VALUES (" +
@@ -87,6 +87,11 @@ public class DataRepository {
                 ", " + data.getStatus() +
                 ", '" + data.getMaThongSo() +
                 "')";
-        sqlJdbc.executeUpdate(sql);
+        return sqlJdbc.executeUpdate(sql);
+    }
+    public int delete(Data data) {
+        H2Jdbc sqlJdbc = H2Jdbc.getInstance();
+        String sql = "DELETE FROM Data where `key` = " + data.getKey();
+        return sqlJdbc.executeUpdate(sql);
     }
 }

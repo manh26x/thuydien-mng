@@ -47,8 +47,20 @@ public final class InitDatabase extends TimerTask {
                 " request LONGVARCHAR, " +
                 " response LONGVARCHAR, " +
                 " api VARCHAR(500), " +
+                " api_name VARCHAR(500), " +
                 " codeResponse INTEGER)";
 
         H2Jdbc.getInstance().executeUpdate(sqlTableResult);
+
+        String sqlTableError = "CREATE TABLE IF NOT EXISTS  DATA_ERROR " +
+                "(id LONG PRIMARY KEY AUTO_INCREMENT, " +
+                " type_message VARCHAR(50) not NULL, " +
+                " create_time DATETIME, " +
+                " message LONGVARCHAR, " +
+                " name_menu VARCHAR(255), " +
+                " title LONGVARCHAR," +
+                " is_read INT )";
+
+        H2Jdbc.getInstance().executeUpdate(sqlTableError);
     }
 }

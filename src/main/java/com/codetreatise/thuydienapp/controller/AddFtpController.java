@@ -25,8 +25,6 @@ public class AddFtpController {
     }
 
     public void save(ActionEvent actionEvent) throws IllegalBlockSizeException, IOException, BadPaddingException, ClassNotFoundException {
-        ApiConfig apiConfig =new ApiConfig();
-        apiConfig.setName(name.getText());
         FtpArgSaved ftpArgSaved = FtpConfig.getFtpConfig();
         ftpArgSaved.getFtpConfigArg().put(name.getText(), new FtpConfigArg());
         FtpConfig.saveFavorites(ftpArgSaved);

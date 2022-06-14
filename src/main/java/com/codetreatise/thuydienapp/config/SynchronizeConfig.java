@@ -3,7 +3,11 @@ package com.codetreatise.thuydienapp.config;
 import com.codetreatise.thuydienapp.bean.*;
 import com.codetreatise.thuydienapp.config.request.DataCallApi;
 import com.codetreatise.thuydienapp.config.request.ObjectSendApi;
+import com.codetreatise.thuydienapp.event.EventTrigger;
+import com.codetreatise.thuydienapp.repository.DataErrorRepository;
 import com.codetreatise.thuydienapp.repository.ResultRepository;
+import com.codetreatise.thuydienapp.utils.Constants;
+import com.codetreatise.thuydienapp.utils.EventObject;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
@@ -16,12 +20,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Slf4j
 public class SynchronizeConfig extends TimerTask {
 
-    private static SynchronizeConfig instance = new SynchronizeConfig();;
+    private static final SynchronizeConfig instance = new SynchronizeConfig();
 
     private final ResultRepository resultRepository;
     public static SynchronizeConfig getInstance() {
@@ -29,7 +34,6 @@ public class SynchronizeConfig extends TimerTask {
     }
 
     public SynchronizeConfig() {
-
         resultRepository = ResultRepository.getInstance();
     }
 
@@ -39,31 +43,30 @@ public class SynchronizeConfig extends TimerTask {
         callApi();
     }
 
-
-
-
-
     public void callApi() {
 
         SystemArg.API_LIST.stream().filter(ApiConfig::checkTimeScheduleCallApi)
                 .forEach(apiConfig -> {
-
+            log.info("start Call API: {}", apiConfig.getUrl() );
             AtomicReference<String> jsonBody = new AtomicReference<>("");
             AtomicReference<ResponseEntity<String>> response = new AtomicReference<>(ResponseEntity.status(HttpStatus.OK).body(""));
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
             simpleDateFormat.applyPattern("yyyy-MM-dd HH:mm:ss");
             List<DataCallApi> datas = new ArrayList<>();
-
-            resultRepository.findNotSend(apiConfig.getUrl()).forEach(e -> {
+            AtomicBoolean isException = new AtomicBoolean(false);
+            AtomicReference<String> customMessage = new AtomicReference<>();
+            resultRepository.findNotSend(apiConfig).forEach(e -> {
                 try {
                     datas.clear();
-                    datas.add(DataCallApi.builder()
+                    DataCallApi dataCallApi = DataCallApi.builder()
                             .key(e.getData().getKey())
                             .nguon(e.getData().getNguon())
                             .value(e.getValue())
                             .thoigian(simpleDateFormat.format(e.getThoigian()))
                             .mathongso(e.getData().getMaThongSo())
-                            .build());
+                            .build();
+                    datas.add(dataCallApi);
+                    log.info("START send data {}", dataCallApi);
                     HttpHeaders headers = new HttpHeaders();
                     headers.setContentType(MediaType.APPLICATION_JSON);
                     RestTemplate restTemplate = new RestTemplate();
@@ -75,33 +78,61 @@ public class SynchronizeConfig extends TimerTask {
                             .build()));
                     HttpEntity<String> request = new HttpEntity<>(jsonBody.get(), headers);
                     response.set(restTemplate.postForEntity(apiConfig.getUrl(), request, String.class));
-                    Thread.sleep(500);
-
+                    isException.set(false);
+                    customMessage.set("");
                 } catch (HttpServerErrorException  ex) {
-                    ex.printStackTrace();
-                    ResponseEntity<String> responseEntity = new ResponseEntity<String>(ex.getResponseBodyAsString(), ex.getStatusCode());
+                    log.error(ex.getMessage());
+                    ResponseEntity<String> responseEntity = new ResponseEntity<>(ex.getResponseBodyAsString(), ex.getStatusCode());
                     response.set(responseEntity);
                     e.setStatus(1);
-
+                    customMessage.set(ex.getResponseBodyAsString());
                 } catch (Exception exception) {
+                    response.set( new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR));
                     log.error(exception.getMessage());
+                    DataError dataError = DataError.builder()
+                            .type(Constants.API_TYPE)
+                            .title("API ERROR")
+                            .message("".equals(customMessage.get()) ?  exception.getMessage() : customMessage.get())
+                            .menuName(apiConfig.getName())
+                            .build();
+                    DataErrorRepository.getInstance().insert(dataError);
+                    isException.set(true);
+                    EventTrigger.getInstance().setChange();
+                    EventTrigger.getInstance().notifyObservers(EventObject.builder()
+                            .type(Constants.CONST_ERROR)
+                            .dataError(dataError)
+                            .build());
                 }
                 finally {
                     resultRepository.insert(Result.builder()
                             .id(null)
                             .request(jsonBody.get())
+                            .dataReceive(e)
                             .api(SystemArg.API_CALL_URL)
                             .codeResponse(response.get().getStatusCodeValue())
                             .timeSend(new Date())
                             .api(apiConfig.getUrl())
                                     .dataReceive(e)
                             .response(response.get().getBody())
+                            .apiName(apiConfig.getName())
                             .build());
-                    apiConfig.autoNextTimeScheduleCallApi();
                 }
+                if(!isException.get()) {
+                    EventTrigger.getInstance().setChange();
 
+                    EventTrigger.getInstance().notifyObservers(EventObject.builder()
+                            .type(Constants.CONST_SUCCESS)
+                            .dataError(DataError.builder()
+                                    .type(Constants.API_TYPE)
+                                    .menuName(apiConfig.getName())
+                                    .build())
+                            .build());
+                }
             });
-        });
+
+                    apiConfig.autoNextTimeScheduleCallApi();
+
+                });
 
     }
 }

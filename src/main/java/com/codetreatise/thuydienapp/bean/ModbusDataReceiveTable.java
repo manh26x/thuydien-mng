@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Builder
@@ -17,4 +18,11 @@ public class ModbusDataReceiveTable {
     private String maThongSo;
     private Float value;
     private Date time;
+    private String timeString;
+
+    public String getTimeString() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
+        simpleDateFormat.applyPattern("yyyy-MM-dd HH:mm:ss");
+        return simpleDateFormat.format(time);
+    }
 }

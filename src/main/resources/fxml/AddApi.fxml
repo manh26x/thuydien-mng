@@ -16,7 +16,7 @@
             prefHeight="100.0" prefWidth="600.0">
     <VBox prefHeight="175.0" prefWidth="600.0" spacing="10.0" styleClass="background" stylesheets="@../styles/Styles.css" BorderPane.alignment="CENTER">
         <children>
-        <Label text="Thêm mới API link" textFill="WHITE">
+        <Label text="Thêm mới API " textFill="WHITE">
             <font>
                 <Font size="20.0" />
             </font>
@@ -24,6 +24,11 @@
                 <Insets left="20.0" top="10.0" />
             </VBox.margin>
         </Label>
+            <Label fx:id="messageError" layoutX="97.0" layoutY="46.0" text="" textFill="red">
+                <font>
+                    <Font size="20.0" />
+                </font>
+            </Label>
             <Label text="Name" textFill="WHITE">
                 <VBox.margin>
                     <Insets left="25.0" />

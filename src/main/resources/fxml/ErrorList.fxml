@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codetreatise.thuydienapp.ErrorListController">
+   <children>
+      <Label layoutX="29.0" layoutY="15.0" text="Thông báo lỗi của Modbus">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <TableView layoutX="29.0" layoutY="90.0" prefHeight="297.0" prefWidth="550.0">
+        <columns>
+          <TableColumn prefWidth="150.39998817443848" text="Title" />
+          <TableColumn minWidth="0.0" prefWidth="308.6000061035156" text="Message" />
+            <TableColumn prefWidth="91.4000244140625" text="Action" />
+        </columns>
+      </TableView>
+      <Button layoutX="535.0" layoutY="54.0" mnemonicParsing="false" text="Read" />
+      <Button layoutX="467.0" layoutY="54.0" mnemonicParsing="false" text="Button" />
+   </children>
+</AnchorPane>

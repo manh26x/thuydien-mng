@@ -27,11 +27,16 @@
                         <MenuItem mnemonicParsing="false" text="About" />
                     </items>
                 </Menu>
+                <Menu fx:id="errorMenu" mnemonicParsing="false" style="-fx-background-color: green" text="Modbus">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Modbus Error" />
+                    </items>
+                </Menu>
             </menus>
         </MenuBar>
     </top>
     <left>
-      <ScrollPane hbarPolicy="NEVER" vbarPolicy="ALWAYS" BorderPane.alignment="TOP_LEFT">
+      <ScrollPane fitToHeight="true" hbarPolicy="NEVER" vbarPolicy="ALWAYS" BorderPane.alignment="TOP_LEFT">
          <BorderPane.margin>
             <Insets />
          </BorderPane.margin>
@@ -249,16 +254,19 @@
       </ScrollPane>
     </left>
     <center>
-        <HBox>
-            <children>
-                <TextArea fx:id="logText">
+        <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="ALWAYS" BorderPane.alignment="TOP_LEFT">
+            <BorderPane.margin>
+                <Insets />
+            </BorderPane.margin>
+            <HBox alignment="BASELINE_LEFT">
+                <TextArea fx:id="logText" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="3500.0" HBox.hgrow="ALWAYS">
                     <font>
                         <Font size="15.0" />
                     </font>
                 </TextArea>
-                <TableView fx:id="fileListTable" prefHeight="300.0" prefWidth="679.0" tableMenuButtonVisible="true">
+                <TableView fx:id="fileListTable" maxHeight="3500.0" maxWidth="1.7976931348623157E308" prefHeight="3500.0" prefWidth="505.0" tableMenuButtonVisible="true" HBox.hgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="colName" maxWidth="700.0" prefWidth="200.0" text="Tên file local" />
+                        <TableColumn fx:id="colName" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="-1.0" text="Tên file local" />
 
                     </columns>
                     <VBox.margin>
@@ -275,7 +283,7 @@
                         </ContextMenu>
                     </contextMenu>
                 </TableView>
-            </children>
-        </HBox>
+            </HBox>
+        </ScrollPane>
     </center>
 </BorderPane>

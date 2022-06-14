@@ -9,6 +9,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 public class DataReceive {
     private Long id;
     private Data data;

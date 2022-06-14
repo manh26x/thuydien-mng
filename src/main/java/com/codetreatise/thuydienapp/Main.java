@@ -1,6 +1,5 @@
 package com.codetreatise.thuydienapp;
 
-import com.codetreatise.thuydienapp.bean.ApiConfig;
 import com.codetreatise.thuydienapp.config.*;
 import com.codetreatise.thuydienapp.config.database.InitDatabase;
 import com.codetreatise.thuydienapp.config.ftp.SynchronizeFtpConfig;
@@ -28,6 +27,13 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        try {
+
+            DataConfig.getHostsList();
+
+        } catch (Exception ignored) {
+        } finally {
+        }
         stageManager = StageManager.getInstance();
         SpringFXMLLoader springFXMLLoader = SpringFXMLLoader.getInstance();
         springFXMLLoader.setResourceBundle(ResourceBundle.getBundle("Bundle"));
@@ -38,12 +44,13 @@ public class Main extends Application {
 
 
         Timer timer = new Timer();
+        timer.schedule(InitDatabase.getInstance(),0);
         timer.scheduleAtFixedRate(ModbusMasterStart.getInstance(), 1000, 10000);
         timer.scheduleAtFixedRate(SynchronizeFtpConfig.getInstance(), 1000, 10000);
         timer.scheduleAtFixedRate(LoginCheckTask.getInstance(), 30*1000, 60*60*1000);
         timer.scheduleAtFixedRate(ModbusSchedule.getInstance(), 2000, 10000);
-        timer.scheduleAtFixedRate(SynchronizeConfig.getInstance(), 2000, 1000);
-        timer.schedule(InitDatabase.getInstance(),2000);
+        timer.scheduleAtFixedRate(SynchronizeConfig.getInstance(), 2000, 10000);
+
     }
 
     @Override
@@ -57,19 +64,10 @@ public class Main extends Application {
      * window.
      */
     protected void displayInitialScene() {
-        try {
-
-            DataConfig.getHostsList();
-
-        } catch (Exception ignored) {
-        } finally {
-        }
-
         if(SystemArg.LOGIN) {
             stageManager.switchScene(FxmlView.TIMING_MODBUS);
         } else {
             stageManager.switchScene(FxmlView.LOGIN);
-
         }
     }
 

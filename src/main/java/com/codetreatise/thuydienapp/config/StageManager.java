@@ -93,9 +93,8 @@ public class StageManager {
         //primaryStage.initStyle(StageStyle.TRANSPARENT);
         primaryStage.setTitle(title);
         primaryStage.setScene(scene);
-        primaryStage.sizeToScene();
+
         primaryStage.centerOnScreen();
-        
         try {
             primaryStage.show();
         } catch (Exception exception) {

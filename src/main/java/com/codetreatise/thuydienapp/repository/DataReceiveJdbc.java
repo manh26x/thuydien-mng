@@ -61,7 +61,7 @@ public class DataReceiveJdbc {
         try {
             PreparedStatement preparedStatement = H2Jdbc.getInstance().getConn().prepareStatement(sql);
             preparedStatement.setString(1, dataReceive.getData().getKey());
-            preparedStatement.setObject(2, dataReceive.getThoigian().toInstant().atZone(ZoneId.of("UTC+7")).toLocalDateTime());
+            preparedStatement.setObject(2, dataReceive.getThoigian());
             preparedStatement.setFloat(3, dataReceive.getValue());
             preparedStatement.setInt(4, dataReceive.getStatus());
             int result = preparedStatement.executeUpdate();

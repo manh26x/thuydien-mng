@@ -5,6 +5,7 @@ import com.codetreatise.thuydienapp.bean.Result;
 import com.codetreatise.thuydienapp.config.DataConfig;
 import com.codetreatise.thuydienapp.config.SystemArg;
 import com.codetreatise.thuydienapp.repository.ResultRepository;
+import com.codetreatise.thuydienapp.view.FxmlView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,7 +15,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Arrays;
@@ -100,8 +100,6 @@ public class ApiConfigController extends BaseController implements Initializable
                 timeSyncChosen.getSelectionModel().select(4);
                 break;
         }
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
-        simpleDateFormat.applyPattern("yyyy-MM-dd HH:mm:ss");
     }
 
 
@@ -111,7 +109,7 @@ public class ApiConfigController extends BaseController implements Initializable
         if(isValid()) {
 
             apiConfig.setPassword(passwordApi.getText());
-            apiConfig.setUsername(usernameApi.getText().trim());
+            apiConfig.setUsername(usernameApi.getText() != null ? usernameApi.getText().trim() : null);
             apiConfig.setUrl(apiAddress.getText().trim());
             apiConfig.setTimeScheduleCallApi((Integer) timeSyncChosen.getSelectionModel().getSelectedItem());
             apiConfig.setApiCallReady(rbReady.isSelected());
@@ -131,7 +129,7 @@ public class ApiConfigController extends BaseController implements Initializable
         toDate.setMinutes(59);
         toDate.setSeconds(59);
         toDate.setHours(23);
-        dataObservable.addAll(resultRepository.findAllByApiAndTimeSendAfterAndTimeSendBefore(apiConfig.getUrl(),fromDate, toDate));
+        dataObservable.addAll(resultRepository.findAllByApiAndTimeSendAfterAndTimeSendBefore(apiConfig.getName(), apiConfig.getUrl(),fromDate, toDate));
         dataTable.setItems(dataObservable);
     }
 
@@ -139,7 +137,7 @@ public class ApiConfigController extends BaseController implements Initializable
         colTrangThai.setCellValueFactory(new PropertyValueFactory<>("codeResponse"));
         colRequest.setCellValueFactory(new PropertyValueFactory<>("request"));
         colResponse.setCellValueFactory(new PropertyValueFactory<>("response"));
-        colTime.setCellValueFactory(new PropertyValueFactory<>("timeSend"));
+        colTime.setCellValueFactory(new PropertyValueFactory<>("timeSendString"));
     }
     public void resfresh(ActionEvent event) {
         initialize(null, null);
@@ -177,6 +175,10 @@ public class ApiConfigController extends BaseController implements Initializable
                 timeSyncChosen.setStyle(errorStyle);
                 valid = false;
             }
+            if(apiConfig.getKeySends() == null || apiConfig.getKeySends().isEmpty()) {
+                message += "Please add your key in Edit tabs\n";
+                valid = false;
+            }
         }
         lbMessage.setText(message);
 
@@ -206,4 +208,7 @@ public class ApiConfigController extends BaseController implements Initializable
     }
 
 
+    public void addField(ActionEvent event) {
+        super.stageManager.createModal(FxmlView.API_FIELD_CONFIG);
+    }
 }

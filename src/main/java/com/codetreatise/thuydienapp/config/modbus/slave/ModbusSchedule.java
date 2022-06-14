@@ -1,10 +1,15 @@
 package com.codetreatise.thuydienapp.config.modbus.slave;
 
+import ch.qos.logback.classic.pattern.ClassNameOnlyAbbreviator;
 import com.codetreatise.thuydienapp.bean.Data;
+import com.codetreatise.thuydienapp.bean.DataError;
 import com.codetreatise.thuydienapp.bean.DataReceive;
 import com.codetreatise.thuydienapp.bean.ModbusMaster;
 import com.codetreatise.thuydienapp.config.SystemArg;
+import com.codetreatise.thuydienapp.event.EventTrigger;
 import com.codetreatise.thuydienapp.repository.DataReceiveJdbc;
+import com.codetreatise.thuydienapp.utils.Constants;
+import com.codetreatise.thuydienapp.utils.EventObject;
 import de.re.easymodbus.exceptions.ModbusException;
 import de.re.easymodbus.modbusclient.ModbusClient;
 import org.slf4j.Logger;
@@ -44,8 +49,10 @@ public class ModbusSchedule extends TimerTask {
                 .port(SystemArg.MODBUS_PORT)
                 .status(1)
                 .build();
-
+        boolean isError = false;
+        String message = "";
         try {
+
             ModbusClient modbusClient = new ModbusClient();
 
             modbusClient.Connect(modbusMaster.getIp(), modbusMaster.getPort());
@@ -77,10 +84,21 @@ public class ModbusSchedule extends TimerTask {
             modbusClient.Disconnect();
         } catch (IOException e) {
             logger.error(e.getMessage());
+            isError= true;
+            message = e.getMessage();
         } finally {
             SystemArg.setNextTimeScheduleSyncModbus();
-
         }
+
+        EventTrigger.getInstance().setChange();
+        EventTrigger.getInstance().notifyObservers(EventObject.builder()
+                .type(isError? Constants.CONST_ERROR : Constants.CONST_SUCCESS)
+                .dataError(DataError.builder()
+                        .menuName("Modbus")
+                        .type(Constants.MODBUS_TYPE)
+                        .message(message)
+                        .build())
+                .build());
 
     }
 }

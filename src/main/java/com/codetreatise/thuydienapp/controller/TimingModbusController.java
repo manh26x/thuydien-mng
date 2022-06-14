@@ -1,13 +1,17 @@
 package com.codetreatise.thuydienapp.controller;
 
 import com.codetreatise.thuydienapp.bean.Data;
-import com.codetreatise.thuydienapp.bean.DataReceive;
+import com.codetreatise.thuydienapp.bean.DataError;
 import com.codetreatise.thuydienapp.bean.ModbusDataReceiveTable;
 import com.codetreatise.thuydienapp.config.DataConfig;
 import com.codetreatise.thuydienapp.config.SystemArg;
 import com.codetreatise.thuydienapp.config.modbus.slave.ModbusClientGetData;
 import com.codetreatise.thuydienapp.config.modbus.slave.ModbusDataReceive;
+import com.codetreatise.thuydienapp.event.EventTrigger;
 import com.codetreatise.thuydienapp.repository.DataReceiveJdbc;
+import com.codetreatise.thuydienapp.repository.DataRepository;
+import com.codetreatise.thuydienapp.utils.Constants;
+import com.codetreatise.thuydienapp.utils.EventObject;
 import com.codetreatise.thuydienapp.view.FxmlView;
 import de.re.easymodbus.exceptions.ModbusException;
 import javafx.collections.FXCollections;
@@ -41,7 +45,7 @@ public class TimingModbusController extends BaseController implements Initializa
     @FXML
     public Button save;
     @FXML
-    public TableView dataTable;
+    public TableView<Data> dataTable;
     @FXML
     public TableColumn colKey;
     @FXML
@@ -57,14 +61,14 @@ public class TimingModbusController extends BaseController implements Initializa
     @FXML
     public TableColumn colMaThongSo;
     @FXML
-    public TableColumn colTrangThai;
+    public TableColumn<Object, Object> colTrangThai;
     @FXML
     public Label lbMessage;
     @FXML
     public ComboBox timeChosen;
     @FXML
     public TextField slaveId;
-    public TableView modbusTable;
+    public TableView<ModbusDataReceive> modbusTable;
     public TableColumn colModAddress;
     public TableColumn colModQuantity;
     public TableColumn colModValue;
@@ -75,7 +79,8 @@ public class TimingModbusController extends BaseController implements Initializa
     public TableColumn modAddress;
     public TableColumn modMaThongSo;
     public TableColumn modValue;
-    public TableView modbusData;
+    public TableView<ModbusDataReceiveTable> modbusData;
+    public TableColumn modTime;
 
     private TimerTask updateModbusThread;
     private Timer timer;
@@ -108,12 +113,18 @@ public class TimingModbusController extends BaseController implements Initializa
         modTenChiTieu.setCellValueFactory(new PropertyValueFactory<>("tenChiTieu"));
         modAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
         modValue.setCellValueFactory(new PropertyValueFactory<>("value"));
+        modTime.setCellValueFactory(new PropertyValueFactory<>("timeString"));
         modMaThongSo.setCellValueFactory(new PropertyValueFactory<>("maThongSo"));
 
         colModAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
         colModQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         colModValue.setCellValueFactory(new PropertyValueFactory<>("value"));
 
+        generateTableColumnModbus(colKey, colDvt, colNguon, colTenChiTieu, colAddress, colQuantity, colMaThongSo);
+        colTrangThai.setCellValueFactory(new PropertyValueFactory<>("status"));
+    }
+
+    static void generateTableColumnModbus(TableColumn colKey, TableColumn colDvt, TableColumn colNguon, TableColumn colTenChiTieu, TableColumn colAddress, TableColumn colQuantity, TableColumn colMaThongSo) {
         colKey.setCellValueFactory(new PropertyValueFactory<>("key"));
         colDvt.setCellValueFactory(new PropertyValueFactory<>("dvt"));
         colNguon.setCellValueFactory(new PropertyValueFactory<>("nguon"));
@@ -121,8 +132,8 @@ public class TimingModbusController extends BaseController implements Initializa
         colAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
         colQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         colMaThongSo.setCellValueFactory(new PropertyValueFactory<>("maThongSo"));
-        colTrangThai.setCellValueFactory(new PropertyValueFactory<>("status"));
     }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         int[] timeChosenList = new int[] { 5, 10, 15, 30, 60 };
@@ -223,18 +234,23 @@ public class TimingModbusController extends BaseController implements Initializa
 
     public void delete(ActionEvent event) {
         SystemArg.DATA_LIST.remove(dataTable.getSelectionModel().getSelectedItem());
-        dataObservable.remove(dataTable.getSelectionModel().getSelectedItem());
-        dataTable.setItems(dataObservable);
-        try {
-            DataConfig.saveFavorites(null);
-        } catch (Exception e) {
-            e.printStackTrace();
+        int result = DataRepository.getInstance().delete(dataTable.getSelectionModel().getSelectedItem());
+        if(result == 1) {
+            dataObservable.remove(dataTable.getSelectionModel().getSelectedItem());
+            dataTable.setItems(dataObservable);
+            try {
+                DataConfig.saveFavorites(null);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
+
     }
 
 
     public void updateData(ActionEvent actionEvent) {
-        UpdateFieldModalController.DATA_CHOSEN = (Data) dataTable.getSelectionModel().getSelectedItem();
+        UpdateFieldModalController.DATA_CHOSEN = dataTable.getSelectionModel().getSelectedItem();
         stageManager.createModal(FxmlView.UPDATE_FIELD_MODAL);
 
     }
@@ -249,6 +265,14 @@ public class TimingModbusController extends BaseController implements Initializa
             getDataModbus();
         } catch (IOException e) {
             e.printStackTrace();
+            EventTrigger.getInstance().setChange();
+            EventTrigger.getInstance().notifyObservers(EventObject.builder()
+                    .type(Constants.CONST_ERROR)
+                    .dataError(DataError.builder()
+                            .type(Constants.MODBUS_TYPE)
+                            .menuName("Modbus")
+                            .build())
+                    .build());
         }
     }
 

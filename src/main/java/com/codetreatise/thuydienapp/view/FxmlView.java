@@ -104,6 +104,17 @@ public enum FxmlView {
         public String getFxmlFile() {
             return "/fxml/AddApi.fxml";
         }
+    },
+    API_FIELD_CONFIG {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("apiFieldConfig.title");
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/fxml/ApiFieldConfig.fxml";
+        }
     }
     ;
     
