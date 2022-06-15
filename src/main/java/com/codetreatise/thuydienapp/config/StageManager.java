@@ -13,7 +13,6 @@ import java.util.concurrent.CountDownLatch;
 
 import com.codetreatise.thuydienapp.event.EventTrigger;
 import com.codetreatise.thuydienapp.view.FxmlView;
-import com.sun.imageio.plugins.common.I18N;
 import javafx.stage.Modality;
 import lombok.Getter;
 import org.slf4j.Logger;
@@ -36,7 +35,6 @@ public class StageManager {
     private Stage primaryStage;
     private SpringFXMLLoader springFXMLLoader;
     private Stage dialog;
-    public static I18N i18n;
     private static final String iconImageLoc =
             "/images/Mlogo-ico.png";
     private static final String instanceId = UUID.randomUUID().toString();
@@ -88,8 +86,7 @@ public class StageManager {
     }
     private void show(final Parent rootnode, String title) {
         Scene scene = prepareScene(rootnode);
-        scene.getStylesheets().add("/styles/Styles.css");
-        
+
         //primaryStage.initStyle(StageStyle.TRANSPARENT);
         primaryStage.setTitle(title);
         primaryStage.setScene(scene);

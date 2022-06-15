@@ -28,10 +28,8 @@
                         <MenuItem mnemonicParsing="false" text="About" />
                     </items>
                 </Menu>
-                <Menu fx:id="errorMenu" mnemonicParsing="false" style="-fx-background-color: green" text="Modbus">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="Modbus Error" />
-                    </items>
+                <Menu fx:id="errorMenu" onAction="#showErrorData" style="-fx-background-color: green" text="Modbus">
+                    <MenuItem mnemonicParsing="false" text="View" onAction="#gotoModbusError"/>
                 </Menu>
             </menus>
         </MenuBar>

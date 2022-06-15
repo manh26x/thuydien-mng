@@ -3,15 +3,19 @@ package com.codetreatise.thuydienapp.config;
 import com.codetreatise.thuydienapp.bean.ApiConfig;
 import com.codetreatise.thuydienapp.bean.Data;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public final class SystemArg {
 
-
+    public static final String OKE_STATUS_STYLE = "-fx-background-color: green";
+    public static final String ERROR_STATUS_STYLE = "-fx-background-color: red";
+    public static final Map<String, String> mapErrorMenu = new HashMap<>();
     private SystemArg() {
 
+    }
+
+    public static String getStatusMenuStyle(String menuName) {
+        return mapErrorMenu.get(menuName) == null ? mapErrorMenu.put(menuName, OKE_STATUS_STYLE) : mapErrorMenu.get(menuName);
     }
 
     public static List<Data> DATA_LIST = new ArrayList<>();
@@ -37,6 +41,10 @@ public final class SystemArg {
     public static List<ApiConfig> API_LIST = new ArrayList<>();
     public static String NAME_API_CHOSEN = "";
     public static String NAME_FTP_CHOSEN = "";
+
+    public static String MENU_ERROR_CHOSEN = "";
+    public static String ERROR_TYPE_CHOSEN = "";
+
 
     public static Data findByKey(String key) {
         return SystemArg.DATA_LIST.stream().filter(data -> data.getKey().equals(key)).findFirst().orElse(null);

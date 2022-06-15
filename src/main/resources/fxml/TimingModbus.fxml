@@ -6,34 +6,24 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="700.0" prefWidth="1400.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codetreatise.thuydienapp.controller.TimingModbusController">
+<BorderPane prefHeight="700.0" prefWidth="1400.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codetreatise.thuydienapp.controller.TimingModbusController">
     <top>
         <MenuBar fx:id="menuBar" BorderPane.alignment="TOP_LEFT">
             <menus>
                 <Menu mnemonicParsing="false" text="File">
-                    <items>
-<!--                        <MenuItem mnemonicParsing="false" onAction="#userMng" text="User Manager" />-->
-                        <MenuItem mnemonicParsing="false" onAction="#timeSyncModbus" text="Modbus Config" />
-<!--                        <MenuItem mnemonicParsing="false" onAction="#exit" text="Exit" />-->
-                    </items>
+                    <MenuItem mnemonicParsing="false" onAction="#timeSyncModbus" text="Modbus Config" />
                 </Menu>
                 <Menu mnemonicParsing="false" text="Edit">
-                    <items>
-                        <MenuItem mnemonicParsing="false" onAction="#addApi" text="Thêm API" />
-                        <MenuItem mnemonicParsing="false" onAction="#addFtp" text="Thêm Ftp " />
-                        <MenuItem mnemonicParsing="false" onAction="#modbusServerConfig" text="Config modbus Server" />
-                    </items>
+                    <MenuItem mnemonicParsing="false" onAction="#addApi" text="Thêm API" />
+                    <MenuItem mnemonicParsing="false" onAction="#addFtp" text="Thêm Ftp " />
+                    <MenuItem mnemonicParsing="false" onAction="#modbusServerConfig" text="Config modbus Server" />
                 </Menu>
 
                 <Menu mnemonicParsing="false" text="Help">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="About" />
-                    </items>
+                    <MenuItem mnemonicParsing="false" text="About" />
                 </Menu>
-                <Menu fx:id="errorMenu" mnemonicParsing="false" style="-fx-background-color: green" text="Modbus">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="Modbus Error" />
-                    </items>
+                <Menu fx:id="errorMenu" onAction="#showErrorData" style="-fx-background-color: green" text="Modbus">
+                    <MenuItem mnemonicParsing="false" text="View" onAction="#gotoModbusError"/>
                 </Menu>
             </menus>
         </MenuBar>

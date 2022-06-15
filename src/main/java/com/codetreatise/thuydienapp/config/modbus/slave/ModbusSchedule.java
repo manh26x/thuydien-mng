@@ -1,6 +1,5 @@
 package com.codetreatise.thuydienapp.config.modbus.slave;
 
-import ch.qos.logback.classic.pattern.ClassNameOnlyAbbreviator;
 import com.codetreatise.thuydienapp.bean.Data;
 import com.codetreatise.thuydienapp.bean.DataError;
 import com.codetreatise.thuydienapp.bean.DataReceive;
@@ -19,6 +18,8 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ModbusSchedule extends TimerTask {
 
@@ -49,8 +50,8 @@ public class ModbusSchedule extends TimerTask {
                 .port(SystemArg.MODBUS_PORT)
                 .status(1)
                 .build();
-        boolean isError = false;
-        String message = "";
+        AtomicBoolean isError = new AtomicBoolean(false);
+        AtomicReference<String> message = new AtomicReference<>("");
         try {
 
             ModbusClient modbusClient = new ModbusClient();
@@ -78,25 +79,28 @@ public class ModbusSchedule extends TimerTask {
                     );
                 } catch (ModbusException | IOException modbusException) {
                     logger.error(modbusException.getMessage());
+                    isError.set(true);
+                    message.set(modbusException.getMessage());
                 }
             });
 
             modbusClient.Disconnect();
         } catch (IOException e) {
             logger.error(e.getMessage());
-            isError= true;
-            message = e.getMessage();
+            isError.set(true);
+            message.set(e.getMessage());
         } finally {
             SystemArg.setNextTimeScheduleSyncModbus();
         }
 
         EventTrigger.getInstance().setChange();
         EventTrigger.getInstance().notifyObservers(EventObject.builder()
-                .type(isError? Constants.CONST_ERROR : Constants.CONST_SUCCESS)
+                .type(isError.get() ? Constants.CONST_ERROR : Constants.CONST_SUCCESS)
                 .dataError(DataError.builder()
                         .menuName("Modbus")
                         .type(Constants.MODBUS_TYPE)
-                        .message(message)
+                        .message(message.get())
+                        .title("Modbus Error")
                         .build())
                 .build());
 

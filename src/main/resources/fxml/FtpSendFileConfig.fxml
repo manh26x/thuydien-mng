@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codetreatise.thuydienapp.controller.FtpController">
+<BorderPane stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codetreatise.thuydienapp.controller.FtpController">
     <top>
         <MenuBar fx:id="menuBar" BorderPane.alignment="TOP_LEFT">
             <menus>
@@ -27,10 +27,8 @@
                         <MenuItem mnemonicParsing="false" text="About" />
                     </items>
                 </Menu>
-                <Menu fx:id="errorMenu" mnemonicParsing="false" style="-fx-background-color: green" text="Modbus">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="Modbus Error" />
-                    </items>
+                <Menu fx:id="errorMenu" onAction="#showErrorData" style="-fx-background-color: green" text="Modbus">
+                    <MenuItem mnemonicParsing="false" onAction="#gotoModbusError" text="View" />
                 </Menu>
             </menus>
         </MenuBar>
@@ -259,7 +257,7 @@
                 <Insets />
             </BorderPane.margin>
             <HBox alignment="BASELINE_LEFT">
-                <TextArea fx:id="logText" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="3500.0" HBox.hgrow="ALWAYS">
+                <TextArea fx:id="logText" disable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="3500.0" HBox.hgrow="ALWAYS">
                     <font>
                         <Font size="15.0" />
                     </font>

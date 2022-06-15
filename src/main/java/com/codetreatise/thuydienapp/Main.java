@@ -32,7 +32,6 @@ public class Main extends Application {
             DataConfig.getHostsList();
 
         } catch (Exception ignored) {
-        } finally {
         }
         stageManager = StageManager.getInstance();
         SpringFXMLLoader springFXMLLoader = SpringFXMLLoader.getInstance();
@@ -64,7 +63,7 @@ public class Main extends Application {
      * window.
      */
     protected void displayInitialScene() {
-        if(SystemArg.LOGIN) {
+        if(Boolean.TRUE.equals(SystemArg.LOGIN)) {
             stageManager.switchScene(FxmlView.TIMING_MODBUS);
         } else {
             stageManager.switchScene(FxmlView.LOGIN);

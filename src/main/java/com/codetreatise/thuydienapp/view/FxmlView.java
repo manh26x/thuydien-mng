@@ -115,6 +115,17 @@ public enum FxmlView {
         public String getFxmlFile() {
             return "/fxml/ApiFieldConfig.fxml";
         }
+    },
+    DATA_ERROR {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("apiFieldConfig.title");
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/fxml/ErrorList.fxml";
+        }
     }
     ;
     

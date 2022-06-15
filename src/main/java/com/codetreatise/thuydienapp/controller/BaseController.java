@@ -1,7 +1,6 @@
 package com.codetreatise.thuydienapp.controller;
 
 import com.codetreatise.thuydienapp.bean.DataError;
-import com.codetreatise.thuydienapp.config.DataConfig;
 import com.codetreatise.thuydienapp.config.StageManager;
 import com.codetreatise.thuydienapp.config.SystemArg;
 import com.codetreatise.thuydienapp.config.ftp.FtpArgSaved;
@@ -14,6 +13,7 @@ import com.codetreatise.thuydienapp.utils.EventObject;
 import com.codetreatise.thuydienapp.view.FxmlView;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -30,8 +30,7 @@ public class BaseController implements Observer {
 
 
     protected final StageManager stageManager;
-    private static final String OKE_STATUS_STYLE = "-fx-background-color: green";
-    private static final String ERROR_STATUS_STYLE = "-fx-background-color: red";
+
 
     @FXML
     public MenuBar menuBar;
@@ -76,8 +75,7 @@ public class BaseController implements Observer {
     }
     @FXML
     public void timeCallApi(ActionEvent event) {
-        String apiName = ((MenuItem)event.getTarget()).getText();
-        SystemArg.NAME_API_CHOSEN = apiName;
+        SystemArg.NAME_API_CHOSEN = ((MenuItem)event.getTarget()).getText();
         stageManager.switchScene(FxmlView.API_CONFIG);
     }
 
@@ -85,10 +83,19 @@ public class BaseController implements Observer {
     public void modbusServerConfig(ActionEvent actionEvent) {
         stageManager.createModal(FxmlView.MODBUS_SERVER_CONFIG);
     }
-
+    public void gotoModbusError(ActionEvent actionEvent) {
+        SystemArg.ERROR_TYPE_CHOSEN = Constants.MODBUS_TYPE;
+        SystemArg.MENU_ERROR_CHOSEN = "Modbus";
+        stageManager.switchScene(FxmlView.DATA_ERROR);
+    }
     protected void initApiMenuGen() {
 
         try {
+
+            Optional<Menu> menuError = menuBar.getMenus().stream().filter(menu -> (menu.getText()).equals("Modbus")).findFirst();
+            menuError.ifPresent(menu -> {
+                menu.setStyle(SystemArg.mapErrorMenu.get("Modbus"));
+            });
             FtpArgSaved ftpArgSaved = FtpConfig.getFtpConfig();
             ftpArgSaved.getFtpConfigArg().keySet().forEach(ftpName -> {
                 MenuItem menuItem = new MenuItem();
@@ -101,7 +108,14 @@ public class BaseController implements Observer {
                 if(menuBar.getMenus().stream().noneMatch(e -> e.getText().equals("FTP: " + ftpName))) {
                     Menu menu = new Menu();
                     menu.setText("FTP: " + ftpName);
-                    menu.setStyle(OKE_STATUS_STYLE);
+                    menu.setStyle(SystemArg.getStatusMenuStyle("FTP: " + ftpName));
+                    menuItem = new MenuItem("View");
+                    menuItem.setOnAction(e -> {
+                        SystemArg.ERROR_TYPE_CHOSEN = Constants.FTP_TYPE;
+                        SystemArg.MENU_ERROR_CHOSEN =  ftpName;
+                        stageManager.switchScene(FxmlView.DATA_ERROR);
+                    });
+                    menu.getItems().add(menuItem);
                     menuBar.getMenus().add(menu);
                 }
             });
@@ -120,7 +134,14 @@ public class BaseController implements Observer {
             if(menuBar.getMenus().stream().noneMatch(e -> e.getText().equals("API: " + api.getName()))) {
                 Menu menu = new Menu();
                 menu.setText("API: " + api.getName());
-                menu.setStyle(OKE_STATUS_STYLE);
+                menu.setStyle(SystemArg.getStatusMenuStyle("API: " + api.getName()));
+                menuItem = new MenuItem("View");
+                menuItem.setOnAction(e -> {
+                    SystemArg.ERROR_TYPE_CHOSEN = Constants.API_TYPE;
+                    SystemArg.MENU_ERROR_CHOSEN =  api.getName();
+                    stageManager.switchScene(FxmlView.DATA_ERROR);
+                });
+                menu.getItems().add(menuItem);
                 menuBar.getMenus().add(menu);
             }
         });
@@ -128,6 +149,14 @@ public class BaseController implements Observer {
 
     }
 
+    public void addFtp(ActionEvent actionEvent) {
+        stageManager.createModal(FxmlView.ADD_FTP);
+    }
+
+    @FXML
+    public void showErrorData(Event actionEvent) {
+        stageManager.switchScene(FxmlView.DATA_ERROR);
+    }
     @Override
     public final void update(Observable o, Object arg) {
         if(arg == null) {
@@ -137,9 +166,10 @@ public class BaseController implements Observer {
             DataError dataError = event.getDataError();
             String menuName = dataError.getMenuName();
             if(event.getType().equals(Constants.CONST_ERROR)) {
-                setStyleMenu(dataError, menuName, ERROR_STATUS_STYLE);
+                setStyleMenu(dataError, menuName, SystemArg.ERROR_STATUS_STYLE);
+                DataErrorRepository.getInstance().insert(dataError);
             } else {
-                setStyleMenu(dataError, menuName, OKE_STATUS_STYLE);
+                setStyleMenu(dataError, menuName, SystemArg.OKE_STATUS_STYLE);
             }
         }
     }
@@ -147,10 +177,24 @@ public class BaseController implements Observer {
     private void setStyleMenu(DataError dataError, String menuName, String statusStyle) {
         if(dataError.getType().equals(Constants.API_TYPE)) {
             Optional<Menu> menuError = menuBar.getMenus().stream().filter(menu -> (menu.getText()).equals("API: " + menuName)).findFirst();
-            menuError.ifPresent(menu -> menu.setStyle(statusStyle));
+            menuError.ifPresent(menu -> {
+                menu.setStyle(statusStyle);
+                SystemArg.mapErrorMenu.put(menu.getText(), statusStyle);
+            });
         } else if(dataError.getType().equals(Constants.MODBUS_TYPE)) {
             Optional<Menu> menuError = menuBar.getMenus().stream().filter(menu -> menu.getText().equals(menuName)).findFirst();
-            menuError.ifPresent(menu -> menu.setStyle(statusStyle));
+            menuError.ifPresent(menu -> {
+                SystemArg.mapErrorMenu.put(menu.getText(), statusStyle);
+                menu.setStyle(statusStyle);
+                menu.setOnAction(e -> stageManager.switchScene(FxmlView.DATA_ERROR));
+            });
+        } else if(dataError.getType().equals(Constants.FTP_TYPE)) {
+            Optional<Menu> menuError = menuBar.getMenus().stream().filter(menu -> menu.getText().equals("FTP: " + menuName)).findFirst();
+            menuError.ifPresent(menu -> {
+                SystemArg.mapErrorMenu.put(menu.getText(), statusStyle);
+                menu.setStyle(statusStyle);
+                menu.setOnAction(e -> stageManager.switchScene(FxmlView.DATA_ERROR));
+            });
         }
     }
 }

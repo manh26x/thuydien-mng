@@ -40,7 +40,7 @@ public class FtpConfig {
         try {
             checkHostFile();
             fin = new FileInputStream(HOST_FILE);
-            in  = new ObjectInputStream(fin);
+            in = new ObjectInputStream(fin);
             if (fin.available() > 0) {
 
                 Object obj = in.readObject();
@@ -53,10 +53,12 @@ public class FtpConfig {
 
                 }
             }
-            if(dataSaveObject == null) {
+            if (dataSaveObject == null) {
                 dataSaveObject = new FtpArgSaved();
             }
             return dataSaveObject;
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             try {
                 if (in != null) {
@@ -68,6 +70,7 @@ public class FtpConfig {
             } catch (IOException ignored) {
             }
         }
+        return new FtpArgSaved();
     }
 
     private static Cipher getCipher(int mode) {

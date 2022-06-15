@@ -1,10 +1,7 @@
 package com.codetreatise.thuydienapp.repository;
 
 import com.codetreatise.thuydienapp.bean.DataError;
-import com.codetreatise.thuydienapp.bean.ModbusDataReceiveTable;
 import com.codetreatise.thuydienapp.config.database.H2Jdbc;
-import com.codetreatise.thuydienapp.event.ErrorTrigger;
-import com.codetreatise.thuydienapp.event.EventTrigger;
 import com.codetreatise.thuydienapp.utils.EventObject;
 
 import java.sql.PreparedStatement;
@@ -14,7 +11,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.util.*;
 
-public class DataErrorRepository  implements Observer {
+public class DataErrorRepository  {
 
     private DataErrorRepository() {
 
@@ -34,6 +31,26 @@ public class DataErrorRepository  implements Observer {
 
     public List<DataError> getAllUnReadTitle() {
         String sql = "SELECT * FROM DATA_ERROR where is_read = 0";
+        return getDataErrorBySql(sql);
+    }
+
+    public List<DataError> getAllUnReadByTypeAndMenu(String type, String menuName) {
+        String sql = "SELECT * FROM DATA_ERROR where is_read = 0 and type_message like '" + type + "' and name_menu like '" + menuName + "'";
+        return getDataErrorBySql(sql);
+    }
+
+    public void readAllType(String type) {
+        String sql = "UPDATE DATA_ERROR set is_read = 1 where type_message = '" + type + "'";
+        H2Jdbc.getInstance().executeUpdate(sql);
+    }
+    public void readSelectionsType(List<DataError> errors, String type) {
+        errors.parallelStream().forEach(error ->  {
+            String sql = "UPDATE DATA_ERROR set is_read = 1 where type_message = '" + type + "' and id = " + error.getId();
+            H2Jdbc.getInstance().executeUpdate(sql);
+
+        });
+    }
+    private List<DataError> getDataErrorBySql(String sql) {
         ResultSet rs = H2Jdbc.getInstance().getResultSet(sql);
         List<DataError> errors = new ArrayList<>();
         while (true) {
@@ -58,6 +75,7 @@ public class DataErrorRepository  implements Observer {
         }
         return errors;
     }
+
 
     public int insert(DataError dataError) {
         H2Jdbc sqlJdbc = H2Jdbc.getInstance();
@@ -92,12 +110,4 @@ public class DataErrorRepository  implements Observer {
         return result;
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
-        if(arg instanceof com.codetreatise.thuydienapp.utils.EventObject) {
-            com.codetreatise.thuydienapp.utils.EventObject event = (EventObject) arg;
-            DataError dataError = event.getDataError();
-            this.insert(dataError);
-        }
-    }
 }

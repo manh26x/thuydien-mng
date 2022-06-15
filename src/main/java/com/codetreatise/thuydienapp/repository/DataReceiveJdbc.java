@@ -3,14 +3,12 @@ package com.codetreatise.thuydienapp.repository;
 import com.codetreatise.thuydienapp.bean.DataReceive;
 import com.codetreatise.thuydienapp.bean.ModbusDataReceiveTable;
 import com.codetreatise.thuydienapp.config.database.H2Jdbc;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

@@ -1,25 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codetreatise.thuydienapp.controller.ErrorListController">
+    <top>
+        <MenuBar fx:id="menuBar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="TOP_LEFT">
+            <menus>
+                <Menu mnemonicParsing="false" text="File">
+                    <items>
+                        <!--                        <MenuItem mnemonicParsing="false" onAction="#userMng" text="User Manager" />-->
+                        <MenuItem mnemonicParsing="false" onAction="#timeSyncModbus" text="Modbus Config" />
+                        <!--                        <MenuItem mnemonicParsing="false" onAction="#exit" text="Exit" />-->
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Edit">
+                    <MenuItem mnemonicParsing="false" onAction="#addApi" text="Thêm API" />
+                    <MenuItem mnemonicParsing="false" onAction="#addFtp" text="Thêm Ftp " />
+                    <MenuItem mnemonicParsing="false" onAction="#modbusServerConfig" text="Config modbus Server" />
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="About" />
+                    </items>
+                </Menu>
+                <Menu fx:id="errorMenu" onAction="#showErrorData" style="-fx-background-color: green" text="Modbus">
+                    <MenuItem mnemonicParsing="false" onAction="#gotoModbusError" text="View" />
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
+    <center>
+    <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="TOP_LEFT">
+        <BorderPane.margin>
+            <Insets />
+        </BorderPane.margin>
+        <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT">
+            <HBox fillHeight="false" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+        <Label maxWidth="1.7976931348623157E308" text="Thông báo lỗi của Modbus" HBox.hgrow="ALWAYS">
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font>
+                  <HBox.margin>
+                     <Insets left="20.0" />
+                  </HBox.margin>
+        </Label>
+            <Button mnemonicParsing="false" onAction="#readSelections" styleClass="btnCall" text="Read Selection" textAlignment="CENTER" textFill="WHITE">
+                  <HBox.margin>
+                     <Insets right="20.0" />
+                  </HBox.margin></Button>
+            <Button mnemonicParsing="false" onAction="#readAll" styleClass="btnPrimary" text="Read All" textFill="WHITE">
+                  <HBox.margin>
+                     <Insets right="20.0" />
+                  </HBox.margin></Button>
+            </HBox>
+        <TableView fx:id="table" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="1200" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colTime" maxWidth="2000.0" minWidth="200.0" prefWidth="-1.0" text="Time" />
+                <TableColumn fx:id="colTitle" minWidth="300.0" prefWidth="-1.0" text="Title" />
+                <TableColumn fx:id="colMessage" maxWidth="1.7976931348623157E308" minWidth="300.0" prefWidth="-1.0" text="Message" />
+                <TableColumn fx:id="colAction" editable="false" minWidth="90.0" prefWidth="-1.0" sortable="false" text="Action">
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codetreatise.thuydienapp.ErrorListController">
-   <children>
-      <Label layoutX="29.0" layoutY="15.0" text="Thông báo lỗi của Modbus">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Label>
-      <TableView layoutX="29.0" layoutY="90.0" prefHeight="297.0" prefWidth="550.0">
-        <columns>
-          <TableColumn prefWidth="150.39998817443848" text="Title" />
-          <TableColumn minWidth="0.0" prefWidth="308.6000061035156" text="Message" />
-            <TableColumn prefWidth="91.4000244140625" text="Action" />
-        </columns>
-      </TableView>
-      <Button layoutX="535.0" layoutY="54.0" mnemonicParsing="false" text="Read" />
-      <Button layoutX="467.0" layoutY="54.0" mnemonicParsing="false" text="Button" />
-   </children>
-</AnchorPane>
+                </TableColumn>
+            </columns>
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+        </TableView>
+            <padding>
+               <Insets top="10.0" />
+            </padding>
+
+        </VBox>
+    </ScrollPane>
+    </center>
+</BorderPane>

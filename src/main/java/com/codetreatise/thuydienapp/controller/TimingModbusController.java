@@ -255,9 +255,6 @@ public class TimingModbusController extends BaseController implements Initializa
 
     }
 
-    public void addFtp(ActionEvent actionEvent) {
-        stageManager.createModal(FxmlView.ADD_FTP);
-    }
 
 
     public void connect(ActionEvent event) {
@@ -343,4 +340,7 @@ public class TimingModbusController extends BaseController implements Initializa
     public void resfreshModbusData(ActionEvent event) {
         loadModbusData();
     }
+
+
+
 }

@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -26,6 +25,7 @@ public class FtpConfigArg implements Serializable {
     private Boolean ready;
     private Integer timeSchedule;
     private String transferDirectory;
+    private String menuName;
     private Date nextTimeSend = new Date();
 
     public Boolean checkReady()  {
@@ -33,7 +33,9 @@ public class FtpConfigArg implements Serializable {
             if(nextTimeSend == null) {
                 nextTimeSend = new Date();
             }
-            return SystemArg.LOGIN && ready && new Date().after(nextTimeSend);
+            Date now = new Date();
+            now.setSeconds(0);
+            return SystemArg.LOGIN && ready && new Date().after(nextTimeSend) && now.getMinutes() % timeSchedule  == 0;
         } catch (NullPointerException e) {
             return false;
         }
@@ -42,6 +44,6 @@ public class FtpConfigArg implements Serializable {
     public void autoNextTime() {
         Date now = new Date();
         now.setSeconds(0);
-        this.nextTimeSend = new Date(now.getTime() + timeSchedule*60*1000);
+        this.nextTimeSend = new Date(now.getTime() + 60*1000);
     }
 }

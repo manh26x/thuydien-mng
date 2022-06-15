@@ -5,6 +5,7 @@ import com.codetreatise.thuydienapp.config.SystemArg;
 import com.codetreatise.thuydienapp.config.ftp.FtpArgSaved;
 import com.codetreatise.thuydienapp.config.ftp.FtpConfig;
 import com.codetreatise.thuydienapp.config.ftp.FtpConfigArg;
+import com.codetreatise.thuydienapp.config.ftp.SynchronizeFtpConfig;
 import com.codetreatise.thuydienapp.view.FxmlView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -108,6 +109,7 @@ public class FtpController  extends BaseController implements Initializable {
         transferDirectory.setText(ftpConfigArg.getTransferDirectory());
         passive.setSelected(ftpConfigArg.getIsPassive() != null && ftpConfigArg.getIsPassive());
         loadFile();
+        logText.setText(SynchronizeFtpConfig.getInstance().getLogText().toString());
     }
 
     public void save(ActionEvent actionEvent) throws IOException, IllegalBlockSizeException, BadPaddingException, ClassNotFoundException {
@@ -123,6 +125,7 @@ public class FtpController  extends BaseController implements Initializable {
         }
         FtpArgSaved ftpArgSaved = FtpConfig.getFtpConfig();
         ftpArgSaved.getFtpConfigArg().put(SystemArg.NAME_FTP_CHOSEN, FtpConfigArg.builder()
+                        .menuName(SystemArg.NAME_FTP_CHOSEN)
                 .account(username.getText())
                 .password(password.getText())
                 .ipAddress(ipAddress.getText())
@@ -221,6 +224,7 @@ public class FtpController  extends BaseController implements Initializable {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
+            this.logText.setText(e.getMessage()) ;
             return false;
         }
     }

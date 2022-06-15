@@ -2,6 +2,7 @@ package com.codetreatise.thuydienapp.config;
 
 import java.io.IOException;
 import java.util.ResourceBundle;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import lombok.Getter;
