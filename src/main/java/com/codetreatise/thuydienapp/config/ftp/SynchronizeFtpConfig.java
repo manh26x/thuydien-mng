@@ -52,6 +52,7 @@ public class SynchronizeFtpConfig extends TimerTask {
         ftpArgSaved.getFtpConfigArg().values().stream().parallel().filter(FtpConfigArg::checkReady).forEach(configArg -> {
             FTPClient ftpClient = getFtpClientConnected(configArg);
             boolean isError = false;
+            StringBuilder content = new StringBuilder();
             if(ftpClient != null) {
                 File folder = new File(configArg.getLocalWorkingDirectory());
                 try{
@@ -63,7 +64,7 @@ public class SynchronizeFtpConfig extends TimerTask {
                                 ftpClient.enterLocalPassiveMode();
                                 ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
                                 log.info(ftpClient.getReplyString() + " file: " + file.getName());
-                                logText.append("\nSEND " + file.getName());
+                                logText.append("\nSEND ").append(file.getName());
                                 inputStream = new FileInputStream(file);
                                 OutputStream os = ftpClient.storeFileStream(configArg.getRemoteWorkingDirectory() + "/" + file.getName());
                                 byte[] buffer = new byte[1024];
