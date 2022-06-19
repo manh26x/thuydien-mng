@@ -29,6 +29,7 @@ public class ResultRepository {
         return instance;
     }
 
+
     public List<Result> findAllByApiAndTimeSendAfterAndTimeSendBefore(String apiName, String apiUrl, Date fromDate, Date toDate) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
         simpleDateFormat.applyPattern("dd/MM/yyyy HH:mm:ss");

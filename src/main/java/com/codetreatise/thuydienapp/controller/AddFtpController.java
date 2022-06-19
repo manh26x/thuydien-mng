@@ -1,11 +1,11 @@
 package com.codetreatise.thuydienapp.controller;
 
-import com.codetreatise.thuydienapp.bean.ApiConfig;
 import com.codetreatise.thuydienapp.config.StageManager;
 import com.codetreatise.thuydienapp.config.ftp.FtpArgSaved;
 import com.codetreatise.thuydienapp.config.ftp.FtpConfig;
 import com.codetreatise.thuydienapp.config.ftp.FtpConfigArg;
 import javafx.event.ActionEvent;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 
 import javax.crypto.BadPaddingException;

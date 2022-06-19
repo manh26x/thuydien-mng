@@ -342,6 +342,9 @@ public class TimingModbusController extends BaseController implements Initializa
     }
 
 
+    public void importFileExcel(ActionEvent event) {
+        stageManager.createModal(FxmlView.FILE_EXCEL_IMPORT);
+    }
     @Override
     protected void reload() {
         loadDataList();
