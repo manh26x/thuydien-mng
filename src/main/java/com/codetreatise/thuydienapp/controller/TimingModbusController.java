@@ -342,5 +342,9 @@ public class TimingModbusController extends BaseController implements Initializa
     }
 
 
-
+    @Override
+    protected void reload() {
+        loadDataList();
+        loadModbusData();
+    }
 }

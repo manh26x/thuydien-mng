@@ -62,6 +62,11 @@ public class ApiConfigController extends BaseController implements Initializable
     }
 
     @Override
+    protected void reload() {
+
+    }
+
+    @Override
     public void initialize(URL location, ResourceBundle resources) {
         int[] timeChosenList = new int[] { 5, 10, 15, 30, 60 };
         timeSyncChosen.getItems().addAll(Arrays.stream(timeChosenList)

@@ -55,6 +55,7 @@ public class SynchronizeConfig extends TimerTask {
             List<DataCallApi> datas = new ArrayList<>();
             AtomicBoolean isException = new AtomicBoolean(false);
             AtomicReference<String> customMessage = new AtomicReference<>();
+            StringBuilder content = new StringBuilder();
             resultRepository.findNotSend(apiConfig).forEach(e -> {
                 try {
                     datas.clear();
@@ -66,6 +67,7 @@ public class SynchronizeConfig extends TimerTask {
                             .mathongso(e.getData().getMaThongSo())
                             .build();
                     datas.add(dataCallApi);
+                    content.append(dataCallApi.toString());
                     log.info("START send data {}", dataCallApi);
                     HttpHeaders headers = new HttpHeaders();
                     headers.setContentType(MediaType.APPLICATION_JSON);
@@ -78,7 +80,6 @@ public class SynchronizeConfig extends TimerTask {
                             .build()));
                     HttpEntity<String> request = new HttpEntity<>(jsonBody.get(), headers);
                     response.set(restTemplate.postForEntity(apiConfig.getUrl(), request, String.class));
-                    isException.set(false);
                     customMessage.set("");
                 } catch (HttpServerErrorException  ex) {
                     log.error(ex.getMessage());
@@ -86,22 +87,13 @@ public class SynchronizeConfig extends TimerTask {
                     response.set(responseEntity);
                     e.setStatus(1);
                     customMessage.set(ex.getResponseBodyAsString());
+                    content.append(ex.getResponseBodyAsString());
+                    isException.set(true);
                 } catch (Exception exception) {
                     response.set( new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR));
                     log.error(exception.getMessage());
-                    DataError dataError = DataError.builder()
-                            .type(Constants.API_TYPE)
-                            .title("API ERROR")
-                            .message("".equals(customMessage.get()) ?  exception.getMessage() : customMessage.get())
-                            .menuName(apiConfig.getName())
-                            .build();
-                    DataErrorRepository.getInstance().insert(dataError);
                     isException.set(true);
-                    EventTrigger.getInstance().setChange();
-                    EventTrigger.getInstance().notifyObservers(EventObject.builder()
-                            .type(Constants.CONST_ERROR)
-                            .dataError(dataError)
-                            .build());
+                    content.append(" ").append(exception.getMessage());
                 }
                 finally {
                     resultRepository.insert(Result.builder()
@@ -116,18 +108,21 @@ public class SynchronizeConfig extends TimerTask {
                             .response(response.get().getBody())
                             .apiName(apiConfig.getName())
                             .build());
-                }
-                if(!isException.get()) {
-                    EventTrigger.getInstance().setChange();
 
+                    DataError dataError = DataError.builder()
+                            .type(Constants.API_TYPE)
+                            .title(isException.get() ? "API ERROR" : "API SUCCESS")
+                            .message(content.toString())
+                            .menuName(apiConfig.getName())
+                            .build();
+                    DataErrorRepository.getInstance().insert(dataError);
+                    EventTrigger.getInstance().setChange();
                     EventTrigger.getInstance().notifyObservers(EventObject.builder()
-                            .type(Constants.CONST_SUCCESS)
-                            .dataError(DataError.builder()
-                                    .type(Constants.API_TYPE)
-                                    .menuName(apiConfig.getName())
-                                    .build())
+                            .type(Constants.CONST_ERROR)
+                            .dataError(dataError)
                             .build());
                 }
+
             });
 
                     apiConfig.autoNextTimeScheduleCallApi();

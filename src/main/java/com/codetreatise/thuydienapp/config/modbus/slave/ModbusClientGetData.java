@@ -28,7 +28,13 @@ public class ModbusClientGetData {
     }
 
     public Float getValue(int address, int quantity) throws IOException, ModbusException {
-        return ModbusClient.ConvertRegistersToFloat(modbusClient.ReadHoldingRegisters(address, quantity));
+        float value = 0F;
+        try {
+            value = ModbusClient.ConvertRegistersToFloat(modbusClient.ReadHoldingRegisters(address, quantity));
+        }  catch (Exception e) {
+            disconnect();
+        }
+        return value;
     }
 
     public void disconnect() throws IOException {

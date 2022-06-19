@@ -44,7 +44,7 @@ public class ModbusSchedule extends TimerTask {
         if(!SystemArg.checkTimeScheduleSyncModbus()) {
             return;
         }
-
+        StringBuilder content = new StringBuilder();
         ModbusMaster modbusMaster = ModbusMaster.builder()
                 .ip(SystemArg.MODBUS_IP)
                 .port(SystemArg.MODBUS_PORT)
@@ -67,8 +67,9 @@ public class ModbusSchedule extends TimerTask {
             dataList.forEach(e -> {
                 try {
 
+                    content.append(e.toString());
                     float arg = ModbusClient.ConvertRegistersToFloat(modbusClient.ReadHoldingRegisters(e.getAddress(), e.getQuantity()));
-                    logger.info(e.getKey() + " : " + arg);
+                    content.append("value: ").append(arg);
                     DataReceiveJdbc.getInstance().insert(
                             DataReceive.builder()
                                     .data(e)
@@ -81,6 +82,7 @@ public class ModbusSchedule extends TimerTask {
                     logger.error(modbusException.getMessage());
                     isError.set(true);
                     message.set(modbusException.getMessage());
+                    content.append(modbusException.getMessage());
                 }
             });
 
@@ -89,6 +91,7 @@ public class ModbusSchedule extends TimerTask {
             logger.error(e.getMessage());
             isError.set(true);
             message.set(e.getMessage());
+            content.append(" ").append(e.getMessage());
         } finally {
             SystemArg.setNextTimeScheduleSyncModbus();
         }
@@ -99,7 +102,7 @@ public class ModbusSchedule extends TimerTask {
                 .dataError(DataError.builder()
                         .menuName("Modbus")
                         .type(Constants.MODBUS_TYPE)
-                        .message(message.get())
+                        .message(content.toString())
                         .title("Modbus Error")
                         .build())
                 .build());

@@ -1,20 +1,16 @@
 package com.codetreatise.thuydienapp.config.modbus.master;
 
-import ModbusRTU.ModbusRTU;
-import de.re.easymodbus.modbusclient.gui.EasyModbusTcpClient;
 import de.re.easymodbus.server.ModbusServer;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import java.io.IOException;
-import java.util.TimerTask;
 
 @Slf4j
-public class ModbusMasterStart  extends TimerTask {
+public class ModbusMasterStart  {
 
-    private ModbusServer modbusServer;
+    private final ModbusServer modbusServer;
 
     private static ModbusMasterStart instance;
     private ModbusMasterStart() {
@@ -27,13 +23,25 @@ public class ModbusMasterStart  extends TimerTask {
         return instance;
     }
 
-    public void createModbusMaster() throws IOException, IllegalBlockSizeException, BadPaddingException, ClassNotFoundException {
-        ModbusMasterArg modbusMasterArg = ModbusMasterConfig.getModbusConfig();
-        if(modbusMasterArg.getReady() && !modbusServer.getServerRunning()) {
+    public void reloadModbus() {
+        ModbusMasterArg modbusMasterArg = null;
+        try {
+            modbusMasterArg = ModbusMasterConfig.getModbusConfig();
+            createModbusMaster(modbusMasterArg);
+            stopModbus(modbusMasterArg);
+        } catch (IOException | ClassNotFoundException | IllegalBlockSizeException | BadPaddingException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    public void createModbusMaster(ModbusMasterArg modbusMasterArg) throws IOException{
+        getInstance();
+        if(Boolean.TRUE.equals(modbusMasterArg.getReady()) && Boolean.FALSE.equals(modbusServer.getServerRunning())) {
             modbusServer.setPort(modbusMasterArg.getPort());
             modbusServer.setName(modbusMasterArg.getName());
             modbusServer.udpFlag=true;
-
             modbusServer.Listen();
             log.info("START modbus server: " + modbusServer.getName() + " on port: " + modbusServer.getPort());
             log.info("Modbus server is running? " +        modbusServer.getServerRunning());
@@ -41,9 +49,16 @@ public class ModbusMasterStart  extends TimerTask {
 
     }
 
-    @SneakyThrows
-    @Override
-    public void run() {
-        createModbusMaster();
+    public void stopModbus(ModbusMasterArg modbusMasterArg)  {
+        if (Boolean.FALSE.equals(modbusMasterArg.getReady() && modbusServer.getServerRunning())) {
+            try {
+                modbusServer.StopListening();
+            }catch (Exception ignore){
+            }
+            log.info("STOP modbus server: " + modbusServer.getName() + " on port: " + modbusServer.getPort());
+            log.info("Modbus server is running? " + modbusServer.getServerRunning());
+        }
     }
+
+
 }

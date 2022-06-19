@@ -44,7 +44,7 @@ public class Main extends Application {
 
         Timer timer = new Timer();
         timer.schedule(InitDatabase.getInstance(),0);
-        timer.scheduleAtFixedRate(ModbusMasterStart.getInstance(), 1000, 10000);
+        ModbusMasterStart.getInstance().reloadModbus();
         timer.scheduleAtFixedRate(SynchronizeFtpConfig.getInstance(), 1000, 10000);
         timer.scheduleAtFixedRate(LoginCheckTask.getInstance(), 30*1000, 60*60*1000);
         timer.scheduleAtFixedRate(ModbusSchedule.getInstance(), 2000, 10000);

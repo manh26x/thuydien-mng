@@ -17,6 +17,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.DirectoryChooser;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPSClient;
 
@@ -30,6 +31,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class FtpController  extends BaseController implements Initializable {
     @FXML
     public ComboBox<String> ftpProtocol;
@@ -44,7 +46,7 @@ public class FtpController  extends BaseController implements Initializable {
 
     public CheckBox passive;
     public TableView<File> fileListTable;
-    public TableColumn colName;
+    public TableColumn<Object, Object> colName;
     public Label lbMessage;
     public RadioButton rbReady;
     public ToggleGroup readyGroup;
@@ -246,5 +248,10 @@ public class FtpController  extends BaseController implements Initializable {
         ftpArgSaved.getFtpConfigArg().remove(SystemArg.NAME_FTP_CHOSEN);
         FtpConfig.saveFavorites(ftpArgSaved);
         stageManager.switchScene(FxmlView.TIMING_MODBUS);
+    }
+    @Override
+    public void reload() {
+        loadFile();
+        logText.setText(SynchronizeFtpConfig.getInstance().getLogText().toString());
     }
 }

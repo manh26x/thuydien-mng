@@ -15,7 +15,7 @@ public final class SystemArg {
     }
 
     public static String getStatusMenuStyle(String menuName) {
-        return mapErrorMenu.get(menuName) == null ? mapErrorMenu.put(menuName, OKE_STATUS_STYLE) : mapErrorMenu.get(menuName);
+        return mapErrorMenu.putIfAbsent(menuName, OKE_STATUS_STYLE);
     }
 
     public static List<Data> DATA_LIST = new ArrayList<>();

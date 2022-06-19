@@ -32,6 +32,11 @@ public class ErrorListController extends BaseController  implements Initializabl
     }
 
     @Override
+    protected void reload() {
+        this.initialize(null, null);
+    }
+
+    @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initApiMenuGen();
         colTime.setCellValueFactory(new PropertyValueFactory<>("createTime"));

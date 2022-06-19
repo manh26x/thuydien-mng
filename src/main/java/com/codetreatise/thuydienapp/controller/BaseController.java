@@ -26,7 +26,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Optional;
 
-public class BaseController implements Observer {
+public abstract class BaseController implements Observer {
 
 
     protected final StageManager stageManager;
@@ -92,10 +92,8 @@ public class BaseController implements Observer {
 
         try {
 
-            Optional<Menu> menuError = menuBar.getMenus().stream().filter(menu -> (menu.getText()).equals("Modbus")).findFirst();
-            menuError.ifPresent(menu -> {
-                menu.setStyle(SystemArg.mapErrorMenu.get("Modbus"));
-            });
+
+            errorMenu.setStyle(SystemArg.getStatusMenuStyle("Modbus"));
             FtpArgSaved ftpArgSaved = FtpConfig.getFtpConfig();
             ftpArgSaved.getFtpConfigArg().keySet().forEach(ftpName -> {
                 MenuItem menuItem = new MenuItem();
@@ -159,6 +157,11 @@ public class BaseController implements Observer {
     }
     @Override
     public final void update(Observable o, Object arg) {
+        try {
+            reload();
+        } catch (Exception ignored) {
+
+        }
         if(arg == null) {
             initApiMenuGen();
         } else if(arg instanceof EventObject) {
@@ -197,4 +200,5 @@ public class BaseController implements Observer {
             });
         }
     }
+    protected abstract void reload();
 }

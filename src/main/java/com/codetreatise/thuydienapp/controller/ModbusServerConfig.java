@@ -3,6 +3,7 @@ package com.codetreatise.thuydienapp.controller;
 import com.codetreatise.thuydienapp.config.StageManager;
 import com.codetreatise.thuydienapp.config.modbus.master.ModbusMasterArg;
 import com.codetreatise.thuydienapp.config.modbus.master.ModbusMasterConfig;
+import com.codetreatise.thuydienapp.config.modbus.master.ModbusMasterStart;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.RadioButton;
@@ -38,6 +39,7 @@ public class ModbusServerConfig implements Initializable {
                 .ready(rbReady.isSelected())
                 .build();
     ModbusMasterConfig.saveFavorites(modbusMasterArg);
+        ModbusMasterStart.getInstance().reloadModbus();
     }
 
     @SneakyThrows

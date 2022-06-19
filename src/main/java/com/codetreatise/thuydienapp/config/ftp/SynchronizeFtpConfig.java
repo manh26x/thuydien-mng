@@ -53,18 +53,19 @@ public class SynchronizeFtpConfig extends TimerTask {
             FTPClient ftpClient = getFtpClientConnected(configArg);
             boolean isError = false;
             StringBuilder content = new StringBuilder();
+            boolean completed = false;
             if(ftpClient != null) {
                 File folder = new File(configArg.getLocalWorkingDirectory());
                 try{
                     for(File file : Objects.requireNonNull(folder.listFiles())) {
                         try {
                             FileInputStream inputStream;
-                            boolean completed = false;
+                            completed = false;
                             while (!completed) {
                                 ftpClient.enterLocalPassiveMode();
                                 ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
                                 log.info(ftpClient.getReplyString() + " file: " + file.getName());
-                                logText.append("\nSEND ").append(file.getName());
+                                content.append("\nSEND ").append(file.getName());
                                 inputStream = new FileInputStream(file);
                                 OutputStream os = ftpClient.storeFileStream(configArg.getRemoteWorkingDirectory() + "/" + file.getName());
                                 byte[] buffer = new byte[1024];
@@ -79,33 +80,22 @@ public class SynchronizeFtpConfig extends TimerTask {
                                 completed = ftpClient.completePendingCommand();
                             }
                             log.info(file.getName() + " is uploaded successfully!");
-                            logText.append(" is uploaded successfully!");
+                            content.append(" is uploaded successfully!");
 
                             if ((configArg.getTransferDirectory() != null || !configArg.getTransferDirectory().equals(""))) {
                                 boolean isTransfer = file.renameTo(new File(configArg.getTransferDirectory() + "/" + file.getName()));
                                 if (isTransfer) {
                                     log.info(file.getName() + " is transfer!");
-                                    logText.append(" and transfer");
+                                    content.append(" and transfer");
                                 } else {
                                     log.error(file.getName() + " transfer error!");
-                                    logText.append(" and transfer error!");
+                                    content.append(" and transfer error!");
+                                    isError = true;
                                 }
                             }
                         }catch (Exception ex) {
                             log.error(ex.getMessage());
-                            EventTrigger.getInstance().setChange();
-                            EventTrigger.getInstance().notifyObservers(
-                                    EventObject.builder()
-                                            .type(Constants.CONST_ERROR)
-                                            .dataError( DataError.builder()
-                                                    .title("FTP ERROR")
-                                                    .message(ex.getMessage())
-                                                    .menuName(configArg.getMenuName())
-                                                    .type(Constants.FTP_TYPE)
-                                                    .createTime(LocalDateTime.now())
-                                                    .build())
-                                            .build()
-                            );
+                            content.append(ex.getMessage());
                             isError = true;
 
                         }
@@ -114,34 +104,41 @@ public class SynchronizeFtpConfig extends TimerTask {
                 } catch (Exception e) {
                     log.error(e.getMessage());
                 } finally {
+                    if(!completed) {
+                        content.append(" upload failed!");
+                    }
+                    log.info(content.toString());
+                    logText.append(content);
                     try {
                         ftpClient.logout();
                         ftpClient.disconnect();
                         while (logText.toString().split("\n").length > 10) {
-                            logText.delete(0, logText.indexOf("\n"));
+                            logText.delete(0, logText.indexOf("\n")+1);
                         }
                     } catch (IOException e) {
                         log.error(e.getMessage());
                     }
-                    if(!isError) {
-                        EventTrigger.getInstance().notifyObservers(
-                                EventObject.builder()
-                                        .type(Constants.CONST_SUCCESS)
-                                        .dataError( DataError.builder()
-                                                .title("FTP SUCCESS")
-                                                .message(null)
-                                                .menuName(configArg.getMenuName())
-                                                .type(Constants.FTP_TYPE)
-                                                .createTime(LocalDateTime.now())
-                                                .build())
-                                        .build()
-                        );
-                    }
+
 
                 }
-                configArg.autoNextTime();
+                String type = isError ? Constants.CONST_ERROR :  Constants.CONST_SUCCESS;
+                EventTrigger.getInstance().setChange();
+                EventTrigger.getInstance().notifyObservers(
+                        EventObject.builder()
+                                .type(type)
+                                .dataError( DataError.builder()
+                                        .title("FTP Warning")
+                                        .message(null)
+                                        .menuName(configArg.getMenuName())
+                                        .type(Constants.FTP_TYPE)
+                                        .createTime(LocalDateTime.now())
+                                        .build())
+                                .build()
+                );
 
             }
+            configArg.autoNextTime();
+
         });
         FtpConfig.saveFavorites(ftpArgSaved);
 
