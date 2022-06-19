@@ -14,6 +14,7 @@
                     <MenuItem mnemonicParsing="false" onAction="#timeSyncModbus" text="Modbus Config" />
                 </Menu>
                 <Menu mnemonicParsing="false" text="Edit">
+                    <MenuItem mnemonicParsing="false" onAction="#importFileExcel" text="Import File Excel Menu" />
                     <MenuItem mnemonicParsing="false" onAction="#addApi" text="Thêm API" />
                     <MenuItem mnemonicParsing="false" onAction="#addFtp" text="Thêm Ftp " />
                     <MenuItem mnemonicParsing="false" onAction="#modbusServerConfig" text="Config modbus Server" />

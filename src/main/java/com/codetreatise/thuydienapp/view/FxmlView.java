@@ -126,6 +126,17 @@ public enum FxmlView {
         public String getFxmlFile() {
             return "/fxml/ErrorList.fxml";
         }
+    },
+    FILE_EXCEL_IMPORT {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("fileimport.title");
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/fxml/ImportFileExcel.fxml";
+        }
     }
     ;
     
