@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="100.0" prefWidth="600.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codetreatise.thuydienapp.controller.ImportExcelFile">
+    <VBox prefHeight="175.0" prefWidth="600.0" spacing="10.0" styleClass="background" stylesheets="@../styles/Styles.css" BorderPane.alignment="CENTER">
+        <children>
+            <Label text="Import File Excel" textFill="WHITE">
+                <font>
+                    <Font size="20.0" />
+                </font>
+                <VBox.margin>
+                    <Insets left="20.0" top="10.0" />
+                </VBox.margin>
+            </Label>
+            <Label text="Choose type" textFill="WHITE">
+                <VBox.margin>
+                    <Insets left="25.0" />
+                </VBox.margin>
+                <font>
+                    <Font name="System Bold" size="12.0" />
+                </font>
+            </Label>
+         <ChoiceBox fx:id="choiceTypeImport" prefWidth="500.0" style="-fx-background-color: white;">
+
+            <VBox.margin>
+               <Insets left="25.0" right="25.0" />
+            </VBox.margin>
+         </ChoiceBox>
+         <Label layoutX="35.0" layoutY="61.0" text="File" textFill="WHITE">
+            <font>
+               <Font name="System Bold" size="12.0" />
+            </font>
+            <VBox.margin>
+               <Insets left="25.0" />
+            </VBox.margin>
+         </Label>
+         <TextField prefWidth="500.0" onMouseClicked="#chooseFile" fx:id="textFile">
+            <VBox.margin>
+               <Insets left="25.0" right="25.0" />
+            </VBox.margin>
+         </TextField>
+            <HBox prefHeight="30.0" prefWidth="250.0" spacing="10.0">
+                <children>
+                    <Button fx:id="reset" mnemonicParsing="false" onAction="#close" prefHeight="30.0" prefWidth="75.0" style="-fx-background-color: white;" text="Close">
+                        <effect>
+                            <DropShadow blurType="ONE_PASS_BOX" color="#1965d0" />
+                        </effect>
+                    </Button>
+                    <Button fx:id="saveUser" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#importFile" prefHeight="30.0" prefWidth="75.0" styleClass="btnGreen" text="Import" textFill="WHITE">
+                        <font>
+                            <Font size="15.0" />
+                        </font>
+                        <effect>
+                            <DropShadow blurType="ONE_PASS_BOX" color="#6468b2" />
+                        </effect>
+                    </Button>
+                </children>
+                <opaqueInsets>
+                    <Insets />
+                </opaqueInsets>
+                <VBox.margin>
+                    <Insets left="110.0" />
+                </VBox.margin>
+            <padding>
+               <Insets bottom="20.0" />
+            </padding>
+            </HBox>
+        </children>
+    </VBox>
+
+</AnchorPane>
