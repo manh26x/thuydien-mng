@@ -12,8 +12,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -125,7 +123,8 @@ public class ResultRepository {
             log.debug("FOUNDED not send apiName {} with result: {}", apiConfig.getName(), dataReceives);
         }
         List<String> keys = apiConfig.getKeySends().stream().map(Data::getKey).collect(Collectors.toList());
-        return dataReceives.stream().filter(dataReceive -> keys.contains(dataReceive.getData().getKey())).collect(Collectors.toList());
+        return dataReceives.stream().filter(dataReceive -> dataReceive.getData() != null &&
+                keys.contains(dataReceive.getData().getKey())).collect(Collectors.toList());
     }
 
     public void insert(Result entity) {

@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="700.0" prefWidth="1400.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codetreatise.thuydienapp.controller.TimingModbusController">
+<BorderPane prefHeight="700.0" prefWidth="1400.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codetreatise.thuydienapp.controller.TimingModbusController">
     <top>
         <MenuBar fx:id="menuBar" BorderPane.alignment="TOP_LEFT">
             <menus>
@@ -24,7 +24,7 @@
                     <MenuItem mnemonicParsing="false" text="About" />
                 </Menu>
                 <Menu fx:id="errorMenu" onAction="#showErrorData" style="-fx-background-color: green" text="Modbus">
-                    <MenuItem mnemonicParsing="false" text="View" onAction="#gotoModbusError"/>
+                    <MenuItem mnemonicParsing="false" onAction="#gotoModbusError" text="View" />
                 </Menu>
             </menus>
         </MenuBar>
@@ -318,6 +318,26 @@
                               <Insets left="15.0" />
                            </HBox.margin>
                               </TableView>
+                        <GridPane>
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="113.6" minHeight="10.0" prefHeight="113.6" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="131.40000381469727" minHeight="10.0" prefHeight="66.4" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <DatePicker />
+                              <DatePicker GridPane.columnIndex="1" />
+                              <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <children>
+                                    <Button mnemonicParsing="false" text="Search" />
+                                    <Button mnemonicParsing="false" text="Delete" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </GridPane>
                           </children>
                       </HBox>
 
