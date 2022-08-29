@@ -131,6 +131,7 @@ public class ImportExcelFile implements Initializable {
                         }
                         break;
                 }
+                data.setQuantity(2);
 
             }
             dataList.add(data);
@@ -146,11 +147,11 @@ public class ImportExcelFile implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        StageManager.getInstance().closeDialog();
         EventTrigger.getInstance().setChange();
         EventTrigger.getInstance().notifyObservers(null);
-    }
+        StageManager.getInstance().closeDialog();
 
+    }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         ArrayList<TypeChooseFile> typeChooseImport = new ArrayList<>();
