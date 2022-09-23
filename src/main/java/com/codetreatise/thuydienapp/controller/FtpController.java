@@ -73,7 +73,7 @@ public class FtpController  extends BaseController implements Initializable {
         ftpProtocol.getItems().addAll(Arrays.stream(protocols)
                 .collect(Collectors.toList()));
         ftpProtocol.getSelectionModel().select(0);
-        int[] timeChosenList = new int[] { 5, 10, 15, 30, 60 };
+        int[] timeChosenList = new int[] { 1, 5, 10, 15, 30, 60 };
         timeChosen.getItems().addAll(Arrays.stream(timeChosenList)
                 .boxed()
                 .collect(Collectors.toList()));
@@ -88,7 +88,9 @@ public class FtpController  extends BaseController implements Initializable {
         dataObservable.clear();
         if(localDirectory.getText() != null) {
             File folder = new File(localDirectory.getText());
-            dataObservable.addAll(Arrays.stream(Objects.requireNonNull(folder.listFiles())).collect(Collectors.toList()));
+            if(folder.exists() && folder.listFiles() != null) {
+                dataObservable.addAll(Arrays.stream(Objects.requireNonNull(folder.listFiles())).collect(Collectors.toList()));
+            }
             fileListTable.setItems(dataObservable);
         }
     }
@@ -101,7 +103,7 @@ public class FtpController  extends BaseController implements Initializable {
         username.setText(ftpConfigArg.getAccount());
         password.setText(ftpConfigArg.getPassword());
         ipAddress.setText(ftpConfigArg.getIpAddress());
-        ftpProtocol.getSelectionModel().select(ftpConfigArg.getProtocol() != null && ftpConfigArg.getProtocol().equals("ftp")  ? 0 : 1 );
+        ftpProtocol.getSelectionModel().select(ftpConfigArg.getProtocol() != null && ftpConfigArg.getProtocol().equals("ftps")  ? 1 : 0 );
         localDirectory.setText(ftpConfigArg.getLocalWorkingDirectory());
         remoteDirectory.setText(ftpConfigArg.getRemoteWorkingDirectory());
         rbReady.setSelected(ftpConfigArg.getReady() != null && ftpConfigArg.getReady());
@@ -253,5 +255,9 @@ public class FtpController  extends BaseController implements Initializable {
     public void reload() {
         loadFile();
         logText.setText(SynchronizeFtpConfig.getInstance().getLogText().toString());
+    }
+
+    public void renameFtp(ActionEvent actionEvent) throws IOException, IllegalBlockSizeException, BadPaddingException, ClassNotFoundException {
+        stageManager.createModal(FxmlView.RENAME_FTP);
     }
 }

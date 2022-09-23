@@ -19,6 +19,7 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="Edit">
                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#renameFtp" text="Rename" />
                         <MenuItem mnemonicParsing="false" onAction="#deleteFtp" text="Delete" />
                     </items>
                 </Menu>
@@ -84,7 +85,7 @@
                           </font>
                       </Label>
                       <ComboBox fx:id="ftpProtocol" layoutX="15.0" layoutY="33.0" prefWidth="90.0" promptText="choose">
-      
+
                           <VBox.margin>
                               <Insets left="25.0" />
                           </VBox.margin>
@@ -115,8 +116,8 @@
                               <Insets left="25.0" right="25.0" />
                           </VBox.margin>
                   </TextField>
-      
-      
+
+
                       <CheckBox fx:id="passive" mnemonicParsing="false" text="Passive " textFill="WHITE">
                           <font>
                               <Font name="System Bold" size="12.0" />
@@ -138,7 +139,7 @@
                               <Insets left="25.0" right="25.0" />
                           </VBox.margin>
                   </TextField>
-      
+
                       <Label text="Remote directory" textFill="WHITE">
                           <VBox.margin>
                               <Insets left="25.0" />
@@ -173,7 +174,7 @@
                               <Insets bottom="10.0" left="20.0" top="30.0" />
                           </VBox.margin>
                         </Label>
-      
+
                       <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="255.0" spacing="15.0">
                           <children>
                               <RadioButton fx:id="rbReady" mnemonicParsing="false" selected="true" text="Ready" textFill="WHITE">
@@ -257,7 +258,7 @@
                 <Insets />
             </BorderPane.margin>
             <HBox alignment="BASELINE_LEFT">
-                <TextArea fx:id="logText" disable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="3500.0" HBox.hgrow="ALWAYS">
+                <TextArea fx:id="logText" disable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="3500.0" HBox.hgrow="ALWAYS">
                     <font>
                         <Font size="15.0" />
                     </font>

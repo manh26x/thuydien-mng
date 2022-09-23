@@ -46,7 +46,7 @@ public class Main extends Application {
         timer.schedule(InitDatabase.getInstance(),0);
         ModbusMasterStart.getInstance().reloadModbus();
         timer.scheduleAtFixedRate(SynchronizeFtpConfig.getInstance(), 1000, 10000);
-        timer.scheduleAtFixedRate(LoginCheckTask.getInstance(), 30*1000, 60*60*1000);
+        timer.scheduleAtFixedRate(LoginCheckTask.getInstance(), 100, 1000);
         timer.scheduleAtFixedRate(ModbusSchedule.getInstance(), 2000, 10000);
         timer.scheduleAtFixedRate(SynchronizeConfig.getInstance(), 2000, 10000);
 
@@ -63,11 +63,7 @@ public class Main extends Application {
      * window.
      */
     protected void displayInitialScene() {
-        if(Boolean.TRUE.equals(SystemArg.LOGIN)) {
-            stageManager.switchScene(FxmlView.TIMING_MODBUS);
-        } else {
-            stageManager.switchScene(FxmlView.LOGIN);
-        }
+        stageManager.switchScene(FxmlView.TIMING_MODBUS);
     }
 
 }

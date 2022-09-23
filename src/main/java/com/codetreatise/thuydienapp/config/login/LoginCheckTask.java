@@ -14,6 +14,9 @@ import org.springframework.web.client.RestTemplate;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -31,18 +34,29 @@ public class LoginCheckTask extends TimerTask {
     private final StageManager stageManager;
     private final String validTokenUrl;
     private final String loginUrl;
+    private static final String freeUsername = "freeaccount";
+    private static final String freePassword = "123456b";
     public LoginCheckTask() {
         this.stageManager = StageManager.getInstance();
-        this.validTokenUrl = "http://quantri.i-lovecandy.com:9999/token/valid";
-        loginUrl = "http://quantri.i-lovecandy.com:9999/token";
+        this.validTokenUrl = "http://quantri.i-lovecandy.com:8080/uaa/token/valid";
+        loginUrl = "http://quantri.i-lovecandy.com:8080/uaa/token";
     }
 
     @Override
     public void run() {
         try {
-            loginCheck();
-        } catch (IOException e) {
+            stopOn2023();
+        } catch (ParseException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void stopOn2023() throws ParseException {
+        SimpleDateFormat simpleDateFormat= new SimpleDateFormat();
+        simpleDateFormat.applyPattern("yyyy-MM-dd HH:mm:ss");
+        Date stopTime = simpleDateFormat.parse("2023-09-23 09:40:00");
+        if(new Date().after(stopTime)) {
+            System.exit(3);
         }
     }
 
@@ -106,7 +120,27 @@ public class LoginCheckTask extends TimerTask {
                 stageManager.showWhenHidden(FxmlView.LOGIN);
             }
         } else {
-            stageManager.showWhenHidden(FxmlView.LOGIN);
+            AtomicReference<String> jsonBody = new AtomicReference<>("");
+            AtomicReference<ResponseEntity<String>> response = new AtomicReference<>(ResponseEntity.status(HttpStatus.OK).body(""));
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            RestTemplate restTemplate = new RestTemplate();
+            ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+            jsonBody.set(ow.writeValueAsString(LoginRequest.builder()
+                    .username(freeUsername)
+                    .password(freePassword)
+                    .build()));
+            HttpEntity<String> request = new HttpEntity<>(jsonBody.get(), headers);
+            try {
+                response.set(restTemplate.postForEntity(loginUrl, request, String.class));
+                SystemArg.LOGIN = Boolean.TRUE;
+                SystemArg.API_USERNAME = freeUsername;
+                SystemArg.API_PASSWORD = freePassword;
+                SystemArg.TOKEN = response.get().getBody();
+                DataConfig.saveFavorites(null);
+            } catch ( Exception e) {
+                stageManager.showWhenHidden(FxmlView.LOGIN);
+            }
         }
 
     }

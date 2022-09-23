@@ -1,11 +1,14 @@
 package com.codetreatise.thuydienapp.controller;
 
 import com.codetreatise.thuydienapp.bean.ApiConfig;
+import com.codetreatise.thuydienapp.bean.DataObj;
 import com.codetreatise.thuydienapp.bean.Result;
 import com.codetreatise.thuydienapp.config.DataConfig;
 import com.codetreatise.thuydienapp.config.SystemArg;
 import com.codetreatise.thuydienapp.repository.ResultRepository;
 import com.codetreatise.thuydienapp.view.FxmlView;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,11 +18,11 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ApiConfigController extends BaseController implements Initializable {
@@ -55,7 +58,9 @@ public class ApiConfigController extends BaseController implements Initializable
 
 
     private final ResultRepository resultRepository;
-    ObservableList<Result> dataObservable = FXCollections.observableArrayList();;
+    ObservableList<DataObj> dataObservable = FXCollections.observableArrayList();;
+
+
 
     public ApiConfigController() {
         resultRepository = ResultRepository.getInstance();
@@ -112,7 +117,6 @@ public class ApiConfigController extends BaseController implements Initializable
     @FXML
     public void save(ActionEvent event) {
         if(isValid()) {
-
             apiConfig.setPassword(passwordApi.getText());
             apiConfig.setUsername(usernameApi.getText() != null ? usernameApi.getText().trim() : null);
             apiConfig.setUrl(apiAddress.getText().trim());
@@ -134,15 +138,72 @@ public class ApiConfigController extends BaseController implements Initializable
         toDate.setMinutes(59);
         toDate.setSeconds(59);
         toDate.setHours(23);
-        dataObservable.addAll(resultRepository.findAllByApiAndTimeSendAfterAndTimeSendBefore(apiConfig.getName(), apiConfig.getUrl(),fromDate, toDate));
+        List<Result> resultList = resultRepository.findAllByApiAndTimeSendAfterAndTimeSendBefore(apiConfig.getName(), apiConfig.getUrl(),fromDate, toDate);
+        Map<String, DataObj> dataObjMap = new HashMap<>();
+        resultList.forEach(e ->{
+            DataObj dataObj = new DataObj();
+            ObjectMapper mapper = new ObjectMapper();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
+            simpleDateFormat.applyPattern("yyyy-MM-dd HH:mm:ss");
+            try {
+                Map<String, Object> map = mapper.readValue(e.getRequest(), Map.class);
+                Map<String, Object> objSend = (Map<String,Object>)((List)map.get("datas")).get(0);
+                dataObj.setTimeSend(simpleDateFormat.parse((String) objSend.get("thoigian")));
+                DataObj.ValueAndCode valueAndCode = new DataObj.ValueAndCode();
+                valueAndCode.setValue((Double) objSend.get("value"));
+                valueAndCode.setCodeResponse(e.getCodeResponse());
+                if(dataObjMap.get(objSend.get("thoigian")) == null) {
+                    dataObj.getData().put(objSend.get("mathongso").toString(), valueAndCode);
+                    dataObjMap.put((String) objSend.get("thoigian"),dataObj);
+                } else {
+                    dataObj = dataObjMap.get(objSend.get("thoigian"));
+                    dataObj.getData().put((String) objSend.get("mathongso"), valueAndCode);
+                }
+            } catch (JsonProcessingException ex) {
+                ex.printStackTrace();
+            } catch (ParseException parseException) {
+                parseException.printStackTrace();
+            }
+        });
+        dataObservable.addAll(dataObjMap.values());
         dataTable.setItems(dataObservable);
     }
 
     private void setColProperties() {
-        colTrangThai.setCellValueFactory(new PropertyValueFactory<>("codeResponse"));
-        colRequest.setCellValueFactory(new PropertyValueFactory<>("request"));
-        colResponse.setCellValueFactory(new PropertyValueFactory<>("response"));
-        colTime.setCellValueFactory(new PropertyValueFactory<>("timeSendString"));
+        dataTable.getColumns().clear();
+        TableColumn timeCol = new TableColumn();
+        timeCol.setCellValueFactory(new PropertyValueFactory<>("timeSendString"));
+        timeCol.setText("Thời gian");
+        dataTable.getColumns().add(timeCol);
+        if(apiConfig.getKeySends() != null && !apiConfig.getKeySends().isEmpty()) {
+            apiConfig.getKeySends().forEach(key -> {
+                TableColumn tableColumn = new TableColumn();
+                tableColumn.setCellValueFactory(new PropertyValueFactory<>("data"));
+                tableColumn.setText(key.getMaThongSo());
+                tableColumn.setCellFactory(e -> new TableCell<ObservableList<String>, Map<String, DataObj.ValueAndCode>>() {
+                    @Override
+                    public void updateItem(Map<String, DataObj.ValueAndCode> item, boolean empty) {
+                        // Always invoke super constructor.
+                        super.updateItem(item, empty);
+
+                        if (item == null || empty) {
+                            setText(null);
+                        }else if(item.get(key.getMaThongSo()) != null) {
+                            setText(String.valueOf(item.get(key.getMaThongSo()).getValue()));
+                            // If index is two we set the background color explicitly.
+                            if (item.get(key.getMaThongSo()).getCodeResponse() >= 300) {
+                                this.setStyle("-fx-background-color: #ff7c7c;");
+                            } else {
+                                this.setStyle("-fx-background-color: #3ade3a;");
+                            }
+                        } else {
+                            setText(null);
+                        }
+                    }
+                });
+                dataTable.getColumns().add(tableColumn);
+            });
+        }
     }
     public void resfresh(ActionEvent event) {
         initialize(null, null);

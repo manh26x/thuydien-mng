@@ -57,55 +57,61 @@ public class SynchronizeFtpConfig extends TimerTask {
             if(ftpClient != null) {
                 File folder = new File(configArg.getLocalWorkingDirectory());
                 try{
-                    for(File file : Objects.requireNonNull(folder.listFiles())) {
-                        try {
-                            FileInputStream inputStream;
-                            completed = false;
-                            while (!completed) {
-                                ftpClient.enterLocalPassiveMode();
-                                ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-                                log.info(ftpClient.getReplyString() + " file: " + file.getName());
-                                content.append("\nSEND ").append(file.getName());
-                                inputStream = new FileInputStream(file);
-                                OutputStream os = ftpClient.storeFileStream(configArg.getRemoteWorkingDirectory() + "/" + file.getName());
-                                byte[] buffer = new byte[1024];
-                                int len;
-                                while ((len = inputStream.read(buffer)) != -1) {
-                                    os.write(buffer, 0, len);
+                    if(folder.exists()) {
+                        File file = Objects.requireNonNull(folder.listFiles())[0];
+                        if(file != null) {
+                            try {
+                                FileInputStream inputStream;
+                                while (!completed) {
+                                    ftpClient.enterLocalPassiveMode();
+                                    ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+                                    log.info(ftpClient.getReplyString() + " file: " + file.getName());
+                                    content.append("\nSEND ").append(file.getName());
+                                    inputStream = new FileInputStream(file);
+                                    OutputStream os = ftpClient.storeFileStream(configArg.getRemoteWorkingDirectory() + "/" + file.getName());
+                                    byte[] buffer = new byte[1024];
+                                    int len;
+                                    while ((len = inputStream.read(buffer)) != -1) {
+                                        os.write(buffer, 0, len);
+                                    }
+
+                                    inputStream.close();
+
+                                    os.close();
+                                    completed = true;
                                 }
+                                log.info(file.getName() + " is uploaded successfully!");
+                                content.append(" is uploaded successfully!");
 
-                                inputStream.close();
-
-                                os.close();
-                                completed = ftpClient.completePendingCommand();
-                            }
-                            log.info(file.getName() + " is uploaded successfully!");
-                            content.append(" is uploaded successfully!");
-
-                            if ((configArg.getTransferDirectory() != null || !configArg.getTransferDirectory().equals(""))) {
-                                boolean isTransfer = file.renameTo(new File(configArg.getTransferDirectory() + "/" + file.getName()));
-                                if (isTransfer) {
-                                    log.info(file.getName() + " is transfer!");
-                                    content.append(" and transfer");
-                                } else {
-                                    log.error(file.getName() + " transfer error!");
-                                    content.append(" and transfer error!");
-                                    isError = true;
+                                if ((configArg.getTransferDirectory() != null || !configArg.getTransferDirectory().equals(""))) {
+                                    boolean isTransfer = file.renameTo(new File(configArg.getTransferDirectory() + "/" + file.getName()));
+                                    if (isTransfer) {
+                                        log.info(file.getName() + " is transfer!");
+                                        content.append(" and transfer");
+                                    } else {
+                                        log.error(file.getName() + " transfer error!");
+                                        content.append(" and transfer error!");
+                                        isError = true;
+                                    }
                                 }
+                            }catch (Exception ex) {
+                                log.error(ex.getMessage());
+                                content.append(ex.getMessage());
+                                isError = true;
+
                             }
-                        }catch (Exception ex) {
-                            log.error(ex.getMessage());
-                            content.append(ex.getMessage());
-                            isError = true;
 
                         }
-
+                    } else {
+                        content.append("Working Directory is not existed!");
                     }
+
                 } catch (Exception e) {
                     log.error(e.getMessage());
                 } finally {
                     if(!completed) {
                         content.append(" upload failed!");
+                        isError = true;
                     }
                     log.info(content.toString());
                     logText.append(content);
@@ -128,7 +134,7 @@ public class SynchronizeFtpConfig extends TimerTask {
                                 .type(type)
                                 .dataError( DataError.builder()
                                         .title("FTP Warning")
-                                        .message(null)
+                                        .message(content.toString())
                                         .menuName(configArg.getMenuName())
                                         .type(Constants.FTP_TYPE)
                                         .createTime(LocalDateTime.now())

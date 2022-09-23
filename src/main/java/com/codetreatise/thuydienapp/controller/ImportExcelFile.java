@@ -161,37 +161,37 @@ public class ImportExcelFile implements Initializable {
         choiceTypeImport.getSelectionModel().select(0);
     }
 
-     static class TypeChooseFile {
+    static class TypeChooseFile {
         private String type;
         private String description;
 
-         public TypeChooseFile(String type, String description) {
-             this.type = type;
-             this.description = description;
-         }
+        public TypeChooseFile(String type, String description) {
+            this.type = type;
+            this.description = description;
+        }
 
-         public TypeChooseFile() {
-         }
+        public TypeChooseFile() {
+        }
 
-         public String getType() {
-             return type;
-         }
+        public String getType() {
+            return type;
+        }
 
-         public void setType(String type) {
-             this.type = type;
-         }
+        public void setType(String type) {
+            this.type = type;
+        }
 
-         public String getDescription() {
-             return description;
-         }
+        public String getDescription() {
+            return description;
+        }
 
-         public void setDescription(String description) {
-             this.description = description;
-         }
+        public void setDescription(String description) {
+            this.description = description;
+        }
 
-         @Override
-         public String toString() {
-             return description;
-         }
-     }
+        @Override
+        public String toString() {
+            return description;
+        }
+    }
 }
