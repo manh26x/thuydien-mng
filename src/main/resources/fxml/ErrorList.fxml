@@ -39,7 +39,7 @@
         </BorderPane.margin>
         <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT">
             <HBox fillHeight="false" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
-        <Label maxWidth="1.7976931348623157E308" text="Thông báo lỗi của Modbus" HBox.hgrow="ALWAYS">
+        <Label maxWidth="1.7976931348623157E308" text="Thông báo lỗi và cảnh bảo" HBox.hgrow="ALWAYS">
             <font>
                 <Font name="System Bold" size="14.0" />
             </font>

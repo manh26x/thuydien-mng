@@ -33,7 +33,14 @@ public class ErrorListController extends BaseController  implements Initializabl
 
     @Override
     protected void reload() {
-        this.initialize(null, null);
+        colTime.setCellValueFactory(new PropertyValueFactory<>("createTime"));
+        colTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        colMessage.setCellValueFactory(new PropertyValueFactory<>("message"));
+        reloadTable();
+    }
+
+    public void initApiMenuGen() {
+
     }
 
     @Override

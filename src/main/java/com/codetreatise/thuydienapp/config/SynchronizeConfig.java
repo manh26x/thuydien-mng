@@ -115,12 +115,14 @@ public class SynchronizeConfig extends TimerTask {
                             .message(content.toString())
                             .menuName(apiConfig.getName())
                             .build();
-                    DataErrorRepository.getInstance().insert(dataError);
-                    EventTrigger.getInstance().setChange();
+                    if(isException.get()) {
+                        DataErrorRepository.getInstance().insert(dataError);
+                    }
                     EventTrigger.getInstance().notifyObservers(EventObject.builder()
-                            .type(Constants.CONST_ERROR)
+                            .type(isException.get() ? Constants.CONST_ERROR: Constants.CONST_SUCCESS)
                             .dataError(dataError)
                             .build());
+                    EventTrigger.getInstance().setChange();
                 }
 
             });

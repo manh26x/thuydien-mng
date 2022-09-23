@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public abstract class BaseController implements Observer {
 
@@ -44,6 +45,7 @@ public abstract class BaseController implements Observer {
         ErrorTrigger.getInstance().deleteObservers();
         ErrorTrigger.getInstance().addObserver(this);
     }
+
 
 
     @FXML
@@ -88,18 +90,27 @@ public abstract class BaseController implements Observer {
         SystemArg.MENU_ERROR_CHOSEN = "Modbus";
         stageManager.switchScene(FxmlView.DATA_ERROR);
     }
-    protected void initApiMenuGen() {
-
+    public void initApiMenuGen() {
         try {
-
-
             errorMenu.setStyle(SystemArg.getStatusMenuStyle("Modbus"));
             FtpArgSaved ftpArgSaved = FtpConfig.getFtpConfig();
+            if(menuBar.getMenus().get(0).getItems().stream()
+                    .anyMatch(item -> "FTP".equals(item.getUserData()))) {
+                menuBar.getMenus().removeAll(menuBar.getMenus().stream().filter(item -> "FTP".equals(item.getUserData()))
+                        .collect(Collectors.toList()));
+                menuBar.getMenus().get(0).getItems().removeAll(
+                        menuBar.getMenus().get(0).getItems().stream()
+                                .filter(item -> "FTP".equals(item.getUserData())).collect(Collectors.toList()));
+
+            }
+
             ftpArgSaved.getFtpConfigArg().keySet().forEach(ftpName -> {
                 MenuItem menuItem = new MenuItem();
                 menuItem.setText(ftpName);
                 menuItem.setId(ftpName);
+                menuItem.setUserData("FTP");
                 menuItem.setOnAction(this::ftpConfig);
+
                 if(menuBar.getMenus().get(0).getItems().stream().noneMatch(e -> e.getText().equals(ftpName))) {
                     menuBar.getMenus().get(0).getItems().add(menuItem);
                 }
@@ -107,6 +118,7 @@ public abstract class BaseController implements Observer {
                     Menu menu = new Menu();
                     menu.setText("FTP: " + ftpName);
                     menu.setStyle(SystemArg.getStatusMenuStyle("FTP: " + ftpName));
+                    menu.setUserData("FTP");
                     menuItem = new MenuItem("View");
                     menuItem.setOnAction(e -> {
                         SystemArg.ERROR_TYPE_CHOSEN = Constants.FTP_TYPE;

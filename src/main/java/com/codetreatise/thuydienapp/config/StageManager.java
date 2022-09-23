@@ -38,7 +38,7 @@ public class StageManager {
     private static final String iconImageLoc =
             "/images/Mlogo-ico.png";
     private static final String instanceId = UUID.randomUUID().toString();
-    private static final int FOCUS_REQUEST_PAUSE_MILLIS = 500;
+    private static final int FOCUS_REQUEST_PAUSE_MILLIS = 5;
     private static final int SINGLE_INSTANCE_LISTENER_PORT = 11055;
     private static final String SINGLE_INSTANCE_FOCUS_MESSAGE = "focus";
     private static StageManager instance;
@@ -98,7 +98,7 @@ public class StageManager {
             logAndExit ("Unable to show scene for title" + title,  exception);
         }
     }
-    
+
     private Scene prepareScene(Parent rootnode){
         Scene scene = primaryStage.getScene();
 
@@ -125,8 +125,8 @@ public class StageManager {
         }
         return rootNode;
     }
-    
-    
+
+
     private void logAndExit(String errorMsg, Exception exception) {
         LOG.error(errorMsg, exception, exception.getCause());
         Platform.exit();
@@ -177,6 +177,7 @@ public class StageManager {
 
                 System.out.println("Aborting execution for instance " + instanceId);
                 Platform.exit();
+                System.exit(1);
             } catch(Exception e) {
                 System.out.println(e.toString());
             } finally {

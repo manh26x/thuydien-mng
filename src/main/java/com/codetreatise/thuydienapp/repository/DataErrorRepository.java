@@ -36,7 +36,7 @@ public class DataErrorRepository  {
 
 
     public List<DataError> getAllUnReadByTypeAndMenu(String type, String menuName) {
-        String sql = "SELECT * FROM DATA_ERROR where is_read = 0 and type_message like '" + type + "' and name_menu like '" + menuName + "'";
+        String sql = "SELECT * FROM DATA_ERROR where is_read = 0 and type_message like '" + type + "' and name_menu like '" + menuName + "' order by  create_time desc";
         return getDataErrorBySql(sql);
     }
 

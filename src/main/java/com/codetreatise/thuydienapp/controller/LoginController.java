@@ -46,8 +46,9 @@ public class LoginController implements Initializable{
     private StageManager stageManager;
 
 	public LoginController() {
-		this.loginUrl = "http://quantri.i-lovecandy.com:9999/token";
+		this.loginUrl = "http://quantri.i-lovecandy.com:8080/uaa/token";
 		stageManager = StageManager.getInstance();
+
 	}
 
 	@FXML
@@ -85,7 +86,7 @@ public class LoginController implements Initializable{
 			e.printStackTrace();
 		}
 	}
-	
+
 	public String getPassword() {
 		return password.getText();
 	}
@@ -96,7 +97,13 @@ public class LoginController implements Initializable{
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
+		username.setText("freeaccount");
+		password.setText("123456b");
+		try {
+			this.login(null);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

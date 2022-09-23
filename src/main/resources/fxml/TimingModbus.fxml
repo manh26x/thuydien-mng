@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="700.0" prefWidth="1400.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codetreatise.thuydienapp.controller.TimingModbusController">
+<BorderPane prefHeight="700.0" prefWidth="1400.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codetreatise.thuydienapp.controller.TimingModbusController">
     <top>
         <MenuBar fx:id="menuBar" BorderPane.alignment="TOP_LEFT">
             <menus>
@@ -266,7 +266,7 @@
                                           </VBox.margin>
                                       </TextField>
                                       <HBox>
-      
+
                                           <children>
                                               <Button fx:id="btnDisconnect" mnemonicParsing="false" onAction="#disconnect" prefHeight="22.0" prefWidth="90.0" styleClass="btnDanger" text="Disconnect" textFill="#fff9f9" textOverrun="CLIP">
                                                   <font>
@@ -292,7 +292,7 @@
                                               </Button>
                                           </children>
                                       </HBox>
-      
+
                                   </children>
                               </VBox>
                               <TableView fx:id="modbusTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="181.0" prefWidth="317.0" tableMenuButtonVisible="true">
@@ -318,26 +318,6 @@
                               <Insets left="15.0" />
                            </HBox.margin>
                               </TableView>
-                        <GridPane>
-                           <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                           </columnConstraints>
-                           <rowConstraints>
-                              <RowConstraints maxHeight="113.6" minHeight="10.0" prefHeight="113.6" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="131.40000381469727" minHeight="10.0" prefHeight="66.4" vgrow="SOMETIMES" />
-                           </rowConstraints>
-                           <children>
-                              <DatePicker />
-                              <DatePicker GridPane.columnIndex="1" />
-                              <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                 <children>
-                                    <Button mnemonicParsing="false" text="Search" />
-                                    <Button mnemonicParsing="false" text="Delete" />
-                                 </children>
-                              </HBox>
-                           </children>
-                        </GridPane>
                           </children>
                       </HBox>
 
