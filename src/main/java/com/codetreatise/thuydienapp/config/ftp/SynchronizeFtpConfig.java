@@ -13,6 +13,8 @@ import org.apache.commons.net.ftp.FTPSClient;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.TimerTask;
@@ -84,15 +86,9 @@ public class SynchronizeFtpConfig extends TimerTask {
                                 content.append(" is uploaded successfully!");
 
                                 if ((configArg.getTransferDirectory() != null || !configArg.getTransferDirectory().equals(""))) {
-                                    boolean isTransfer = file.renameTo(new File(configArg.getTransferDirectory() + "/" + file.getName()));
-                                    if (isTransfer) {
-                                        log.info(file.getName() + " is transfer!");
-                                        content.append(" and transfer");
-                                    } else {
-                                        log.error(file.getName() + " transfer error!");
-                                        content.append(" and transfer error!");
-                                        isError = true;
-                                    }
+                                    Files.move(file.toPath(), new File(configArg.getTransferDirectory() + "/" + file.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
+                                    log.info(file.getName() + " is transfer!");
+                                    content.append(" and transfer");
                                 }
                             }catch (Exception ex) {
                                 log.error(ex.getMessage());
