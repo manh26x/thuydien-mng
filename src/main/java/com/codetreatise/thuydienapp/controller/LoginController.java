@@ -78,7 +78,7 @@ public class LoginController implements Initializable{
 			} else if(ex.getStatusCode().is4xxClientError()) {
 				lblLogin.setText("Sai tài khoản hoặc mật khẩu");
 			}
-			SystemArg.LOGIN = false;
+			SystemArg.LOGIN = Boolean.TRUE;
 
 			ex.printStackTrace();
 		} catch ( Exception e) {

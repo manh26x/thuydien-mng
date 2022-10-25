@@ -59,29 +59,25 @@ public class SynchronizeFtpConfig extends TimerTask {
             if(ftpClient != null) {
                 File folder = new File(configArg.getLocalWorkingDirectory());
                 try{
-                    if(folder.exists()) {
+                    if(folder.exists() && Objects.requireNonNull(folder.listFiles()).length > 0) {
                         File file = Objects.requireNonNull(folder.listFiles())[0];
                         if(file != null) {
                             try {
-                                FileInputStream inputStream;
+                                FileInputStream inputStream = null;
                                 while (!completed) {
                                     ftpClient.enterLocalPassiveMode();
                                     ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
                                     log.info(ftpClient.getReplyString() + " file: " + file.getName());
                                     content.append("\nSEND ").append(file.getName());
                                     inputStream = new FileInputStream(file);
-                                    OutputStream os = ftpClient.storeFileStream(configArg.getRemoteWorkingDirectory() + "/" + file.getName());
-                                    byte[] buffer = new byte[1024];
-                                    int len;
-                                    while ((len = inputStream.read(buffer)) != -1) {
-                                        os.write(buffer, 0, len);
-                                    }
-
-                                    inputStream.close();
-
-                                    os.close();
-                                    completed = true;
+                                    completed = ftpClient.storeFile(configArg.getRemoteWorkingDirectory() + "/" + file.getName(), inputStream);
                                 }
+                                try {
+                                    inputStream.close();
+                                } catch (Exception e) {
+                                    log.error(e.getMessage());
+                                }
+
                                 log.info(file.getName() + " is uploaded successfully!");
                                 content.append(" is uploaded successfully!");
 
@@ -99,7 +95,7 @@ public class SynchronizeFtpConfig extends TimerTask {
 
                         }
                     } else {
-                        content.append("Working Directory is not existed!");
+                        completed = true;
                     }
 
                 } catch (Exception e) {

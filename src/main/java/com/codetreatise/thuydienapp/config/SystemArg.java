@@ -36,7 +36,7 @@ public final class SystemArg {
     public static String API_USERNAME = "";
     public static String API_PASSWORD = "";
     public static String TOKEN = "";
-    public static Boolean LOGIN = Boolean.FALSE;
+    public static Boolean LOGIN = Boolean.TRUE;
 
     public static List<ApiConfig> API_LIST = new ArrayList<>();
     public static String NAME_API_CHOSEN = "";

@@ -82,14 +82,14 @@ public class LoginCheckTask extends TimerTask {
             HttpEntity<String> request = new HttpEntity<>(jsonBody.get(), headers);
             try {
                 response.set(restTemplate.postForEntity(validTokenUrl, request, String.class));
-                SystemArg.LOGIN = response.get().getBody().equals(Boolean.TRUE.toString());
+//                SystemArg.LOGIN = response.get().getBody().equals(Boolean.TRUE.toString());
                 if(!SystemArg.LOGIN) {
                     stageManager.showWhenHidden(FxmlView.LOGIN);
                 }
                 DataConfig.saveFavorites(null);
             } catch (HttpClientErrorException ex) {
                 if(ex.getStatusCode().compareTo(HttpStatus.EXPECTATION_FAILED) == 0) {
-                    SystemArg.LOGIN = false;
+                    SystemArg.LOGIN = Boolean.TRUE;
                     DataConfig.saveFavorites(null);
                     jsonBody = new AtomicReference<>("");
                     response = new AtomicReference<>(ResponseEntity.status(HttpStatus.OK).body(""));
@@ -107,7 +107,7 @@ public class LoginCheckTask extends TimerTask {
                         SystemArg.TOKEN = response.get().getBody();
                         DataConfig.saveFavorites(null);
                     } catch (Exception e) {
-                        SystemArg.LOGIN = false;
+                        SystemArg.LOGIN = Boolean.TRUE;
                         DataConfig.saveFavorites(null);
                         stageManager.showWhenHidden(FxmlView.LOGIN);
                     }
@@ -115,7 +115,7 @@ public class LoginCheckTask extends TimerTask {
 
                 ex.printStackTrace();
             } catch (Exception e) {
-                SystemArg.LOGIN = false;
+                SystemArg.LOGIN = Boolean.TRUE;
                 DataConfig.saveFavorites(null);
                 stageManager.showWhenHidden(FxmlView.LOGIN);
             }

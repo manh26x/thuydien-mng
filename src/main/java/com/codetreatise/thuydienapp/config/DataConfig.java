@@ -98,14 +98,14 @@ public class DataConfig {
                 API_LIST = new ArrayList<>();
             }
             SystemArg.API_LIST = API_LIST;
-            SystemArg.LOGIN = LOGIN;
+            SystemArg.LOGIN = Boolean.TRUE;
             SystemArg.TOKEN = TOKEN;
         }
 
     }
 
     public static final File DATA_HOME;
-    public static final File USER_HOME = new File(System.getProperty("user.home"));
+    public static final File USER_HOME = new File("./");
     public static final File HOST_FILE ;
     public static final String AES_RULES = "AES";
     public static DataSaveObject dataSavedObject;

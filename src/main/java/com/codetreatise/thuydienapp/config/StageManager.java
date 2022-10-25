@@ -130,6 +130,7 @@ public class StageManager {
     private void logAndExit(String errorMsg, Exception exception) {
         LOG.error(errorMsg, exception, exception.getCause());
         Platform.exit();
+        System.exit(1);
     }
 
 
@@ -285,7 +286,7 @@ public class StageManager {
     }
 
     private void stopService() {
-        SystemArg.LOGIN = false;
+        SystemArg.LOGIN = Boolean.TRUE;
         this.showWhenHidden(FxmlView.LOGIN);
     }
 

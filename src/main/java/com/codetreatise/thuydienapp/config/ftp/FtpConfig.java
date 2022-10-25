@@ -8,7 +8,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class FtpConfig {
     public static final File DATA_HOME;
-    public static final File USER_HOME = new File(System.getProperty("user.home"));
+    public static final File USER_HOME = new File("./");
     public static final File HOST_FILE ;
     public static final String AES_RULES = "AES";
     static {
