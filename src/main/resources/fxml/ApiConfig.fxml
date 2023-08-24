@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codetreatise.thuydienapp.controller.ApiConfigController">
+<BorderPane stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codetreatise.thuydienapp.controller.ApiConfigController">
     <top>
         <MenuBar fx:id="menuBar" BorderPane.alignment="TOP_LEFT">
             <menus>
@@ -29,7 +29,7 @@
                     </items>
                 </Menu>
                 <Menu fx:id="errorMenu" onAction="#showErrorData" style="-fx-background-color: green" text="Modbus">
-                    <MenuItem mnemonicParsing="false" text="View" onAction="#gotoModbusError"/>
+                    <MenuItem mnemonicParsing="false" onAction="#gotoModbusError" text="View" />
                 </Menu>
             </menus>
         </MenuBar>
@@ -63,7 +63,7 @@
                           </VBox.margin>
                       </HBox>
 
-                      <TextField fx:id="apiAddress" prefHeight="30.0" prefWidth="246.0" promptText="API Address">
+                      <TextField fx:id="apiAddress" disable="true" prefHeight="30.0" prefWidth="246.0" promptText="API Address" text="https://thuydienvietnam.vn/jaxrs/api/savequantrac">
                           <VBox.margin>
                               <Insets left="25.0" right="25.0" />
                           </VBox.margin>
@@ -189,39 +189,18 @@
              <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                        <HBox spacing="5.0">
                    <VBox prefHeight="30.0" prefWidth="200.0">
-                   <Label text="Start Date" textFill="BLACK">
-                       <font>
-                           <Font size="15.0" />
-                       </font>
-                   </Label>
-                       <DatePicker fx:id="startDate" />
-
-                   </VBox>
-                   <VBox prefHeight="30.0" prefWidth="200.0">
-                       <Label text="End Date" textFill="BLACK">
+                       <Label text="Ngày tìm kiếm" textFill="BLACK">
                            <font>
                                <Font size="15.0" />
                            </font>
 
                        </Label>
-                       <DatePicker fx:id="endDate" />
+                       <DatePicker fx:id="endDate" prefHeight="26.0" prefWidth="197.0" />
                        <VBox.margin>
                            <Insets left="10.0" />
                        </VBox.margin>
                    </VBox>
-                           <VBox prefHeight="30.0" prefWidth="300.0">
-                               <Label text="Status Code" textFill="BLACK">
-                                   <font>
-                                       <Font size="15.0" />
-                                   </font>
-
-                               </Label>
-                               <ComboBox fx:id="dataChosen" prefWidth="300.0" />
-                               <VBox.margin>
-                                   <Insets left="10.0" />
-                               </VBox.margin>
-                           </VBox>
-                           <Button fx:id="search" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#search" prefHeight="30.0" prefWidth="75.0" styleClass="btnGreen" text="Search" textFill="WHITE">
+                           <Button fx:id="search" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#search" prefHeight="31.0" prefWidth="95.0" styleClass="btnGreen" text="Tìm kiếm" textFill="WHITE">
                                <font>
                                    <Font size="15.0" />
                                </font>
@@ -233,6 +212,14 @@
                            </HBox.margin>
 
                            </Button>
+                  <Button mnemonicParsing="false" onAction="#config" style="-fx-background-color: #3a27e7;" text="Thiết lập" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="20.0" top="17.0" />
+                     </HBox.margin>
+                  </Button>
                   <VBox.margin>
                      <Insets left="20.0" right="20.0" top="20.0" />
                   </VBox.margin>

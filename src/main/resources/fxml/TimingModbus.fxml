@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="700.0" prefWidth="1400.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codetreatise.thuydienapp.controller.TimingModbusController">
+<BorderPane prefHeight="700.0" prefWidth="1400.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codetreatise.thuydienapp.controller.TimingModbusController">
     <top>
         <MenuBar fx:id="menuBar" BorderPane.alignment="TOP_LEFT">
             <menus>
@@ -16,12 +16,12 @@
                 <Menu mnemonicParsing="false" text="Edit">
                     <MenuItem mnemonicParsing="false" onAction="#importFileExcel" text="Import File Excel Menu" />
                     <MenuItem mnemonicParsing="false" onAction="#addApi" text="Thêm API" />
-                    <MenuItem mnemonicParsing="false" onAction="#addFtp" text="Thêm Ftp " />
+                    <MenuItem mnemonicParsing="false" onAction="#clearData" text="Xóa dữ liệu cũ" />
                     <MenuItem mnemonicParsing="false" onAction="#modbusServerConfig" text="Config modbus Server" />
                 </Menu>
 
                 <Menu mnemonicParsing="false" text="Help">
-                    <MenuItem mnemonicParsing="false" text="About" />
+                    <MenuItem mnemonicParsing="false" text="Truy cập trang web" onAction="#goHelpPage"></MenuItem>
                 </Menu>
                 <Menu fx:id="errorMenu" onAction="#showErrorData" style="-fx-background-color: green" text="Modbus">
                     <MenuItem mnemonicParsing="false" onAction="#gotoModbusError" text="View" />
@@ -172,31 +172,29 @@
          <content>
               <VBox alignment="TOP_LEFT" prefHeight="571.0" prefWidth="892.0">
                   <children>
-                      <HBox alignment="TOP_RIGHT" prefHeight="41.0" prefWidth="640.0">
-                          <children>
-                              <Button fx:id="btnAddData" mnemonicParsing="false" onAction="#addData" prefHeight="22.0" prefWidth="90.0" styleClass="background" text="Add Field" textFill="#fff9f9" textOverrun="CLIP">
+                  <AnchorPane>
+                     <children>
+                        <Label layoutX="14.0" text="Các giá trị theo dõi" textFill="#3c42bc">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
+                              <Button fx:id="btnAddData" layoutX="943.0" layoutY="1.0" mnemonicParsing="false" onAction="#addData" prefHeight="30.0" prefWidth="113.0" styleClass="background" text="Thêm địa chỉ" textFill="#fff9f9" textOverrun="CLIP">
                                   <font>
                                       <Font size="14.0" />
                                   </font>
-                                  <HBox.margin>
-                                      <Insets right="5.0" top="5.0" />
-                                  </HBox.margin>
                                   <effect>
                                       <DropShadow blurType="ONE_PASS_BOX" color="#00000091" />
                                   </effect>
                               </Button>
-                          </children>
-                      </HBox>
+                     </children>
+                  </AnchorPane>
                       <TableView fx:id="dataTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
                           <columns>
-                              <TableColumn fx:id="colKey" maxWidth="700.0" prefWidth="20.0" text="Key" />
-                              <TableColumn fx:id="colNguon" maxWidth="4000.0" prefWidth="75.0" text="Nguồn" />
-                              <TableColumn fx:id="colTenChiTieu" maxWidth="4000.0" prefWidth="75.0" text="Tên chỉ tiêu" />
+                              <TableColumn fx:id="colTenChiTieu" maxWidth="4000.0" prefWidth="75.0" text="Tên giá trị" />
                               <TableColumn fx:id="colDvt" maxWidth="4000.0" prefWidth="75.0" text="Đơn vị tính" />
-                              <TableColumn fx:id="colAddress" maxWidth="4000.0" prefWidth="60.0" text="Address" />
-                              <TableColumn fx:id="colQuantity" maxWidth="4000.0" prefWidth="75.0" text="Quantity" />
-                              <TableColumn fx:id="colMaThongSo" maxWidth="6000.0" prefWidth="130.0" text="Mã Thông Số" />
-                              <TableColumn fx:id="colTrangThai" maxWidth="3500.0" prefWidth="75.0" text="Trạng thái" />
+                              <TableColumn fx:id="colAddress" maxWidth="4000.0" prefWidth="60.0" text="Địa chỉ" />
+                              <TableColumn fx:id="colCurrentValue" maxWidth="4000.0" prefWidth="75.0" text="Giá trị hiện tại" />
                           </columns>
                           <VBox.margin>
                               <Insets left="10.0" right="5.0" />
@@ -214,120 +212,29 @@
                               </ContextMenu>
                           </contextMenu>
                       </TableView>
-                      <Label text="Modbus poll" textFill="#3c42bc">
-                          <font>
-                              <Font size="20.0" />
-                          </font>
-                          <VBox.margin>
-                              <Insets bottom="10.0" left="20.0" top="5.0" />
-                          </VBox.margin>
-                      </Label>
-                      <HBox>
-                          <children>
-                              <VBox>
-                                  <children>
-                                      <Label text="Địa chỉ đầu tiên Modbus" textFill="#3c42bc">
-                                          <VBox.margin>
-                                              <Insets left="25.0" />
-                                          </VBox.margin>
-                                          <font>
-                                              <Font name="System Bold" size="12.0" />
-                                          </font>
-                                      </Label>
-                                      <TextField fx:id="address" prefHeight="30.0" prefWidth="246.0" promptText="Address Modbus" text="0">
-                                          <VBox.margin>
-                                              <Insets left="25.0" right="25.0" />
-                                          </VBox.margin>
-                                      </TextField>
-                                      <Label text="Quantity Modbus" textFill="#3c42bc">
-                                          <VBox.margin>
-                                              <Insets left="25.0" />
-                                          </VBox.margin>
-                                          <font>
-                                              <Font name="System Bold" size="12.0" />
-                                          </font>
-                                      </Label>
-                                      <TextField fx:id="quantity" prefHeight="30.0" prefWidth="246.0" promptText="Quantity Modbus" text="2">
-                                          <VBox.margin>
-                                              <Insets left="25.0" right="25.0" />
-                                          </VBox.margin>
-                                      </TextField>
-                                      <Label text="Số lượng địa chỉ Modbus" textFill="#3c42bc">
-                                          <VBox.margin>
-                                              <Insets left="25.0" />
-                                          </VBox.margin>
-                                          <font>
-                                              <Font name="System Bold" size="12.0" />
-                                          </font>
-                                      </Label>
-                                      <TextField fx:id="sizeMod" prefHeight="30.0" prefWidth="246.0" promptText="Size Modbus" text="5">
-                                          <VBox.margin>
-                                              <Insets left="25.0" right="25.0" />
-                                          </VBox.margin>
-                                      </TextField>
-                                      <HBox>
-
-                                          <children>
-                                              <Button fx:id="btnDisconnect" mnemonicParsing="false" onAction="#disconnect" prefHeight="22.0" prefWidth="90.0" styleClass="btnDanger" text="Disconnect" textFill="#fff9f9" textOverrun="CLIP">
-                                                  <font>
-                                                      <Font size="12.0" />
-                                                  </font>
-                                                  <HBox.margin>
-                                                      <Insets left="25.0" right="25.0" top="25.0" />
-                                                  </HBox.margin>
-                                                  <effect>
-                                                      <DropShadow blurType="ONE_PASS_BOX" color="#00000091" />
-                                                  </effect>
-                                              </Button>
-                                              <Button fx:id="btnConnect" mnemonicParsing="false" onAction="#connect" prefHeight="22.0" prefWidth="90.0" styleClass="background" text="Connect" textFill="#fff9f9" textOverrun="CLIP">
-                                                  <font>
-                                                      <Font size="12.0" />
-                                                  </font>
-                                                  <HBox.margin>
-                                                      <Insets left="25.0" right="25.0" top="25.0" />
-                                                  </HBox.margin>
-                                                  <effect>
-                                                      <DropShadow blurType="ONE_PASS_BOX" color="#00000091" />
-                                                  </effect>
-                                              </Button>
-                                          </children>
-                                      </HBox>
-
-                                  </children>
-                              </VBox>
-                              <TableView fx:id="modbusTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="181.0" prefWidth="317.0" tableMenuButtonVisible="true">
-                                  <columns>
-                                      <TableColumn fx:id="colModAddress" maxWidth="4000.0" prefWidth="75.0" text="Address" />
-                                      <TableColumn fx:id="colModQuantity" maxWidth="6000.0" prefWidth="130.0" text="Quantity" />
-                                      <TableColumn fx:id="colModValue" maxWidth="3500.0" minWidth="-1.0" prefWidth="-1.0" text="Value" />
-                                  </columns>
-                                  <VBox.margin>
-                                      <Insets left="10.0" right="5.0" />
-                                  </VBox.margin>
-                                  <columnResizePolicy>
-                                      <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                  </columnResizePolicy>
-                                  <contextMenu>
-                                      <ContextMenu>
-                                          <items>
-                                              <MenuItem mnemonicParsing="false" onAction="#resfreshModbus" text="Refresh" />
-                                          </items>
-                                      </ContextMenu>
-                                  </contextMenu>
+                  <HBox>
+                     <children>
+                            <Label text="Theo dõi các giá trị đo được" textFill="#3c42bc">
+                                <font>
+                                    <Font size="20.0" />
+                                </font>
+                            </Label>
+                        <DatePicker fx:id="dateSearch" promptText="ngày tìm kiếm">
                            <HBox.margin>
-                              <Insets left="15.0" />
+                              <Insets left="20.0" top="5.0" />
                            </HBox.margin>
-                              </TableView>
-                          </children>
-                      </HBox>
+                        </DatePicker>
+                        <Button mnemonicParsing="false" onAction="#loadModbusData" style="-fx-background-color: #15cf31;" text="Tìm kiếm" textFill="WHITE">
+                           <HBox.margin>
+                              <Insets left="20.0" top="5.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
 
                       <TableView fx:id="modbusData" tableMenuButtonVisible="true">
                           <columns>
-                              <TableColumn fx:id="modTenChiTieu" maxWidth="4000.0" prefWidth="75.0" text="Tên chỉ tiêu" />
-                              <TableColumn fx:id="modAddress" maxWidth="4000.0" prefWidth="60.0" text="Address" />
-                              <TableColumn fx:id="modMaThongSo" maxWidth="6000.0" minWidth="-1.0" prefWidth="130.0" text="Mã Thông Số" />
-                              <TableColumn fx:id="modValue" maxWidth="3500.0" prefWidth="75.0" text="Giá trị" />
-                        <TableColumn fx:id="modTime" maxWidth="3500.0" prefWidth="75.0" text="Thời gian" />
+                              <TableColumn fx:id="modTime" maxWidth="4000.0" prefWidth="75.0" text="Thời gian" />
                           </columns>
                           <VBox.margin>
                               <Insets left="10.0" right="5.0" top="15.0" />
@@ -338,12 +245,15 @@
                           <contextMenu>
                               <ContextMenu>
                                   <items>
-                                      <MenuItem mnemonicParsing="false" onAction="#resfreshModbusData" text="Refresh" />
+                                      <MenuItem mnemonicParsing="false" text="Refresh" />
                                   </items>
                               </ContextMenu>
                           </contextMenu>
                       </TableView>
                   </children>
+               <padding>
+                  <Insets top="10.0" />
+               </padding>
               </VBox>
          </content>
       </ScrollPane>

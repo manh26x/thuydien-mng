@@ -3,8 +3,7 @@ package com.codetreatise.thuydienapp.controller;
 import com.codetreatise.thuydienapp.bean.DataError;
 import com.codetreatise.thuydienapp.config.StageManager;
 import com.codetreatise.thuydienapp.config.SystemArg;
-import com.codetreatise.thuydienapp.config.ftp.FtpArgSaved;
-import com.codetreatise.thuydienapp.config.ftp.FtpConfig;
+import com.codetreatise.thuydienapp.config.database.SqliteJdbc;
 import com.codetreatise.thuydienapp.event.ErrorTrigger;
 import com.codetreatise.thuydienapp.event.EventTrigger;
 import com.codetreatise.thuydienapp.repository.DataErrorRepository;
@@ -21,7 +20,10 @@ import javafx.scene.control.MenuItem;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
+import java.awt.*;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Optional;
@@ -57,18 +59,18 @@ public abstract class BaseController implements Observer {
     public void timeSyncModbus(ActionEvent event) {
         stageManager.switchScene(FxmlView.TIMING_MODBUS);
     }
+
+    @FXML
+    public void cucTNNApi(ActionEvent event) {
+
+    }
     /**
      * Logout and go to the login page
      */
     @FXML
-    private void logout(ActionEvent event) throws IOException {
-        stageManager.switchScene(FxmlView.LOGIN);
-    }
-    @FXML
     public void ftpConfig(ActionEvent actionEvent) {
         String ftpName = ((MenuItem)actionEvent.getTarget()).getText();
         SystemArg.NAME_FTP_CHOSEN = ftpName;
-        stageManager.switchScene(FxmlView.FTP_CONFIG);
     }
 
     @FXML
@@ -93,7 +95,6 @@ public abstract class BaseController implements Observer {
     public void initApiMenuGen() {
         try {
             errorMenu.setStyle(SystemArg.getStatusMenuStyle("Modbus"));
-            FtpArgSaved ftpArgSaved = FtpConfig.getFtpConfig();
             if(menuBar.getMenus().get(0).getItems().stream()
                     .anyMatch(item -> "FTP".equals(item.getUserData()))) {
                 menuBar.getMenus().removeAll(menuBar.getMenus().stream().filter(item -> "FTP".equals(item.getUserData()))
@@ -103,34 +104,7 @@ public abstract class BaseController implements Observer {
                                 .filter(item -> "FTP".equals(item.getUserData())).collect(Collectors.toList()));
 
             }
-
-            ftpArgSaved.getFtpConfigArg().keySet().forEach(ftpName -> {
-                MenuItem menuItem = new MenuItem();
-                menuItem.setText(ftpName);
-                menuItem.setId(ftpName);
-                menuItem.setUserData("FTP");
-                menuItem.setOnAction(this::ftpConfig);
-
-                if(menuBar.getMenus().get(0).getItems().stream().noneMatch(e -> e.getText().equals(ftpName))) {
-                    menuBar.getMenus().get(0).getItems().add(menuItem);
-                }
-                if(menuBar.getMenus().stream().noneMatch(e -> e.getText().equals("FTP: " + ftpName))) {
-                    Menu menu = new Menu();
-                    menu.setText("FTP: " + ftpName);
-                    menu.setStyle(SystemArg.getStatusMenuStyle("FTP: " + ftpName));
-                    menu.setUserData("FTP");
-                    menuItem = new MenuItem("View");
-                    menuItem.setOnAction(e -> {
-                        SystemArg.ERROR_TYPE_CHOSEN = Constants.FTP_TYPE;
-                        SystemArg.MENU_ERROR_CHOSEN =  ftpName;
-                        stageManager.switchScene(FxmlView.DATA_ERROR);
-                    });
-                    menu.getItems().add(menuItem);
-                    menuBar.getMenus().add(menu);
-                }
-            });
-
-        } catch (IOException | ClassNotFoundException | IllegalBlockSizeException | BadPaddingException | NullPointerException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         SystemArg.API_LIST.forEach(api -> {
@@ -158,11 +132,6 @@ public abstract class BaseController implements Observer {
 
 
     }
-
-    public void addFtp(ActionEvent actionEvent) {
-        stageManager.createModal(FxmlView.ADD_FTP);
-    }
-
     @FXML
     public void showErrorData(Event actionEvent) {
         stageManager.switchScene(FxmlView.DATA_ERROR);
@@ -190,27 +159,45 @@ public abstract class BaseController implements Observer {
     }
 
     private void setStyleMenu(DataError dataError, String menuName, String statusStyle) {
-        if(dataError.getType().equals(Constants.API_TYPE)) {
-            Optional<Menu> menuError = menuBar.getMenus().stream().filter(menu -> (menu.getText()).equals("API: " + menuName)).findFirst();
-            menuError.ifPresent(menu -> {
-                menu.setStyle(statusStyle);
-                SystemArg.mapErrorMenu.put(menu.getText(), statusStyle);
-            });
-        } else if(dataError.getType().equals(Constants.MODBUS_TYPE)) {
-            Optional<Menu> menuError = menuBar.getMenus().stream().filter(menu -> menu.getText().equals(menuName)).findFirst();
-            menuError.ifPresent(menu -> {
-                SystemArg.mapErrorMenu.put(menu.getText(), statusStyle);
-                menu.setStyle(statusStyle);
-                menu.setOnAction(e -> stageManager.switchScene(FxmlView.DATA_ERROR));
-            });
-        } else if(dataError.getType().equals(Constants.FTP_TYPE)) {
-            Optional<Menu> menuError = menuBar.getMenus().stream().filter(menu -> menu.getText().equals("FTP: " + menuName)).findFirst();
-            menuError.ifPresent(menu -> {
-                SystemArg.mapErrorMenu.put(menu.getText(), statusStyle);
-                menu.setStyle(statusStyle);
-                menu.setOnAction(e -> stageManager.switchScene(FxmlView.DATA_ERROR));
-            });
+        switch (dataError.getType()) {
+            case Constants.API_TYPE: {
+                Optional<Menu> menuError = menuBar.getMenus().stream().filter(menu -> (menu.getText()).equals("API: " + menuName)).findFirst();
+                menuError.ifPresent(menu -> {
+                    menu.setStyle(statusStyle);
+                    SystemArg.mapErrorMenu.put(menu.getText(), statusStyle);
+                });
+                break;
+            }
+            case Constants.MODBUS_TYPE: {
+                Optional<Menu> menuError = menuBar.getMenus().stream().filter(menu -> menu.getText().equals(menuName)).findFirst();
+                menuError.ifPresent(menu -> {
+                    SystemArg.mapErrorMenu.put(menu.getText(), statusStyle);
+                    menu.setStyle(statusStyle);
+                    menu.setOnAction(e -> stageManager.switchScene(FxmlView.DATA_ERROR));
+                });
+                break;
+            }
+            case Constants.FTP_TYPE: {
+                Optional<Menu> menuError = menuBar.getMenus().stream().filter(menu -> menu.getText().equals("FTP: " + menuName)).findFirst();
+                menuError.ifPresent(menu -> {
+                    SystemArg.mapErrorMenu.put(menu.getText(), statusStyle);
+                    menu.setStyle(statusStyle);
+                    menu.setOnAction(e -> stageManager.switchScene(FxmlView.DATA_ERROR));
+                });
+                break;
+            }
         }
     }
     protected abstract void reload();
+
+    public void goHelpPage(ActionEvent event) {
+        try {
+            Desktop.getDesktop().browse(new URI("https://tudonghoaiot.blogspot.com/"));
+        } catch (IOException | URISyntaxException e) {
+            e.printStackTrace();
+        }
+    }
+    public void clearData(ActionEvent event) {
+        SqliteJdbc.getInstance().clearAllData();
+    }
 }

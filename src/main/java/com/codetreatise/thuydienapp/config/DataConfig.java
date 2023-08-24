@@ -73,7 +73,7 @@ public class DataConfig {
                     SystemArg.API_CALL_API_READY,
                     SystemArg.API_USERNAME,
                     SystemArg.API_PASSWORD,
-                    SystemArg.DATA_LIST,
+                    null,
                     SystemArg.API_LIST,
                     SystemArg.TOKEN,
                      SystemArg.LOGIN
@@ -92,7 +92,6 @@ public class DataConfig {
             SystemArg.API_CALL_API_READY = API_CALL_API_READY;
             SystemArg.API_USERNAME = API_USERNAME;
             SystemArg.API_PASSWORD = API_PASSWORD;
-            SystemArg.DATA_LIST = DATA_LIST;
             SystemArg.UNIT = UNIT;
             if(API_LIST == null) {
                 API_LIST = new ArrayList<>();

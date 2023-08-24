@@ -1,5 +1,6 @@
 package com.codetreatise.thuydienapp.config.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -18,4 +19,6 @@ public class DataCallApi implements Serializable {
     private String thoigian;
     private String nguon;
     private String mathongso;
+    @JsonIgnore
+    private Integer modbusDataId;
 }

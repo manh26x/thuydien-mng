@@ -41,7 +41,8 @@ public class ModbusMasterStart  {
         if(Boolean.TRUE.equals(modbusMasterArg.getReady()) && Boolean.FALSE.equals(modbusServer.getServerRunning())) {
             modbusServer.setPort(modbusMasterArg.getPort());
             modbusServer.setName(modbusMasterArg.getName());
-            modbusServer.udpFlag=true;
+//            modbusServer.udpFlag=true;
+            modbusServer.start();
             modbusServer.Listen();
             log.info("START modbus server: " + modbusServer.getName() + " on port: " + modbusServer.getPort());
             log.info("Modbus server is running? " +        modbusServer.getServerRunning());

@@ -286,8 +286,7 @@ public class StageManager {
     }
 
     private void stopService() {
-        SystemArg.LOGIN = Boolean.TRUE;
-        this.showWhenHidden(FxmlView.LOGIN);
+        System.exit(4);
     }
 
 

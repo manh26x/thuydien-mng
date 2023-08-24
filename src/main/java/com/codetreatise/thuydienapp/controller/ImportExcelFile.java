@@ -2,10 +2,17 @@ package com.codetreatise.thuydienapp.controller;
 
 import com.codetreatise.thuydienapp.bean.ApiConfig;
 import com.codetreatise.thuydienapp.bean.Data;
+import com.codetreatise.thuydienapp.bean.ModbusParam;
 import com.codetreatise.thuydienapp.config.DataConfig;
 import com.codetreatise.thuydienapp.config.StageManager;
 import com.codetreatise.thuydienapp.config.SystemArg;
+import com.codetreatise.thuydienapp.config.database.SqliteJdbc;
 import com.codetreatise.thuydienapp.event.EventTrigger;
+import com.codetreatise.thuydienapp.model.ParamBoCT;
+import com.codetreatise.thuydienapp.model.ParamCucTNN;
+import com.codetreatise.thuydienapp.repository.BoCTRepository;
+import com.codetreatise.thuydienapp.repository.CucTNNRepository;
+import com.codetreatise.thuydienapp.utils.Constants;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
@@ -54,6 +61,80 @@ public class ImportExcelFile implements Initializable {
 
     private void readFile(String file) throws IOException {
         Workbook wb2007 = new XSSFWorkbook(file);
+        SqliteJdbc.getInstance().clearAllParams();
+        SqliteJdbc.getInstance().clearAllData();
+        getParamBoCT(wb2007);
+        getParamCucTNN(wb2007);
+        EventTrigger.getInstance().setChange();
+        EventTrigger.getInstance().notifyObservers(null);
+        StageManager.getInstance().closeDialog();
+
+    }
+
+    private void getParamCucTNN(Workbook workbook) {
+        Sheet sheet = workbook.getSheetAt(1);
+        Row row = sheet.getRow(2);
+        String username = row.getCell(1).getStringCellValue();
+        String password = sheet.getRow(3).getCell(1).getStringCellValue();
+        String maTinh = sheet.getRow(4).getCell(1).getStringCellValue();
+        String kyHieuCongTrinh = sheet.getRow(5).getCell(1).getStringCellValue();
+        Integer status =(int) sheet.getRow(6).getCell(1).getNumericCellValue();
+        Integer timer = (int) sheet.getRow(7).getCell(1).getNumericCellValue();
+        Double numberOfParams = sheet.getRow(8).getCell(1).getNumericCellValue();
+
+        ArrayList<ParamCucTNN> dataList = new ArrayList<>();
+        for(int i =0; i < numberOfParams; i++) {
+            row = sheet.getRow(10 + i);
+            int j = 0;
+            ParamCucTNN data = new ParamCucTNN();
+            for (Iterator<Cell> it = row.cellIterator(); it.hasNext(); j++) {
+                Cell cel = it.next();
+                switch (j) {
+                    case 0:
+                        data.setName(cel.getStringCellValue().trim());
+                        break;
+                    case 1:
+                        data.setThongSoDo(cel.getStringCellValue().trim());
+                        break;
+                    case 2:
+                        data.setKyHieuTram(cel.getStringCellValue().trim());
+                        break;
+                    case 3:
+                        data.setDvt(cel.getStringCellValue().trim());
+                        break;
+                    case 4:
+                        data.setAddress((int) cel.getNumericCellValue());
+                        break;
+                }
+            }
+            dataList.add(data);
+            SqliteJdbc.getInstance().addModbusParam(ModbusParam.builder()
+                    .name(data.getName())
+                    .dvt(data.getDvt())
+                    .address(data.getAddress())
+                    .build());
+        }
+        SystemArg.API_LIST.add(ApiConfig.builder()
+                        .apiCallReady(status == 1)
+                        .url(Constants.CUC_TNN_URL)
+                        .username(username)
+                        .password(password)
+                        .timeScheduleCallApi(timer)
+                        .name(Constants.CUC_TNN_NAME)
+                .build());
+        CucTNNRepository.getInstance().saveInfo(maTinh, kyHieuCongTrinh);
+        CucTNNRepository.getInstance().saveAllParams(dataList);
+//        SystemArg.DATA_LIST.clear();
+//        SystemArg.DATA_LIST.addAll(dataList);
+        try {
+            DataConfig.saveFavorites(null);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void getParamBoCT(Workbook wb2007) {
         Sheet sheet = wb2007.getSheetAt(0);
         Row row = sheet.getRow(1);
         Cell numberOfApiCell = row.getCell(1);
@@ -68,7 +149,7 @@ public class ImportExcelFile implements Initializable {
                 Cell value = row.getCell(1);
                 switch (name.getStringCellValue()) {
                     case "name":
-                        apiConfig.setName(value.getStringCellValue().trim());
+                        apiConfig.setName(Constants.BO_CT_NAME);
                         break;
                     case "url":
                         apiConfig.setUrl(value.getStringCellValue().trim());
@@ -95,11 +176,11 @@ public class ImportExcelFile implements Initializable {
         row = sheet.getRow(maxRow +1);
         Cell numberOfKeyCell = row.getCell(1);
         double numberOfKey = numberOfKeyCell.getNumericCellValue();
-        ArrayList<Data> dataList = new ArrayList<>();
+        ArrayList<ParamBoCT> dataList = new ArrayList<>();
         for(int i =0; i < numberOfKey; i++) {
             row = sheet.getRow(maxRow + 3 + i);
             int j = 0;
-            Data data = new Data();
+            ParamBoCT data = new ParamBoCT();
             for (Iterator<Cell> it = row.cellIterator(); it.hasNext(); j++) {
                 Cell cel = it.next();
                 switch (j) {
@@ -108,9 +189,10 @@ public class ImportExcelFile implements Initializable {
                         break;
                     case 1:
                         data.setTenChiTieu(cel.getStringCellValue().trim());
+                        data.setName(cel.getStringCellValue().trim());
                         break;
                     case 2:
-                        data.setMaThongSo(cel.getStringCellValue().trim());
+                        data.setMaThamSo(cel.getStringCellValue().trim());
                         break;
                     case 3:
                         data.setDvt(cel.getStringCellValue());
@@ -122,35 +204,35 @@ public class ImportExcelFile implements Initializable {
                         data.setAddress((int) cel.getNumericCellValue());
                         break;
                     case 6:
-                        for(String apiName : cel.getStringCellValue().split(";")) {
-                            ApiConfig api = listApi.stream().filter(apiConfig -> apiConfig.getName().equals(apiName)).findFirst().orElse(new ApiConfig());
-                            if(api.getKeySends() == null) {
-                                api.setKeySends( new ArrayList<>());
-                            }
-                            api.getKeySends().add(data);
-                        }
+//                        for(String apiName : cel.getStringCellValue().split(";")) {
+//                            ApiConfig api = listApi.stream().filter(apiConfig -> apiConfig.getName().equals(apiName)).findFirst().orElse(new ApiConfig());
+//                            if(api.getKeySends() == null) {
+//                                api.setKeySends( new ArrayList<>());
+//                            }
+//                            api.getKeySends().add(data);
+//                        }
                         break;
                 }
-                data.setQuantity(2);
-
             }
             dataList.add(data);
+            SqliteJdbc.getInstance().addModbusParam(ModbusParam.builder()
+                    .name(data.getName())
+                    .dvt(data.getDvt())
+                    .address(data.getAddress())
+                    .build());
         }
 
         SystemArg.API_LIST.clear();
         SystemArg.API_LIST.addAll(listApi);
-        SystemArg.DATA_LIST.clear();
-        SystemArg.DATA_LIST.addAll(dataList);
+        BoCTRepository.getInstance().saveAll(dataList);
+//        SystemArg.DATA_LIST.clear();
+//        SystemArg.DATA_LIST.addAll(dataList);
         try {
             DataConfig.saveFavorites(null);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        EventTrigger.getInstance().setChange();
-        EventTrigger.getInstance().notifyObservers(null);
-        StageManager.getInstance().closeDialog();
-
     }
     @Override
     public void initialize(URL location, ResourceBundle resources) {

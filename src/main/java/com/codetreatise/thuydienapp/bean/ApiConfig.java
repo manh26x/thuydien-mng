@@ -1,9 +1,6 @@
 package com.codetreatise.thuydienapp.bean;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -15,6 +12,7 @@ import static com.codetreatise.thuydienapp.config.SystemArg.*;
 @Setter
 @AllArgsConstructor
 @ToString
+@Builder
 public class ApiConfig implements Serializable {
     private int id;
     private String name;
@@ -44,7 +42,7 @@ public class ApiConfig implements Serializable {
     public boolean checkTimeScheduleCallApi() {
         Date now = new Date();
         now.setSeconds(0);
-
+        if(nextTimeScheduleCallApi == null) nextTimeScheduleCallApi = new Date();
         return LOGIN && apiCallReady && now.after(nextTimeScheduleCallApi)
                 && (timeScheduleCallApi == 60 ||
                 now.getMinutes() % timeScheduleCallApi == 0);

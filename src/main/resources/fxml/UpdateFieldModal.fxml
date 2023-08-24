@@ -6,10 +6,10 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="571.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codetreatise.thuydienapp.controller.UpdateFieldModalController">
-    <VBox prefHeight="600.0" prefWidth="600.0" spacing="10.0" styleClass="background" stylesheets="@../styles/Styles.css" BorderPane.alignment="CENTER">
+<AnchorPane prefHeight="389.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codetreatise.thuydienapp.controller.UpdateFieldModalController">
+    <VBox prefHeight="392.0" prefWidth="600.0" spacing="10.0" styleClass="background" stylesheets="@../styles/Styles.css" BorderPane.alignment="CENTER">
         <children>
-            <Label text="Add New Field Data" textFill="WHITE">
+            <Label text="Chỉnh sửa tham số" textFill="WHITE">
                 <font>
                     <Font size="20.0" />
                 </font>
@@ -29,18 +29,6 @@
                     <Insets left="25.0" />
                 </VBox.margin>
             </HBox>
-         <Label text="Key" textFill="WHITE">
-            <VBox.margin>
-               <Insets left="25.0" />
-            </VBox.margin>
-            <font>
-               <Font name="System Bold" size="12.0" />
-            </font>
-         </Label>
-            <TextField fx:id="key" prefHeight="30.0" prefWidth="246.0" promptText="Key">
-                <VBox.margin>
-                    <Insets left="25.0" right="25.0" />
-                </VBox.margin></TextField>
          <Label text="Tên chỉ tiêu" textFill="WHITE">
             <VBox.margin>
                <Insets left="25.0" />
@@ -49,19 +37,7 @@
                <Font name="System Bold" size="12.0" />
             </font>
          </Label>
-            <TextField fx:id="tenChiTieu" prefHeight="30.0" prefWidth="246.0" promptText="Tên chỉ tiêu">
-                <VBox.margin>
-                    <Insets left="25.0" right="25.0" />
-                </VBox.margin></TextField>
-         <Label text="Mã thông số" textFill="WHITE">
-            <VBox.margin>
-               <Insets left="25.0" />
-            </VBox.margin>
-            <font>
-               <Font name="System Bold" size="12.0" />
-            </font>
-         </Label>
-            <TextField fx:id="maThongSo" prefHeight="30.0" prefWidth="246.0" promptText="Mã thông số">
+            <TextField fx:id="tenThamSo" editable="false" prefHeight="30.0" prefWidth="246.0" promptText="Tên chỉ tiêu">
                 <VBox.margin>
                     <Insets left="25.0" right="25.0" />
                 </VBox.margin></TextField>
@@ -77,18 +53,6 @@
                 <VBox.margin>
                     <Insets left="25.0" right="25.0" />
                 </VBox.margin></TextField>
-         <Label text="Nguồn" textFill="WHITE">
-            <VBox.margin>
-               <Insets left="25.0" />
-            </VBox.margin>
-            <font>
-               <Font name="System Bold" size="12.0" />
-            </font>
-         </Label>
-            <TextField fx:id="nguon" prefHeight="30.0" prefWidth="246.0" promptText="Nguồn">
-                <VBox.margin>
-                    <Insets left="25.0" right="25.0" />
-                </VBox.margin></TextField>
          <Label text="Địa chỉ Modbus" textFill="WHITE">
             <VBox.margin>
                <Insets left="25.0" />
@@ -98,18 +62,6 @@
             </font>
          </Label>
             <TextField fx:id="address" prefHeight="30.0" prefWidth="246.0" promptText="Address Modbus">
-                <VBox.margin>
-                    <Insets left="25.0" right="25.0" />
-                </VBox.margin></TextField>
-         <Label text="Quantity Modbus" textFill="WHITE">
-            <VBox.margin>
-               <Insets left="25.0" />
-            </VBox.margin>
-            <font>
-               <Font name="System Bold" size="12.0" />
-            </font>
-         </Label>
-            <TextField fx:id="quantity" prefHeight="30.0" prefWidth="246.0" promptText="Quantity Modbus">
                 <VBox.margin>
                     <Insets left="25.0" right="25.0" />
                 </VBox.margin></TextField>

@@ -42,7 +42,7 @@ public class ApiFieldConfig  implements Initializable {
     ApiConfig apiConfig;
     ObservableList<Data> dataObservable = FXCollections.observableArrayList();;
     private void setColProperties() {
-        TimingModbusController.generateTableColumnModbus(colKey, colDvt, colNguon, colTenChiTieu, colAddress, colQuantity, colMaThongSo);
+//        TimingModbusController.generateTableColumnModbus(colKey, colDvt, colNguon, colTenChiTieu, colAddress, colQuantity, colMaThongSo);
     }
 
     @Override
@@ -61,7 +61,7 @@ public class ApiFieldConfig  implements Initializable {
     }
     private void loadDataList() {
         dataObservable.clear();
-        dataObservable.addAll(SystemArg.DATA_LIST);
+//        dataObservable.addAll(SystemArg.DATA_LIST);
         dataTable.setItems(dataObservable);
     }
 

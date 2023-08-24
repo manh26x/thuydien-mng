@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane prefHeight="370.0" prefWidth="857.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codetreatise.thuydienapp.controller.ConfigCucTNNParamsController">
+   <center>
+      <TableView fx:id="paramTable" prefHeight="296.0" prefWidth="830.0">
+        <columns>
+                  <TableColumn fx:id="nameCol" editable="false" minWidth="120.0" prefWidth="120.0" text="Tên tham số" />
+                  <TableColumn fx:id="addressCol" editable="false" minWidth="60.0" prefWidth="60.0" text="Địa chỉ" />
+                  <TableColumn fx:id="thongSoCol" minWidth="150.0" prefWidth="150.0" text="Thông số đo" />
+           <TableColumn fx:id="tramCol" minWidth="100.0" prefWidth="100.0" text="Ký hiệu trạm" />
+           <TableColumn fx:id="dvtCol" minWidth="100.0" prefWidth="100.0" text="Đơn vị tính" />
+        </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+   </center>
+   <top>
+      <BorderPane BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="5.0" />
+         </BorderPane.margin>
+         <center>
+            <AnchorPane prefHeight="126.0" prefWidth="795.0">
+               <children>
+                  <Button layoutX="240.0" layoutY="81.0" mnemonicParsing="false" onAction="#addParam" style="-fx-background-color: #00ff59;" text="Thêm tham số" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+                  <Button layoutX="360.0" layoutY="81.0" mnemonicParsing="false" onAction="#delete" style="-fx-background-color: #e72c2c;" text="Xóa tham số" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+                  <ChoiceBox fx:id="paramsSelection" layoutX="13.0" layoutY="85.0" prefHeight="26.0" prefWidth="221.0" />
+                  <Label layoutX="15.0" layoutY="12.0" text="Mã tỉnh">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font></Label>
+                  <TextField layoutX="14.0" layoutY="32.0" prefHeight="26.0" prefWidth="106.0" fx:id="maTinhTxt"/>
+                  <Label layoutX="137.0" layoutY="13.0" text="Ký hiệu công trình">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField layoutX="135.0" layoutY="33.0" fx:id="kyHieuCongTrinhTxt"/>
+               </children>
+            </AnchorPane>
+         </center>
+         <top>
+            <Label text="Thiết lập tham số cho API Cục TNN" BorderPane.alignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+         </top>
+         <right>
+            <Button mnemonicParsing="false" onAction="#save" style="-fx-background-color: #3a3aff;" text="Lưu" textFill="WHITE" BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+         </right>
+      </BorderPane>
+   </top>
+   <padding>
+      <Insets left="10.0" right="10.0" top="10.0" />
+   </padding>
+</BorderPane>

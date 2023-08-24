@@ -1,10 +1,8 @@
 package com.codetreatise.thuydienapp.config.modbus.slave;
 
-import com.codetreatise.thuydienapp.bean.Data;
-import com.codetreatise.thuydienapp.bean.DataError;
-import com.codetreatise.thuydienapp.bean.DataReceive;
-import com.codetreatise.thuydienapp.bean.ModbusMaster;
+import com.codetreatise.thuydienapp.bean.*;
 import com.codetreatise.thuydienapp.config.SystemArg;
+import com.codetreatise.thuydienapp.config.database.SqliteJdbc;
 import com.codetreatise.thuydienapp.event.EventTrigger;
 import com.codetreatise.thuydienapp.repository.DataReceiveJdbc;
 import com.codetreatise.thuydienapp.utils.Constants;
@@ -15,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import java.util.TimerTask;
@@ -39,7 +38,7 @@ public class ModbusSchedule extends TimerTask {
     }
 
 
-    private void getData() {
+    private synchronized void getData() {
 
         if(!SystemArg.checkTimeScheduleSyncModbus()) {
             return;
@@ -62,20 +61,19 @@ public class ModbusSchedule extends TimerTask {
             Date now = new Date();
             now.setSeconds(0);
             now.setMinutes((now.getMinutes() / 5) * 5);
-            List<Data> dataList = SystemArg.DATA_LIST;
+            List<ModbusParam> dataList = SqliteJdbc.getInstance().getModbusParams();
 
             dataList.forEach(e -> {
                 try {
 
                     content.append(e.toString());
-                    float arg = ModbusClient.ConvertRegistersToFloat(modbusClient.ReadHoldingRegisters(e.getAddress(), e.getQuantity()));
+                    float arg = ModbusClient.ConvertRegistersToFloat(modbusClient.ReadHoldingRegisters(e.getAddress(), 2));
                     content.append("value: ").append(arg);
                     DataReceiveJdbc.getInstance().insert(
-                            DataReceive.builder()
-                                    .data(e)
-                                    .status(0)
-                                    .thoigian(now)
-                                    .value(arg)
+                            ModbusData.builder()
+                                    .timeReceive(now)
+                                    .name(e.getName())
+                                    .value(Math.round(arg* 100) / 100.0f)
                                     .build()
                     );
                 } catch (ModbusException | IOException modbusException) {
@@ -87,7 +85,7 @@ public class ModbusSchedule extends TimerTask {
             });
 
             modbusClient.Disconnect();
-        } catch (IOException e) {
+        } catch (IOException | SQLException e) {
             logger.error(e.getMessage());
             isError.set(true);
             message.set(e.getMessage());

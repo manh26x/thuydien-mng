@@ -5,7 +5,7 @@ import com.codetreatise.thuydienapp.bean.Data;
 import com.codetreatise.thuydienapp.bean.DataReceive;
 import com.codetreatise.thuydienapp.bean.Result;
 import com.codetreatise.thuydienapp.config.SystemArg;
-import com.codetreatise.thuydienapp.config.database.H2Jdbc;
+import com.codetreatise.thuydienapp.config.database.SqliteJdbc;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.PreparedStatement;
@@ -41,7 +41,7 @@ public class ResultRepository {
             toDate.setSeconds(59);
             toDate.setHours(23);
             toDate.setMinutes(59);
-            preparedStatement = H2Jdbc.getInstance().getConn().prepareStatement(sql);
+            preparedStatement = SqliteJdbc.getInstance().getConn().prepareStatement(sql);
             preparedStatement.setString(1, apiUrl);
             preparedStatement.setObject(2, fromDate );
             preparedStatement.setObject(3, toDate);
@@ -84,51 +84,51 @@ public class ResultRepository {
         return results.stream().filter(r -> r.getApiName().equals(apiName)).collect(Collectors.toList());
     }
 
-    public List<DataReceive> findNotSend(ApiConfig apiConfig)  {
-
-        String sql = "SELECT * FROM Data_Receive d " +
-                " where d.id not in ( select r.data_receive_id from DATA_RESULT r where  r.api_name like ?)";
-        List<DataReceive> dataReceives = new ArrayList<>();
-        PreparedStatement ps = null;
-        try {
-            ps = H2Jdbc.getInstance().getConn().prepareStatement(sql);
-            ps.setString(1, apiConfig.getName());
-            ResultSet rs = ps.executeQuery();
-
-            while (true) {
-                try {
-                    if (!rs.next()) break;
-                    dataReceives.add(DataReceive.builder()
-                            .data(SystemArg.findByKey(rs.getString("data_id")))
-                            .id(rs.getLong("id"))
-                            .value(rs.getFloat("gia_tri"))
-                            .thoigian(Date.from(rs.getTimestamp("thoigian").toInstant()))
-                            .status(rs.getInt("status"))
-                            .build());
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                    log.error(throwables.getMessage());
-                }
-
-            }
-        }catch (Exception e) {
-            log.error(e.getMessage());
-        } finally {
-            try{
-                assert ps != null;
-                ps.close();
-            }catch (Exception ignored) {
-
-            }
-            log.debug("FOUNDED not send apiName {} with result: {}", apiConfig.getName(), dataReceives);
-        }
-        List<String> keys = apiConfig.getKeySends().stream().map(Data::getKey).collect(Collectors.toList());
-        return dataReceives.stream().filter(dataReceive -> dataReceive.getData() != null &&
-                keys.contains(dataReceive.getData().getKey())).collect(Collectors.toList());
-    }
+//    public List<DataReceive> findNotSend(ApiConfig apiConfig)  {
+//
+//        String sql = "SELECT * FROM Data_Receive d " +
+//                " where d.id not in ( select r.data_receive_id from DATA_RESULT r where  r.api_name like ?)";
+//        List<DataReceive> dataReceives = new ArrayList<>();
+//        PreparedStatement ps = null;
+//        try {
+//            ps = SqliteJdbc.getInstance().getConn().prepareStatement(sql);
+//            ps.setString(1, apiConfig.getName());
+//            ResultSet rs = ps.executeQuery();
+//
+//            while (true) {
+//                try {
+//                    if (!rs.next()) break;
+//                    dataReceives.add(DataReceive.builder()
+//                            .data(SystemArg.findByKey(rs.getString("data_id")))
+//                            .id(rs.getLong("id"))
+//                            .value(rs.getFloat("gia_tri"))
+//                            .thoigian(Date.from(rs.getTimestamp("thoigian").toInstant()))
+//                            .status(rs.getInt("status"))
+//                            .build());
+//                } catch (SQLException throwables) {
+//                    throwables.printStackTrace();
+//                    log.error(throwables.getMessage());
+//                }
+//
+//            }
+//        }catch (Exception e) {
+//            log.error(e.getMessage());
+//        } finally {
+//            try{
+//                assert ps != null;
+//                ps.close();
+//            }catch (Exception ignored) {
+//
+//            }
+//            log.debug("FOUNDED not send apiName {} with result: {}", apiConfig.getName(), dataReceives);
+//        }
+//        List<String> keys = apiConfig.getKeySends().stream().map(Data::getKey).collect(Collectors.toList());
+//        return dataReceives.stream().filter(dataReceive -> dataReceive.getData() != null &&
+//                keys.contains(dataReceive.getData().getKey())).collect(Collectors.toList());
+//    }
 
     public void insert(Result entity) {
-        H2Jdbc sqlJdbc = H2Jdbc.getInstance();
+        SqliteJdbc sqlJdbc = SqliteJdbc.getInstance();
         String sql = "INSERT INTO DATA_RESULT(" +
                 "api, " +
                 "response," +

@@ -2,13 +2,16 @@ package com.codetreatise.thuydienapp.controller;
 
 import com.codetreatise.thuydienapp.bean.ApiConfig;
 import com.codetreatise.thuydienapp.bean.DataObj;
-import com.codetreatise.thuydienapp.bean.Result;
 import com.codetreatise.thuydienapp.config.DataConfig;
 import com.codetreatise.thuydienapp.config.SystemArg;
+import com.codetreatise.thuydienapp.model.APIDataModel;
+import com.codetreatise.thuydienapp.model.ParamBoCT;
+import com.codetreatise.thuydienapp.model.ParamCucTNN;
+import com.codetreatise.thuydienapp.repository.BoCTRepository;
+import com.codetreatise.thuydienapp.repository.CucTNNRepository;
 import com.codetreatise.thuydienapp.repository.ResultRepository;
+import com.codetreatise.thuydienapp.utils.Constants;
 import com.codetreatise.thuydienapp.view.FxmlView;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,8 +21,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
@@ -58,7 +59,7 @@ public class ApiConfigController extends BaseController implements Initializable
 
 
     private final ResultRepository resultRepository;
-    ObservableList<DataObj> dataObservable = FXCollections.observableArrayList();;
+    ObservableList<DataObj> dataObservable = FXCollections.observableArrayList();
 
 
 
@@ -79,15 +80,15 @@ public class ApiConfigController extends BaseController implements Initializable
                 .collect(Collectors.toList()));
         reset(null);
         endDate.setValue(LocalDate.now());
-        startDate.setValue(LocalDate.now());
-        dataChosen.getItems().addAll(Arrays.asList( new Integer[] {200, 201, 400, 404, 500}));
+//        startDate.setValue(LocalDate.now());
+//        dataChosen.getItems().addAll(Arrays.asList( new Integer[] {200, 201, 400, 404, 500}));
         setColProperties();
         loadDataList();
         super.initApiMenuGen();
     }
 
     public void reset(ActionEvent event) {
-        apiConfig = SystemArg.API_LIST.stream().filter(e-> e.getName() == SystemArg.NAME_API_CHOSEN).findFirst().get();
+        apiConfig = SystemArg.API_LIST.stream().filter(e-> Objects.equals(e.getName(), SystemArg.NAME_API_CHOSEN)).findFirst().get();
         apiAddress.setText(apiConfig.getUrl());
         usernameApi.setText(apiConfig.getUsername());
         passwordApi.setText(apiConfig.getPassword());
@@ -131,39 +132,30 @@ public class ApiConfigController extends BaseController implements Initializable
 
     private void loadDataList() {
         dataObservable.clear();
-        LocalDate fromDateLocal = startDate.getValue();
         LocalDate toDateLocal = endDate.getValue();
-        Date fromDate = Date.from(fromDateLocal.atStartOfDay(ZoneId.systemDefault()).toInstant());
         Date toDate =  Date.from(toDateLocal.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        toDate.setMinutes(59);
-        toDate.setSeconds(59);
-        toDate.setHours(23);
-        List<Result> resultList = resultRepository.findAllByApiAndTimeSendAfterAndTimeSendBefore(apiConfig.getName(), apiConfig.getUrl(),fromDate, toDate);
+        List<APIDataModel> resultList = new ArrayList<>();
+        if (apiConfig.getName().equals(Constants.BO_CT_NAME)) {
+            resultList = BoCTRepository.getInstance().findBoCTDataResultByDate(toDate);
+        }
+        if (apiConfig.getName().equals(Constants.CUC_TNN_NAME)) {
+            resultList = CucTNNRepository.getInstance().findCucTNNDataResultByDate(toDate);
+        }
         Map<String, DataObj> dataObjMap = new HashMap<>();
-        resultList.forEach(e ->{
+        resultList.forEach(e -> {
             DataObj dataObj = new DataObj();
-            ObjectMapper mapper = new ObjectMapper();
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
-            simpleDateFormat.applyPattern("yyyy-MM-dd HH:mm:ss");
-            try {
-                Map<String, Object> map = mapper.readValue(e.getRequest(), Map.class);
-                Map<String, Object> objSend = (Map<String,Object>)((List)map.get("datas")).get(0);
-                dataObj.setTimeSend(simpleDateFormat.parse((String) objSend.get("thoigian")));
-                DataObj.ValueAndCode valueAndCode = new DataObj.ValueAndCode();
-                valueAndCode.setValue((Double) objSend.get("value"));
-                valueAndCode.setCodeResponse(e.getCodeResponse());
-                if(dataObjMap.get(objSend.get("thoigian")) == null) {
-                    dataObj.getData().put(objSend.get("mathongso").toString(), valueAndCode);
-                    dataObjMap.put((String) objSend.get("thoigian"),dataObj);
-                } else {
-                    dataObj = dataObjMap.get(objSend.get("thoigian"));
-                    dataObj.getData().put((String) objSend.get("mathongso"), valueAndCode);
-                }
-            } catch (JsonProcessingException ex) {
-                ex.printStackTrace();
-            } catch (ParseException parseException) {
-                parseException.printStackTrace();
+            dataObj.setTimeSend(e.getTime());
+            DataObj.ValueAndCode valueAndCode = new DataObj.ValueAndCode();
+            valueAndCode.setValue((double) Math.round(e.getValue() * 100) / 100.0f);
+            valueAndCode.setCodeResponse(e.getCode());
+            if (dataObjMap.get(e.getTime().toString()) == null) {
+                dataObj.getData().put(e.getMaThamSo(), valueAndCode);
+                dataObjMap.put(e.getTime().toString(), dataObj);
+            } else {
+                dataObj = dataObjMap.get(e.getTime().toString());
+                dataObj.getData().put(e.getMaThamSo(), valueAndCode);
             }
+
         });
         dataObservable.addAll(dataObjMap.values());
         dataTable.setItems(dataObservable);
@@ -175,11 +167,12 @@ public class ApiConfigController extends BaseController implements Initializable
         timeCol.setCellValueFactory(new PropertyValueFactory<>("timeSendString"));
         timeCol.setText("Thời gian");
         dataTable.getColumns().add(timeCol);
-        if(apiConfig.getKeySends() != null && !apiConfig.getKeySends().isEmpty()) {
-            apiConfig.getKeySends().forEach(key -> {
+        if (apiConfig.getName().equals(Constants.BO_CT_NAME)) {
+            List<ParamBoCT> paramBoCTS = BoCTRepository.getInstance().findAll();
+            paramBoCTS.forEach(key -> {
                 TableColumn tableColumn = new TableColumn();
                 tableColumn.setCellValueFactory(new PropertyValueFactory<>("data"));
-                tableColumn.setText(key.getMaThongSo());
+                tableColumn.setText(key.getMaThamSo());
                 tableColumn.setCellFactory(e -> new TableCell<ObservableList<String>, Map<String, DataObj.ValueAndCode>>() {
                     @Override
                     public void updateItem(Map<String, DataObj.ValueAndCode> item, boolean empty) {
@@ -188,10 +181,10 @@ public class ApiConfigController extends BaseController implements Initializable
 
                         if (item == null || empty) {
                             setText(null);
-                        }else if(item.get(key.getMaThongSo()) != null) {
-                            setText(String.valueOf(item.get(key.getMaThongSo()).getValue()));
+                        }else if(item.get(key.getMaThamSo()) != null) {
+                            setText(String.valueOf(item.get(key.getMaThamSo()).getValue()));
                             // If index is two we set the background color explicitly.
-                            if (item.get(key.getMaThongSo()).getCodeResponse() >= 300) {
+                            if (item.get(key.getMaThamSo()).getCodeResponse() >= 300) {
                                 this.setStyle("-fx-background-color: #ff7c7c;");
                             } else {
                                 this.setStyle("-fx-background-color: #3ade3a;");
@@ -204,6 +197,37 @@ public class ApiConfigController extends BaseController implements Initializable
                 dataTable.getColumns().add(tableColumn);
             });
         }
+        if (apiConfig.getName().equals(Constants.CUC_TNN_NAME)) {
+            List<ParamCucTNN> paramsCucTNN = CucTNNRepository.getInstance().findAll();
+            paramsCucTNN.forEach(param -> {
+                TableColumn tableColumn = new TableColumn();
+                tableColumn.setCellValueFactory(new PropertyValueFactory<>("data"));
+                tableColumn.setText(param.getName());
+                tableColumn.setCellFactory(e -> new TableCell<ObservableList<String>, Map<String, DataObj.ValueAndCode>>() {
+                    @Override
+                    public void updateItem(Map<String, DataObj.ValueAndCode> item, boolean empty) {
+                        // Always invoke super constructor.
+                        super.updateItem(item, empty);
+
+                        if (item == null || empty) {
+                            setText(null);
+                        }else if(item.get(param.getName()) != null) {
+                            setText(String.valueOf(item.get(param.getName()).getValue()));
+                            // If index is two we set the background color explicitly.
+                            if (item.get(param.getName()).getCodeResponse() >= 300) {
+                                this.setStyle("-fx-background-color: #ff7c7c;");
+                            } else {
+                                this.setStyle("-fx-background-color: #3ade3a;");
+                            }
+                        } else {
+                            setText(null);
+                        }
+                    }
+                });
+                dataTable.getColumns().add(tableColumn);
+            });
+        }
+
     }
     public void resfresh(ActionEvent event) {
         initialize(null, null);
@@ -241,10 +265,6 @@ public class ApiConfigController extends BaseController implements Initializable
                 timeSyncChosen.setStyle(errorStyle);
                 valid = false;
             }
-            if(apiConfig.getKeySends() == null || apiConfig.getKeySends().isEmpty()) {
-                message += "Please add your key in Edit tabs\n";
-                valid = false;
-            }
         }
         lbMessage.setText(message);
 
@@ -276,5 +296,14 @@ public class ApiConfigController extends BaseController implements Initializable
 
     public void addField(ActionEvent event) {
         super.stageManager.createModal(FxmlView.API_FIELD_CONFIG);
+    }
+
+    public void config(ActionEvent actionEvent) {
+        if(apiConfig.getName().equals(Constants.BO_CT_NAME)) {
+            stageManager.createModal(FxmlView.CONFIG_BO_CT_PARAMS);
+        }
+        if(apiConfig.getName().equals(Constants.CUC_TNN_NAME)) {
+            stageManager.createModal(FxmlView.CONFIG_CUC_TNN_PARAMS);
+        }
     }
 }

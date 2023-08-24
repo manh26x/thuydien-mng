@@ -1,13 +1,17 @@
 package com.codetreatise.thuydienapp.config.database;
 
+import com.codetreatise.thuydienapp.bean.ModbusParam;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
 @Slf4j
-public class H2Jdbc {
-    private static H2Jdbc instance;
-    static final String JDBC_DRIVER = "org.h2.Driver";
-    static final String DB_URL = "jdbc:h2:file:./database/thuydien_db";
+public class SqliteJdbc {
+    private static SqliteJdbc instance;
+    static final String JDBC_DRIVER = "org.sqlite.JDBC";
+    static final String DB_URL = "jdbc:sqlite:./database/thuydien.db";
 
     //  Database credentials
     static final String USER = "sa";
@@ -15,7 +19,7 @@ public class H2Jdbc {
     private Connection conn ;
     private Statement stmt;
 
-    private H2Jdbc() {
+    private SqliteJdbc() {
     }
 
     public Connection getConn() throws SQLException {
@@ -74,11 +78,47 @@ public class H2Jdbc {
 
 
 
-    public static H2Jdbc getInstance() {
+    public static SqliteJdbc getInstance() {
         if(instance == null) {
-            instance = new H2Jdbc();
+            instance = new SqliteJdbc();
         }
         return instance;
+    }
+
+    public void clearAllParams() {
+        executeUpdate("DELETE FROM BO_CT_PARAMS WHERE 1=1;\n" +
+                "DELETE FROM CUC_TNN_PARAMS WHERE 1=1;\n" +
+                "DELETE FROM MODBUS_PARAMS WHERE 1=1;");
+    }
+    public void clearAllData() {
+        executeUpdate("DELETE FROM BO_CT_DATA WHERE 1=1;\n" +
+                "DELETE FROM MODBUS_DATA WHERE 1=1;\n" +
+                "DELETE FROM CUC_TNN_DATA WHERE 1=1;");
+    }
+
+    public List<ModbusParam> getModbusParams() throws SQLException {
+        String sql = "select NAME, DVT, ADDRESS from MODBUS_PARAMS";
+
+        ResultSet rs = getResultSet(sql);
+        List<ModbusParam> modbusParams = new ArrayList<>();
+
+        while(rs.next()) {
+            ModbusParam modbusParam = new ModbusParam();
+            modbusParam.setName(rs.getString(1));
+            modbusParam.setDvt(rs.getString(2));
+            modbusParam.setAddress(rs.getInt(3));
+            modbusParams.add(modbusParam);
+        }
+        return modbusParams;
+    }
+
+    public int addModbusParam(ModbusParam modbusParam) {
+        String sql = "INSERT INTO MODBUS_PARAMS (NAME, DVT, ADDRESS) VALUES('"
+                + modbusParam.getName()
+                + "', '" + modbusParam.getDvt()
+                + "', " + modbusParam.getAddress()
+                + ")";
+        return executeUpdate(sql);
     }
 
 

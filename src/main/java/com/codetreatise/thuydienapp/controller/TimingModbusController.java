@@ -1,13 +1,13 @@
 package com.codetreatise.thuydienapp.controller;
 
-import com.codetreatise.thuydienapp.bean.Data;
-import com.codetreatise.thuydienapp.bean.DataError;
-import com.codetreatise.thuydienapp.bean.ModbusDataReceiveTable;
+import com.codetreatise.thuydienapp.bean.*;
 import com.codetreatise.thuydienapp.config.DataConfig;
 import com.codetreatise.thuydienapp.config.SystemArg;
+import com.codetreatise.thuydienapp.config.database.SqliteJdbc;
 import com.codetreatise.thuydienapp.config.modbus.slave.ModbusClientGetData;
-import com.codetreatise.thuydienapp.config.modbus.slave.ModbusDataReceive;
 import com.codetreatise.thuydienapp.event.EventTrigger;
+import com.codetreatise.thuydienapp.model.ModbusDataModel;
+import com.codetreatise.thuydienapp.model.ModbusParamData;
 import com.codetreatise.thuydienapp.repository.DataReceiveJdbc;
 import com.codetreatise.thuydienapp.repository.DataRepository;
 import com.codetreatise.thuydienapp.utils.Constants;
@@ -24,6 +24,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -45,11 +49,7 @@ public class TimingModbusController extends BaseController implements Initializa
     @FXML
     public Button save;
     @FXML
-    public TableView<Data> dataTable;
-    @FXML
-    public TableColumn colKey;
-    @FXML
-    public TableColumn colNguon;
+    public TableView<ModbusParamData> dataTable;
     @FXML
     public TableColumn colTenChiTieu;
     @FXML
@@ -57,81 +57,96 @@ public class TimingModbusController extends BaseController implements Initializa
     @FXML
     public TableColumn colAddress;
     @FXML
-    public TableColumn colQuantity;
-    @FXML
-    public TableColumn colMaThongSo;
-    @FXML
-    public TableColumn<Object, Object> colTrangThai;
+    public TableColumn colCurrentValue;
     @FXML
     public Label lbMessage;
     @FXML
     public ComboBox timeChosen;
     @FXML
     public TextField slaveId;
-    public TableView<ModbusDataReceive> modbusTable;
-    public TableColumn colModAddress;
-    public TableColumn colModQuantity;
-    public TableColumn colModValue;
-    public TextField address;
-    public TextField quantity;
-    public TextField sizeMod;
-    public TableColumn modTenChiTieu;
-    public TableColumn modAddress;
-    public TableColumn modMaThongSo;
-    public TableColumn modValue;
-    public TableView<ModbusDataReceiveTable> modbusData;
+    public TableView modbusData;
     public TableColumn modTime;
 
     private TimerTask updateModbusThread;
     private Timer timer;
 
+    @FXML
+    public DatePicker dateSearch;
 
-    ObservableList<Data> dataObservable = FXCollections.observableArrayList();;
-    ObservableList<ModbusDataReceive> receiveObservableList = FXCollections.observableArrayList();
-    ObservableList<ModbusDataReceiveTable> modbusDataReceives = FXCollections.observableArrayList();
+
+    ObservableList<ModbusParamData> dataObservable = FXCollections.observableArrayList();;
+    ObservableList<ModbusDataModel> receiveObservableList = FXCollections.observableArrayList();
 
     private DataReceiveJdbc receiveJdbc;
 
 
-    private void loadModbusData() {
+    private void loadDataList() {
+        dataObservable.clear();
+        // TODO Generate data
         try {
-            receiveJdbc = DataReceiveJdbc.getInstance();
-            modbusDataReceives.clear();
-            modbusDataReceives.addAll(receiveJdbc.findAllByTime(null, null));
-            modbusData.setItems(modbusDataReceives);
-        } catch (Exception e) {
+            List<ModbusParamData> datas = new ArrayList<>(SqliteJdbc.getInstance().getModbusParams().stream().map(ModbusParamData::new).collect(Collectors.toList()));
+            dataObservable.addAll(datas);
+            this.dataTable.setItems(dataObservable);
+
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    private void loadDataList() {
-        dataObservable.clear();
-        dataObservable.addAll(SystemArg.DATA_LIST);
-        dataTable.setItems(dataObservable);
+    @FXML
+    private void loadModbusData() throws SQLException {
+        receiveObservableList.clear();
+        Map<Date, ModbusDataModel> modbusDataMap = new HashMap<>();
+        DataRepository.getInstance().findAllModbusDataByDate(convertToDate(dateSearch)).stream().forEach(e -> {
+            ModbusDataModel dataModel = modbusDataMap.get(e.getTimeReceive());
+            if (dataModel == null) {
+                dataModel = new ModbusDataModel();
+                dataModel.setModTime(e.getTimeReceive());
+                modbusDataMap.put(e.getTimeReceive(), dataModel);
+            }
+            dataModel.getData().put(e.getName(), Math.round(e.getValue() * 100) / 100f);
+        });
+        receiveObservableList.addAll(modbusDataMap.values());
+        modbusData.setItems(receiveObservableList);
     }
+
+    private Date convertToDate(DatePicker picker) {
+        LocalDate localDate = picker.getValue();
+        Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
+        return Date.from(instant);
+    }
+
     private void setColProperties() {
-        modTenChiTieu.setCellValueFactory(new PropertyValueFactory<>("tenChiTieu"));
-        modAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
-        modValue.setCellValueFactory(new PropertyValueFactory<>("value"));
-        modTime.setCellValueFactory(new PropertyValueFactory<>("timeString"));
-        modMaThongSo.setCellValueFactory(new PropertyValueFactory<>("maThongSo"));
-
-        colModAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
-        colModQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-        colModValue.setCellValueFactory(new PropertyValueFactory<>("value"));
-
-        generateTableColumnModbus(colKey, colDvt, colNguon, colTenChiTieu, colAddress, colQuantity, colMaThongSo);
-        colTrangThai.setCellValueFactory(new PropertyValueFactory<>("status"));
-    }
-
-    static void generateTableColumnModbus(TableColumn colKey, TableColumn colDvt, TableColumn colNguon, TableColumn colTenChiTieu, TableColumn colAddress, TableColumn colQuantity, TableColumn colMaThongSo) {
-        colKey.setCellValueFactory(new PropertyValueFactory<>("key"));
-        colDvt.setCellValueFactory(new PropertyValueFactory<>("dvt"));
-        colNguon.setCellValueFactory(new PropertyValueFactory<>("nguon"));
-        colTenChiTieu.setCellValueFactory(new PropertyValueFactory<>("tenChiTieu"));
+        colTenChiTieu.setCellValueFactory(new PropertyValueFactory<>("name"));
         colAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
-        colQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-        colMaThongSo.setCellValueFactory(new PropertyValueFactory<>("maThongSo"));
+        colDvt.setCellValueFactory(new PropertyValueFactory<>("dvt"));
+        colCurrentValue.setCellValueFactory(new PropertyValueFactory<>("value"));
+
+        modTime.setCellValueFactory(new PropertyValueFactory<>("modTime"));
+        try {
+            SqliteJdbc.getInstance().getModbusParams().stream().forEach(e -> {
+                TableColumn modCol = new TableColumn(e.getName());
+                modCol.setCellValueFactory(new PropertyValueFactory<>("data"));
+                modCol.setCellFactory(x -> new TableCell<ObservableList<String>, Map<String, Float>>() {
+                    @Override
+                    public void updateItem(Map<String, Float> item,  boolean empty) {
+                        super.updateItem(item, empty);
+                        if (item == null || empty) {
+                            setText("-");
+                        } else if(item.get(e.getName()) != null) {
+                            setText(item.get(e.getName()).toString());
+                        } else {
+                            setText("-");
+                        }
+
+                    }
+                });
+                modbusData.getColumns().add(modCol);
+            });
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     @Override
@@ -140,13 +155,23 @@ public class TimingModbusController extends BaseController implements Initializa
         timeChosen.getItems().addAll(Arrays.stream(timeChosenList)
                 .boxed()
                 .collect(Collectors.toList()));
+        if (dateSearch.getValue() == null) {
+            dateSearch.setValue(LocalDate.now());
+        }
         reset(null);
         setColProperties();
         loadDataList();
-        loadModbusData();
+        try {
+            loadModbusData();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         super.initApiMenuGen();
     }
 
+    public void searchDataByDate(Date date) {
+
+    }
 
 
     @FXML
@@ -166,7 +191,11 @@ public class TimingModbusController extends BaseController implements Initializa
         }
     }
     public void resfresh(ActionEvent event) {
-        initialize(null, null);
+        try {
+            loadModbusData();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private boolean isValid() {
@@ -233,19 +262,16 @@ public class TimingModbusController extends BaseController implements Initializa
     }
 
     public void delete(ActionEvent event) {
-        SystemArg.DATA_LIST.remove(dataTable.getSelectionModel().getSelectedItem());
-        int result = DataRepository.getInstance().delete(dataTable.getSelectionModel().getSelectedItem());
-        if(result == 1) {
-            dataObservable.remove(dataTable.getSelectionModel().getSelectedItem());
-            dataTable.setItems(dataObservable);
-            try {
-                DataConfig.saveFavorites(null);
-            } catch (Exception e) {
-                e.printStackTrace();
+        String name = dataTable.getSelectionModel().getSelectedItem().getName();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Xoá " + name + " ?", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+        alert.showAndWait();
+        try {
+            if (alert.getResult() == ButtonType.YES) {
+                DataRepository.getInstance().deleteModbusParam(name);
             }
-
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-
     }
 
 
@@ -291,37 +317,19 @@ public class TimingModbusController extends BaseController implements Initializa
     }
 
     private void updateDataModbus() {
-
+//        TODO update the value in param table
         if(ModbusClientGetData.getInstance().isConnected()) {
             try {
-                Integer sizeMod = Integer.parseInt(this.sizeMod.getText().trim());
-                Integer address = Integer.parseInt(this.address.getText().trim());
-                Integer quantity = Integer.parseInt(this.quantity.getText().trim());
-                for(int i = 0; i < sizeMod; i++) {
-                    float arg = ModbusClientGetData.getInstance().getValue(address + i*quantity, quantity);
-                    ModbusDataReceive dataReceive = null;
-                    try {
-                        dataReceive = receiveObservableList.get(i);
-                    } catch (Exception ignored) {}
-                    if(dataReceive == null) {
-                        receiveObservableList.add(ModbusDataReceive.builder()
-                                .address(String.valueOf(address + i*quantity))
-                                .quantity(String.valueOf(quantity))
-                                .value(arg)
-                                .build());
-                    } else if(dataReceive.getValue() != arg) {
-                        dataReceive.setValue(arg);
-                    }
-
+                for (ModbusParamData param: dataObservable) {
+                    int address = param.getAddress();
+                    float arg = ModbusClientGetData.getInstance().getValue(address, 2);
+                    param.setValue(arg);
                 }
             } catch (ModbusException | IOException e) {
                 e.printStackTrace();
             }
-        } else {
-            receiveObservableList.clear();
         }
-        modbusTable.setItems(receiveObservableList);
-        modbusTable.refresh();
+        dataTable.refresh();
 
     }
 
@@ -337,9 +345,6 @@ public class TimingModbusController extends BaseController implements Initializa
     }
 
 
-    public void resfreshModbusData(ActionEvent event) {
-        loadModbusData();
-    }
 
 
     public void importFileExcel(ActionEvent event) {
@@ -348,6 +353,8 @@ public class TimingModbusController extends BaseController implements Initializa
     @Override
     protected void reload() {
         loadDataList();
-        loadModbusData();
     }
+
+
+
 }

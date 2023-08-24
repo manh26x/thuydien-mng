@@ -18,7 +18,6 @@ public final class SystemArg {
         return mapErrorMenu.putIfAbsent(menuName, OKE_STATUS_STYLE);
     }
 
-    public static List<Data> DATA_LIST = new ArrayList<>();
     public static Integer TIME_SCHEDULE_SYNC_MODBUS = 1000 * 60*10;
     public static Date NEXT_TIME_SCHEDULE_SYNC_MODBUS = new Date();
     public static Integer TIME_SCHEDULE_CALL_API = 1000 * 60 * 10;
@@ -46,9 +45,7 @@ public final class SystemArg {
     public static String ERROR_TYPE_CHOSEN = "";
 
 
-    public static Data findByKey(String key) {
-        return SystemArg.DATA_LIST.stream().filter(data -> data.getKey().equals(key)).findFirst().orElse(null);
-    }
+
 
     public static void setNextTimeScheduleSyncModbus() {
         Date now = new Date();

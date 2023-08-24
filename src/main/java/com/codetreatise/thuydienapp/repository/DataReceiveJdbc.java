@@ -1,8 +1,10 @@
 package com.codetreatise.thuydienapp.repository;
 
 import com.codetreatise.thuydienapp.bean.DataReceive;
+import com.codetreatise.thuydienapp.bean.ModbusData;
 import com.codetreatise.thuydienapp.bean.ModbusDataReceiveTable;
-import com.codetreatise.thuydienapp.config.database.H2Jdbc;
+import com.codetreatise.thuydienapp.config.database.SqliteJdbc;
+import com.codetreatise.thuydienapp.model.ModbusParamData;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.PreparedStatement;
@@ -28,7 +30,7 @@ public class DataReceiveJdbc {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         String sql = "SELECT dr.data_id, d.address, d.ma_thong_so, dr.gia_tri, dr.thoigian from Data_Receive dr left join DATA d on dr.data_id like d.`key` ";
 //                + " where dr.thoi_gian between " + formatter.format(fromDate) + " and " + formatter.format(toDate);
-        ResultSet rs = H2Jdbc.getInstance().getResultSet(sql);
+        ResultSet rs = SqliteJdbc.getInstance().getResultSet(sql);
         List<ModbusDataReceiveTable> result = new ArrayList<>();
         while (true) {
             try {
@@ -53,15 +55,14 @@ public class DataReceiveJdbc {
         return result;
     }
 
-    public void insert(DataReceive dataReceive) {
-        String sql = "INSERT INTO Data_Receive" +
-                " (  data_id, thoigian, gia_tri, status) VALUES ( ?, ? , ?, ? )";
+    public void insert(ModbusData dataReceive) {
+        String sql = "INSERT INTO MODBUS_DATA" +
+                " (  TIME_RECEIVE, NAME, VALUE) VALUES ( ? , ?, ? )";
         try {
-            PreparedStatement preparedStatement = H2Jdbc.getInstance().getConn().prepareStatement(sql);
-            preparedStatement.setString(1, dataReceive.getData().getKey());
-            preparedStatement.setObject(2, dataReceive.getThoigian());
+            PreparedStatement preparedStatement = SqliteJdbc.getInstance().getConn().prepareStatement(sql);
+            preparedStatement.setLong(1, dataReceive.getTimeReceive().getTime());
+            preparedStatement.setString(2, dataReceive.getName());
             preparedStatement.setFloat(3, dataReceive.getValue());
-            preparedStatement.setInt(4, dataReceive.getStatus());
             int result = preparedStatement.executeUpdate();
             log.info("saved " + dataReceive.getValue() + " ? " + result);
             System.out.println("saved " + dataReceive.getValue() + " ? " + result);
@@ -72,7 +73,7 @@ public class DataReceiveJdbc {
             log.error(throwables.getMessage());
         } finally {
             try {
-                H2Jdbc.getInstance().getConn().close();
+                SqliteJdbc.getInstance().getConn().close();
             } catch (Exception throwables) {
                 throwables.printStackTrace();
                 log.error(throwables.getMessage());

@@ -4,18 +4,6 @@ import java.util.ResourceBundle;
 
 public enum FxmlView {
 
-
-    LOGIN {
-        @Override
-		public String getTitle() {
-            return getStringFromResourceBundle("login.title");
-        }
-
-        @Override
-		public String getFxmlFile() {
-            return "/fxml/Login.fxml";
-        }
-    },
     TIMING_MODBUS {
         @Override
         public String getTitle() {
@@ -47,40 +35,6 @@ public enum FxmlView {
         @Override
         public String getFxmlFile() {
             return "/fxml/UpdateFieldModal.fxml";
-        }
-    },
-    FTP_CONFIG {
-        @Override
-        public String getTitle() {
-            return getStringFromResourceBundle("ftp.title");
-        }
-
-        @Override
-        public String getFxmlFile() {
-            return "/fxml/FtpSendFileConfig.fxml";
-        }
-    },
-
-    ADD_FTP {
-        @Override
-        public String getTitle() {
-            return getStringFromResourceBundle("addFtp.title");
-        }
-
-        @Override
-        public String getFxmlFile() {
-            return "/fxml/AddFtp.fxml";
-        }
-    },
-    RENAME_FTP {
-        @Override
-        public String getTitle() {
-            return getStringFromResourceBundle("rename.title");
-        }
-
-        @Override
-        public String getFxmlFile() {
-            return "/fxml/RenameFtp.fxml";
         }
     },
     MODBUS_SERVER_CONFIG {
@@ -147,6 +101,39 @@ public enum FxmlView {
         @Override
         public String getFxmlFile() {
             return "/fxml/ImportFileExcel.fxml";
+        }
+    },
+    CONFIG_BO_CT_PARAMS {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("bo.ct.config.title");
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/fxml/ConfigArgument.fxml";
+        }
+    },
+    CONFIG_CUC_TNN_PARAMS {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("cuc.tnn.title");
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/fxml/ConfigArgumentCucTNN.fxml";
+        }
+    },
+    API_CUC_TNN {
+        @Override
+        public String getTitle() {
+            return getStringFromResourceBundle("cuc.tnn.title");
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/fxml/ApiCucTnn.fxml";
         }
     }
     ;

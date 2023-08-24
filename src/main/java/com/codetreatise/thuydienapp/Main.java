@@ -1,11 +1,11 @@
 package com.codetreatise.thuydienapp;
 
+import com.codetreatise.thuydienapp.bean.ApiConfig;
 import com.codetreatise.thuydienapp.config.*;
 import com.codetreatise.thuydienapp.config.database.InitDatabase;
-import com.codetreatise.thuydienapp.config.ftp.SynchronizeFtpConfig;
-import com.codetreatise.thuydienapp.config.login.LoginCheckTask;
 import com.codetreatise.thuydienapp.config.modbus.master.ModbusMasterStart;
 import com.codetreatise.thuydienapp.config.modbus.slave.ModbusSchedule;
+import com.codetreatise.thuydienapp.utils.Constants;
 import com.codetreatise.thuydienapp.view.FxmlView;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -28,9 +28,20 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         try {
-
             DataConfig.getHostsList();
-
+            if (SystemArg.API_LIST.stream().noneMatch(a -> a.getName().equals(Constants.BO_CT_NAME))) {
+                ApiConfig apiConfig = new ApiConfig();
+                apiConfig.setName(Constants.BO_CT_NAME);
+                apiConfig.setUrl(Constants.BO_CT_URL);
+                SystemArg.API_LIST.add(apiConfig);
+            }
+            if (SystemArg.API_LIST.stream().noneMatch(a -> a.getName().equals(Constants.CUC_TNN_NAME))) {
+                ApiConfig apiConfig = new ApiConfig();
+                apiConfig.setName(Constants.CUC_TNN_NAME);
+                apiConfig.setUrl(Constants.CUC_TNN_URL);
+                SystemArg.API_LIST.add(apiConfig);
+            }
+            DataConfig.saveFavorites(null);
         } catch (Exception ignored) {
         }
         stageManager = StageManager.getInstance();
@@ -45,8 +56,6 @@ public class Main extends Application {
         Timer timer = new Timer();
         timer.schedule(InitDatabase.getInstance(),0);
         ModbusMasterStart.getInstance().reloadModbus();
-        timer.scheduleAtFixedRate(SynchronizeFtpConfig.getInstance(), 1000, 10000);
-        timer.scheduleAtFixedRate(LoginCheckTask.getInstance(), 100, 1000);
         timer.scheduleAtFixedRate(ModbusSchedule.getInstance(), 2000, 10000);
         timer.scheduleAtFixedRate(SynchronizeConfig.getInstance(), 2000, 10000);
 

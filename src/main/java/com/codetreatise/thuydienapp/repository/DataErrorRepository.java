@@ -1,8 +1,7 @@
 package com.codetreatise.thuydienapp.repository;
 
 import com.codetreatise.thuydienapp.bean.DataError;
-import com.codetreatise.thuydienapp.config.database.H2Jdbc;
-import com.codetreatise.thuydienapp.utils.EventObject;
+import com.codetreatise.thuydienapp.config.database.SqliteJdbc;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -42,17 +41,17 @@ public class DataErrorRepository  {
 
     public void readAllType(String type) {
         String sql = "UPDATE DATA_ERROR set is_read = 1 where type_message = '" + type + "'";
-        H2Jdbc.getInstance().executeUpdate(sql);
+        SqliteJdbc.getInstance().executeUpdate(sql);
     }
     public void readSelectionsType(List<DataError> errors, String type) {
         errors.parallelStream().forEach(error ->  {
             String sql = "UPDATE DATA_ERROR set is_read = 1 where type_message = '" + type + "' and id = " + error.getId();
-            H2Jdbc.getInstance().executeUpdate(sql);
+            SqliteJdbc.getInstance().executeUpdate(sql);
 
         });
     }
     private List<DataError> getDataErrorBySql(String sql) {
-        ResultSet rs = H2Jdbc.getInstance().getResultSet(sql);
+        ResultSet rs = SqliteJdbc.getInstance().getResultSet(sql);
         List<DataError> errors = new ArrayList<>();
         while (true) {
             try {
@@ -79,7 +78,7 @@ public class DataErrorRepository  {
 
 
     public int insert(DataError dataError) {
-        H2Jdbc sqlJdbc = H2Jdbc.getInstance();
+        SqliteJdbc sqlJdbc = SqliteJdbc.getInstance();
         String sql = "INSERT INTO DATA_ERROR (" +
                 " type_message, " +
                 " create_time, " +
